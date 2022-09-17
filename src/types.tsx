@@ -1,0 +1,7 @@
+type Article = {
+
+}
+
+type Subscription = {
+
+}
