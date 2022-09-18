@@ -1,4 +1,4 @@
-import { SubscriptionListItem } from "./types";
+import { SubscriptionListItem } from "./types/types";
 
 export const MOCK_SUBSCRIPTIONS: SubscriptionListItem[] = [
 	{
