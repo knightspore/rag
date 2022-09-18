@@ -11,6 +11,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^1.35.6",
     "axios": "^0.27.2",
     "feed-reader": "^6.0.2",
     "next": "12.3.0",

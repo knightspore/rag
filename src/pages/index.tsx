@@ -4,22 +4,21 @@ import SubscriptionCard from "../components/SubscriptionCard";
 
 export default function HomePage() {
     const { subscriptions, readingList } = useUserContext()
+
     return (
-        <div className="flex flex-col w-screen h-screen p-8 text-slate-200 bg-gradient-to-b from-slate-900 to-gray-900">
-            <div className="grid flex-initial grid-cols-1 md:grid-cols-8 overflow-clip">
-                <section className="col-span-2 p-2">
-                    <h2 className="mb-2 font-medium text-md">Subscriptions</h2>
-                    <div className="flex flex-row flex-wrap gap-2">
-                        {subscriptions.map(sub => <SubscriptionCard key={sub.title} {...{ sub }} />)}
-                    </div>
-                </section>
-                <section className="gap-2 p-2 overflow-y-scroll cols-span-1">
-                    <h2 className="mb-2 font-medium text-md">Reading List</h2>
-                    <div className="flex flex-col gap-2">
-                        {readingList.map(article => <ArticleCard key={article.title} {...{article}} />)}
-                    </div>
-                </section>
-            </div>
+        <div className="grid flex-initial grid-cols-1 md:grid-cols-8 overflow-clip">
+            <section className="col-span-2 p-2">
+                <h2 className="mb-2 font-medium text-md">Subscriptions</h2>
+                <div className="flex flex-row flex-wrap gap-2">
+                    {subscriptions.map(sub => <SubscriptionCard key={sub.title} {...{ sub }} />)}
+                </div>
+            </section>
+            <section className="gap-2 p-2 overflow-y-scroll cols-span-1">
+                <h2 className="mb-2 font-medium text-md">Reading List</h2>
+                <div className="flex flex-col gap-2">
+                    {readingList.map(article => <ArticleCard key={article.title} {...{ article }} />)}
+                </div>
+            </section>
         </div>
     )
 }

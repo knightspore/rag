@@ -14,4 +14,8 @@
     @apply bg-slate-700/50 rounded-full
   }
 
+  input {
+    @apply text-slate-300 p-1 rounded-sm bg-slate-700
+  }
+
 }

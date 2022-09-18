@@ -1,5 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
-import { MOCK_SUBSCRIPTIONS } from "../../mocks";
+import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
 import { ArticleListItem, SubscriptionListItem } from "../../types";
 
 type Props = {
