@@ -1,17 +1,12 @@
-import { Article } from "../types/backend-vo";
-import Icon from "../src/components/Icon";
+import { ArticleListItem } from "../types";
+import Icon from "./Icon";
 
 export default function ArticleCard({
   article,
-  setFocus,
 }: {
-  article: Article;
-  setFocus: Function;
+  article: ArticleListItem;
 }) {
-  const handleClick = () => {
-    setFocus(article.id);
-    article.read = true;
-  };
+
 
   return (
     <div
@@ -19,11 +14,10 @@ export default function ArticleCard({
       className={`cursor-pointer hover:opacity-50 transition-all duration-150 text-slate-200 ${
         article.read && "opacity-50"
       }`}
-      onClick={handleClick}
     >
       <h3 className="mb-1 text-lg">
         <div className="inline-block pr-2 translate-y-1">
-          <Icon src={article.icon} />
+          <Icon src={article.link} />
         </div>
         {article.title}
       </h3>
