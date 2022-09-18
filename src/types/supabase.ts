@@ -391,6 +391,6 @@ export interface parameters {
   "rowFilter.articles.subscription": string;
 }
 
-export interface operations {}
+// export interface operations {}
 
-export interface external {}
+// export interface external {}
