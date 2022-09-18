@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "yarn types:generate && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -14,6 +14,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "@supabase/supabase-js": "^2.0.0-rc.10",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "axios": "^0.27.2",
     "feed-reader": "^6.0.2",
     "graphql": "^16.6.0",

@@ -28,14 +28,11 @@ export default function SubscriptionFeed() {
 	})
 
 	if (fetching) return <SubscriptionCard sub={{ id: "none", title: "Loading...", icon: undefined }} />
+
 	if (error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
-	return (
-		<>
-			{data.subscriptionsCollection.edges.map((edge: EdgeType) => {
-				return <SubscriptionCard key={edge.node.title} sub={edge.node} />
-			})}
-		</>
-	)
+	return data.subscriptionsCollection.edges.map((edge: EdgeType) => {
+		return <SubscriptionCard key={edge.node.title} sub={edge.node} />
+	})
 
 }

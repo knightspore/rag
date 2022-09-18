@@ -35,12 +35,11 @@ export default function AddSubscriptionForm() {
     const date = new Date().toDateString()
     const id = uuidv4()
 
-
     const articles: Article[] = feed.entries.map((entry: { title: string, link: string, published: string, description: string }) => {
       const a: Article = {
         id: uuidv4(),
         created_at: date,
-        title: entry.title,
+        title: title,
         url: entry.link,
         pub_date: entry.published,
         description: entry.description,
@@ -105,7 +104,7 @@ export default function AddSubscriptionForm() {
         onClose={() => setOpen(false)}
         className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-slate-700/50"
       >
-        <Dialog.Panel className="min-w-lg grid gap-2 p-4 rounded-sm bg-slate-900 text-slate-200">
+        <Dialog.Panel className="grid gap-2 p-4 rounded-sm min-w-lg bg-slate-900 text-slate-200">
           <Dialog.Title>
             <h2>Add Subscription</h2>
           </Dialog.Title>
