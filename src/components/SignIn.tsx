@@ -1,10 +1,10 @@
 import { FormEvent, useState } from "react"
+import { SUPABASE_LOGIN_REDIRECT_URL } from "../constants/env"
+import { supabase } from "../lib/supabase"
 import Alert, { Level } from "./Alert"
-import { useAuthContext } from "./provider/AuthContextProvider"
 
 export default function SignIn() {
 
-	const supabase = useAuthContext()
 	const [loading, setLoading] = useState(false)
 	const [errMsg, setErrMsg] = useState("")
 	const [otpSent, setOtpSent] = useState(false)
@@ -12,12 +12,15 @@ export default function SignIn() {
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault()
+		setErrMsg("")
 		try {
 			setLoading(true)
-			const { error } = await supabase.auth.signIn({ email })
+			const { error } = await supabase.auth.signInWithOtp({ email, options: {
+				emailRedirectTo: SUPABASE_LOGIN_REDIRECT_URL
+			} })
 			if (error) {
 				setErrMsg(error.message)
-			setOtpSent(false)
+				setOtpSent(false)
 			} else {
 				setOtpSent(true)
 			}
@@ -26,10 +29,6 @@ export default function SignIn() {
 		} finally {
 			setLoading(false)
 		}
-	}
-
-	if (loading) {
-		return <div className="m-auto">Loading...</div>
 	}
 
 	return (
@@ -42,6 +41,7 @@ export default function SignIn() {
 				</button>
 			</form>
 			{errMsg && <Alert text={errMsg} level={Level.error} />}
+			{loading && <Alert text="Loading..." level={Level.info} />}
 			{otpSent && <Alert text="Magic Sign-in Link Sent! Check your Email." level={Level.info} />}
 		</div>
 	)

@@ -25,6 +25,7 @@ export interface paths {
           muted?: parameters["rowFilter.subscriptions.muted"];
           icon?: parameters["rowFilter.subscriptions.icon"];
           user?: parameters["rowFilter.subscriptions.user"];
+          articles?: parameters["rowFilter.subscriptions.articles"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -84,6 +85,7 @@ export interface paths {
           muted?: parameters["rowFilter.subscriptions.muted"];
           icon?: parameters["rowFilter.subscriptions.icon"];
           user?: parameters["rowFilter.subscriptions.user"];
+          articles?: parameters["rowFilter.subscriptions.articles"];
         };
         header: {
           /** Preference */
@@ -107,10 +109,122 @@ export interface paths {
           muted?: parameters["rowFilter.subscriptions.muted"];
           icon?: parameters["rowFilter.subscriptions.icon"];
           user?: parameters["rowFilter.subscriptions.user"];
+          articles?: parameters["rowFilter.subscriptions.articles"];
         };
         body: {
           /** subscriptions */
           subscriptions?: definitions["subscriptions"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/articles": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.articles.id"];
+          created_at?: parameters["rowFilter.articles.created_at"];
+          title?: parameters["rowFilter.articles.title"];
+          url?: parameters["rowFilter.articles.url"];
+          pub_date?: parameters["rowFilter.articles.pub_date"];
+          description?: parameters["rowFilter.articles.description"];
+          content?: parameters["rowFilter.articles.content"];
+          is_read?: parameters["rowFilter.articles.is_read"];
+          subscription?: parameters["rowFilter.articles.subscription"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["articles"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** articles */
+          articles?: definitions["articles"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.articles.id"];
+          created_at?: parameters["rowFilter.articles.created_at"];
+          title?: parameters["rowFilter.articles.title"];
+          url?: parameters["rowFilter.articles.url"];
+          pub_date?: parameters["rowFilter.articles.pub_date"];
+          description?: parameters["rowFilter.articles.description"];
+          content?: parameters["rowFilter.articles.content"];
+          is_read?: parameters["rowFilter.articles.is_read"];
+          subscription?: parameters["rowFilter.articles.subscription"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.articles.id"];
+          created_at?: parameters["rowFilter.articles.created_at"];
+          title?: parameters["rowFilter.articles.title"];
+          url?: parameters["rowFilter.articles.url"];
+          pub_date?: parameters["rowFilter.articles.pub_date"];
+          description?: parameters["rowFilter.articles.description"];
+          content?: parameters["rowFilter.articles.content"];
+          is_read?: parameters["rowFilter.articles.is_read"];
+          subscription?: parameters["rowFilter.articles.subscription"];
+        };
+        body: {
+          /** articles */
+          articles?: definitions["articles"];
         };
         header: {
           /** Preference */
@@ -160,6 +274,43 @@ export interface definitions {
     icon?: string;
     /** Format: uuid */
     user: string;
+    /** Format: ARRAY */
+    articles?: unknown[];
+  };
+  /** @description Articles belonging to Subscriptions */
+  articles: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /** Format: text */
+    title: string;
+    /** Format: text */
+    url: string;
+    /** Format: timestamp with time zone */
+    pub_date: string;
+    /** Format: text */
+    description?: string;
+    /** Format: text */
+    content?: string;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    is_read?: boolean;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `subscriptions.id`.<fk table='subscriptions' column='id'/>
+     */
+    subscription?: string;
   };
 }
 
@@ -216,8 +367,30 @@ export interface parameters {
   "rowFilter.subscriptions.icon": string;
   /** Format: uuid */
   "rowFilter.subscriptions.user": string;
+  /** Format: ARRAY */
+  "rowFilter.subscriptions.articles": string;
+  /** @description articles */
+  "body.articles": definitions["articles"];
+  /** Format: uuid */
+  "rowFilter.articles.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.articles.created_at": string;
+  /** Format: text */
+  "rowFilter.articles.title": string;
+  /** Format: text */
+  "rowFilter.articles.url": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.articles.pub_date": string;
+  /** Format: text */
+  "rowFilter.articles.description": string;
+  /** Format: text */
+  "rowFilter.articles.content": string;
+  /** Format: boolean */
+  "rowFilter.articles.is_read": string;
+  /** Format: uuid */
+  "rowFilter.articles.subscription": string;
 }
 
-// export interface operations {}
+export interface operations {}
 
-// export interface external {}
+export interface external {}

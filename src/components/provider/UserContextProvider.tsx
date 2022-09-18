@@ -1,23 +1,15 @@
-import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
-import { ArticleListItem, SubscriptionListItem } from "../../types/types";
+import { User } from "@supabase/supabase-js";
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../../lib/supabase";
+import SignIn from "../SignIn";
 
 type Props = {
 	children: React.ReactNode
 }
 
-type UserContextValue = {
-	subscriptions: SubscriptionListItem[] | []
-	setSubscriptions: Dispatch<SetStateAction<UserContextValue["subscriptions"]>>,
-	readingList: ArticleListItem[],
-	setReadingList: Dispatch<SetStateAction<UserContextValue["readingList"]>>,
-}
+type UserContextValue = User | null
 
-export const UserContext = createContext<UserContextValue>({
-	subscriptions: [],
-	setSubscriptions: () => [],
-	readingList: [],
-	setReadingList: () => [],
-})
+export const UserContext = createContext<UserContextValue>(null)
 
 export function useUserContext() {
 	const value = useContext(UserContext)
@@ -30,11 +22,31 @@ export function useUserContext() {
 
 export default function UserContextProvider({ children }: Props) {
 
-	const [subscriptions, setSubscriptions] = useState<UserContextValue["subscriptions"]>([])
-	const [readingList, setReadingList] = useState<UserContextValue["readingList"]>([])
+	const [user, setUser] = useState<User | null>(null)
+	const [loading, setLoading] = useState(true)
 
-	return <UserContext.Provider value={{ subscriptions, setSubscriptions, readingList, setReadingList }}>
-		{children}
-	</UserContext.Provider>
+	useEffect(() => {
+		async function getCurrentUser() {
+			const { data: { session}, error, } = await supabase.auth.getSession()
+			if (error) {
+				alert(error)
+			}
+			session && setUser(session.user)
+		}
+		if (!user) {
+			setLoading(true)
+			getCurrentUser()
+			setLoading(false)
+		}
+	}, [user])
 
+	if (loading) {
+		return <div className="m-auto">Loading...</div>
+	} 
+
+	return (
+		<UserContext.Provider value={user}>
+			{user ? children : <SignIn/>}
+		</UserContext.Provider>
+	)
 }

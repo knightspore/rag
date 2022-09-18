@@ -13,12 +13,14 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.2",
-    "@supabase/supabase-js": "^1.35.6",
+    "@supabase/supabase-js": "^2.0.0-rc.10",
     "axios": "^0.27.2",
     "feed-reader": "^6.0.2",
+    "graphql": "^16.6.0",
     "next": "12.3.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "urql": "^3.0.3"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.7",
