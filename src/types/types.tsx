@@ -1,6 +1,6 @@
-import { FeedData } from "feed-reader";
+import { definitions } from "./supabase"
 
-export type SubscriptionListItem = Pick<FeedData, "title" | "link">
+export type SubscriptionPreview = Pick<definitions["subscriptions"],"id" | "title" | "icon">
 
 export type ArticleListItem = {
   url: string,
