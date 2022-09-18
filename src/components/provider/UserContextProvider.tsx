@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
-import { ArticleListItem, SubscriptionListItem } from "../../types";
+import { ArticleListItem, SubscriptionListItem } from "../../types/types";
 
 type Props = {
 	children: React.ReactNode

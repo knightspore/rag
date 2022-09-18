@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SubscriptionListItem } from "../types";
+import { SubscriptionListItem } from "../types/types";
 import Icon from "./Icon";
 
 export default function SubscriptionCard({ sub }: { sub: SubscriptionListItem }) {

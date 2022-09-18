@@ -22,7 +22,7 @@ export default function SignIn() {
 				setOtpSent(true)
 			}
 		} catch (error) {
-			setErrMsg(error.message || JSON.stringify(error))
+			setErrMsg((error as Error).message || JSON.stringify(error))
 		} finally {
 			setLoading(false)
 		}

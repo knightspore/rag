@@ -1,4 +1,4 @@
-import { ArticleListItem } from "../types";
+import { ArticleListItem } from "../types/types";
 import Icon from "./Icon";
 
 export default function ArticleCard({
