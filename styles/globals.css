@@ -15,7 +15,11 @@
   }
 
   input {
-    @apply text-slate-300 p-1 rounded-sm bg-slate-700
+    @apply border-2 border-slate-800 text-slate-300 p-2 rounded-sm bg-slate-700/50
+  }
+
+  button {
+    @apply border-2 border-slate-800 bg-slate-800/50 text-slate-300 rounded-sm p-2
   }
 
 }

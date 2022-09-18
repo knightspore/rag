@@ -1,10 +1,11 @@
 import ArticleCard from "../components/ArticleCard";
+import { useAuthContext } from "../components/provider/AuthContextProvider";
 import { useUserContext } from "../components/provider/UserContextProvider";
 import SubscriptionCard from "../components/SubscriptionCard";
 
 export default function HomePage() {
+    const supabase = useAuthContext()
     const { subscriptions, readingList } = useUserContext()
-
     return (
         <div className="grid flex-initial grid-cols-1 md:grid-cols-8 overflow-clip">
             <section className="col-span-2 p-2">
@@ -12,6 +13,7 @@ export default function HomePage() {
                 <div className="flex flex-row flex-wrap gap-2">
                     {subscriptions.map(sub => <SubscriptionCard key={sub.title} {...{ sub }} />)}
                 </div>
+                <button onClick={async () => await supabase.auth.signOut()}>Sign Out</button>
             </section>
             <section className="gap-2 p-2 overflow-y-scroll cols-span-1">
                 <h2 className="mb-2 font-medium text-md">Reading List</h2>
