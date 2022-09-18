@@ -27,7 +27,7 @@ export default function SubscriptionFeed() {
 		query: SubscriptionsQuery
 	})
 
-	if (fetching) return <SubscriptionCard sub={{ id: "none", title: "Loading subscriptions...", icon: undefined }} />
+	if (fetching) return <SubscriptionCard sub={{ id: "none", title: "Loading...", icon: undefined }} />
 	if (error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
 	return (
