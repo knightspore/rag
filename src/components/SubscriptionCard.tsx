@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { SubscriptionPreview } from "../types/types";
 import Icon from "./Icon";
-import { SubscriptionPreview } from "./SubscriptionFeed";
 
-export default function SubscriptionCard({ sub }: { sub: SubscriptionPreview["node"] }) {
+export default function SubscriptionCard({ sub }: { sub: SubscriptionPreview }) {
   const [hidden, setHidden] = useState(false)
   const hide = () => { setHidden(!hidden) }
   return (
