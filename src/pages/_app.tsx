@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import '../../styles/globals.css'
+import AppContextProvider from '../components/provider/AppContextProvider'
 import UrqlContextProvider from '../components/provider/UrqlContextProvider'
 import UserContextProvider from '../components/provider/UserContextProvider'
 
@@ -12,7 +13,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 		</Head>
 		<UserContextProvider>
 			<UrqlContextProvider>
-				<Component {...pageProps} />
+				<AppContextProvider>
+					<Component {...pageProps} />
+				</AppContextProvider>
 			</UrqlContextProvider>
 		</UserContextProvider>
 	</div >

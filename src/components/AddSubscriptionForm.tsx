@@ -1,11 +1,10 @@
 import { Dialog } from "@headlessui/react";
-import { FeedData } from "feed-reader";
 import { FormEvent, useState } from "react";
-import { supabase } from "../lib/supabase";
-import { Article, Subscription } from "../types/types";
+import { addArticles } from "../lib/db/articles";
+import { addSubscription } from "../lib/db/subscriptions";
+import { parseFeed } from "../lib/parse";
 import Alert, { Level } from "./Alert";
 import { useUserContext } from "./provider/UserContextProvider";
-import { v4 as uuidv4 } from 'uuid';
 
 export default function AddSubscriptionForm() {
 
@@ -20,75 +19,22 @@ export default function AddSubscriptionForm() {
     e.preventDefault();
     setError(false)
     setIsLoading(true);
-
-    const res = await fetch("/api/feed/get", {
-      method: "POST",
-      body: JSON.stringify({ url }),
-    })
-
-    if (res.status !== 200) {
+    try {
+      const { subscription, articles } = await parseFeed(title, url, user.id)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+      const sErr = await addSubscription(subscription)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+      const aErr = await addArticles(articles)
+      if (sErr || aErr) {
+        throw new Error(sErr ? sErr.message : aErr && aErr.message)
+      }
+      window.location.reload()
+    } catch (e) {
       setIsLoading(false)
       setError(true)
-    }
-
-    const feed: FeedData = await res.json()
-    const date = new Date().toDateString()
-    const id = uuidv4()
-
-    const articles: Article[] = feed.entries.map((entry: { title: string, link: string, published: string, description: string }) => {
-      const a: Article = {
-        id: uuidv4(),
-        created_at: date,
-        title: title,
-        url: entry.link,
-        pub_date: entry.published,
-        description: entry.description,
-        is_read: false,
-        subscription: id,
-      }
-      return a
-    })
-
-    const subscription: Subscription = {
-      id: id,
-      updated_at: date,
-      title: feed.title,
-      description: feed.description,
-      url: url,
-      icon: `https://www.google.com/s2/favicons?domain=${url}`,
-      user: user.id,
-      articles: articles.map(a  => a.id)
-    }
-
-    async function addSubscription(sub: Subscription) {
-      const { data, error } = await supabase
-        .from('subscriptions')
-        .upsert({
-          ...sub
-        })
-      return [data, error]
-    }
-
-    async function addArticles(art: Article[]) {
-    const { data, error } = await supabase
-      .from('articles')
-      .upsert([
-        ...art
-      ])
-    return [data, error]
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
-    const [s, sErr] = await addSubscription(subscription)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
-    const [a, aErr] = await addArticles(articles)
-
-    if (!sErr && !sErr) {
+    } finally {
       setOpen(false);
       setIsLoading(false);
-    } else {
-      setIsLoading(false)
-      setError(true)
     }
   };
 

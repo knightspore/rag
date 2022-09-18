@@ -1,4 +1,5 @@
 import AddSubscriptionForm from "../components/AddSubscriptionForm"
+import ArticleFeed from "../components/ArticleFeed"
 import { useUserContext } from "../components/provider/UserContextProvider"
 import SubscriptionFeed from "../components/SubscriptionFeed"
 import { supabase } from "../lib/supabase"
@@ -27,7 +28,7 @@ export default function HomePage() {
                 <section className="gap-2 overflow-y-scroll md:col-span-6">
                     <h2 className="mb-2 font-medium text-md">Reading List</h2>
                     <div className="flex flex-col gap-2">
-                        ...ReadingList
+                        <ArticleFeed />
                     </div>
                 </section>
             </div>

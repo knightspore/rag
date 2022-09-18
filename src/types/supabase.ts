@@ -259,7 +259,11 @@ export interface definitions {
      * @default now()
      */
     updated_at?: string;
-    /** Format: text */
+    /**
+     * Format: text
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
     title: string;
     /** Format: text */
     description?: string;
@@ -305,11 +309,7 @@ export interface definitions {
      * @default false
      */
     is_read?: boolean;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `subscriptions.id`.<fk table='subscriptions' column='id'/>
-     */
+    /** Format: text */
     subscription?: string;
   };
 }
@@ -387,7 +387,7 @@ export interface parameters {
   "rowFilter.articles.content": string;
   /** Format: boolean */
   "rowFilter.articles.is_read": string;
-  /** Format: uuid */
+  /** Format: text */
   "rowFilter.articles.subscription": string;
 }
 
