@@ -4,7 +4,7 @@ import handleGetFeed from "./get";
 
 describe("/api/feed/get", () => {
 	it("It parses a feed correctly", async () => {
-		const url = "https://news.ycombinator.com/rss"
+		const url = "https://www.groundup.org.za/sitenews/rss/"
 		const { req, res } = createMocks({
 			method: "POST",
 			body: {
