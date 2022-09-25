@@ -2,7 +2,7 @@ import { gql, useQuery } from "urql"
 import { ArticlePreview } from "../types/types"
 import Alert, { Level } from "./Alert"
 import ArticleCard, {SkeletonArticleCard} from "./ArticleCard"
-import {useAppContext, useSubscriptionArticlesContext} from "./provider/AppContextProvider"
+import {useAppContext} from "./provider/AppContextProvider"
 
 type EdgeType = {
 	node: ArticlePreview
@@ -13,11 +13,9 @@ export default function ArticleFeed() {
   
   const { articles } = useAppContext()
 
-  console.log(articles.length)
-  
   const ArticlesQuery = gql`
-    query {
-      articlesCollection(orderBy: [{ pub_date: AscNullsFirst }]) {
+    query ($ids: [UUID!]) {
+      articlesCollection(filter: {id: {in: $ids}}, orderBy: {pub_date: DescNullsLast}) {
         edges {
           node {
             id
@@ -34,7 +32,10 @@ export default function ArticleFeed() {
   `
 
 	const [{ data, fetching, error }] = useQuery({
-		query: ArticlesQuery
+		query: ArticlesQuery,
+    variables: {
+      ids: articles,
+    }
 	})
 
   if (fetching) return <SkeletonArticleCard />

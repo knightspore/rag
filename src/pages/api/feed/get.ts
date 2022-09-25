@@ -6,7 +6,7 @@ export default async function handleGetFeed(
   res: NextApiResponse
 ) {
 
-	const { url } = req.body
+	const { url } = JSON.parse(req.body)
 
 	if (!url) {
 		res.status(400).json('{ "error": "No URL Provided" }')
