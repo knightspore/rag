@@ -10,7 +10,6 @@ type EdgeType = {
 	node: ArticlePreview
 }
 
-
 export default function ArticleFeed() {
   
   const { articles } = useAppContext()

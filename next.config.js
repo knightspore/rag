@@ -6,7 +6,7 @@ const nextConfig = {
   pwa: {
     dest: 'public',
     runtimeCaching,
-  }
+  },
   images: {
     domains: ['t2.gstatic.com', 'www.google.com', 'google.com']
   }

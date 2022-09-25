@@ -1,7 +1,8 @@
-import React, { createContext, useContext } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { CombinedError } from "urql"
 import { gql, useQuery } from "urql"
 import { useUserContext } from "./UserContextProvider"
+import { definitions } from "../../types/supabase"
 
 type AppContextValue = {
 	data: any | undefined,
@@ -24,6 +25,7 @@ export function useAppContext() {
 export default function AppContextProvider({ children }: { children: React.ReactNode }) {
 
 	const user = useUserContext()
+	const [articles, setArticles] = useState<string[]|[]>([])
 
 	const AppQuery = gql`
     query {
@@ -44,14 +46,15 @@ export default function AppContextProvider({ children }: { children: React.React
 		query: AppQuery
 	})
 
-
-  const subs = data?.subscriptionsCollection.edges.map(({node}) => node)
-  const articles: string[] = []
-  subs && subs.forEach((sub) => {
-  sub.articles.forEach(item => {
-    articles.push(item)
-    })
-  })
+	useEffect(() => {
+		data && data.subscriptionsCollection.edges.map(({node}:{node: definitions["subscriptions"]}) => {
+			node.articles?.forEach((item) => {
+				if (typeof(item) == "string" && item?.length >0 ) {
+					setArticles((value) => [...value, item])
+				}
+			})
+		})
+	}, [data])
 
 	return <AppContext.Provider value={{ data, fetching, error, articles }}>
 		{children}
