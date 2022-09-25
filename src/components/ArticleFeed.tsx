@@ -40,11 +40,12 @@ export default function ArticleFeed() {
     }
 	})
 
+  if (fetching) return <LoadingState />
+
 	if (error) return <Alert text="Error loading articles..." level={Level.warn} />
 
   return (
     <motion.ol variants={container} initial="hidden" animate="show">
-      { fetching && <LoadingState/> }
       { data && data.articlesCollection.edges.map((edge: EdgeType) => {
         return <motion.li key={edge.node.title} variants={item}>
           <ArticleCard article={edge.node} />
@@ -56,9 +57,15 @@ export default function ArticleFeed() {
 }
 
 function LoadingState() {
-  return <>
+  return <motion.ol variants={container} initial="hidden" animate="show">
+    <motion.li variants={item}>
     <SkeletonArticleCard/>
+    </motion.li>
+    <motion.li variants={item}>
     <SkeletonArticleCard/>
+    </motion.li>
+    <motion.li variants={item}>
     <SkeletonArticleCard/>
-    </>
+    </motion.li>
+    </motion.ol>
 }

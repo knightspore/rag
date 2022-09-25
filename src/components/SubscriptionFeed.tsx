@@ -13,25 +13,32 @@ export default function SubscriptionFeed() {
 
 	const { data, fetching, error } = useAppContext()
 
+  if (fetching) return <LoadingState />
+
 	if (error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
-    return (
-    <motion.ol variants={container} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
-      { fetching && <LoadingState/>}
-      {data && data.subscriptionsCollection.edges.map((edge: EdgeType) => {
-        return <motion.li key={edge.node.title} variants={item}>
-          <SubscriptionCard sub={edge.node} />
-        </motion.li> 
-      })}
-    </motion.ol>
-    )
+  return (
+  <motion.ol variants={container} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
+    {data && data.subscriptionsCollection.edges.map((edge: EdgeType) => {
+      return <motion.li key={edge.node.title} variants={item}>
+        <SubscriptionCard sub={edge.node} />
+      </motion.li> 
+    })}
+  </motion.ol>
+  )
 
 }
 
 function LoadingState() {
-  return <>
+  return <motion.ol variants={container} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
+    <motion.li variants={item}>
     <SkeletonSubscriptionCard/>
+    </motion.li>
+    <motion.li variants={item}>
     <SkeletonSubscriptionCard/>
+    </motion.li>
+    <motion.li variants={item}>
     <SkeletonSubscriptionCard/>
-    </>
+    </motion.li>
+    </motion.ol>
 }

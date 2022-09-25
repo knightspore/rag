@@ -50,7 +50,7 @@ export default function AddSubscriptionForm() {
         onClose={() => setOpen(false)}
         className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-slate-700/50"
       >
-        <Dialog.Panel className="grid gap-2 p-4 rounded-sm min-w-lg bg-slate-900 text-slate-200">
+        <Dialog.Panel className="z-30 grid gap-2 p-4 rounded-sm min-w-lg bg-slate-900 text-slate-200">
           <Dialog.Title>
             <h2>Add Subscription</h2>
           </Dialog.Title>

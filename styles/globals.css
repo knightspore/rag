@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,12 +14,8 @@
     @apply bg-slate-700/50 rounded-full
   }
 
-  input {
-    @apply border-2 border-slate-800 text-slate-300 p-1 rounded-sm bg-slate-700/50 text-sm
-  }
-
-  button {
-    @apply border-2 border-slate-800 bg-slate-800/50 text-slate-300 rounded-sm p-1 text-sm
+  input[type="submit"], button {
+    @apply border-2 border-slate-800 text-slate-300 p-1 rounded-sm text-sm bg-slate-800
   }
 
 }
