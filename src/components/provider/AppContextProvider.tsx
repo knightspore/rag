@@ -27,23 +27,24 @@ export default function AppContextProvider({ children }: { children: React.React
 	const user = useUserContext()
 	const [articles, setArticles] = useState<string[]|[]>([])
 
-	const AppQuery = gql`
-    query {
-        subscriptionsCollection(filter: { user: { eq: "${user.id}" }}) {
-            edges {
-                node {
-                    id
-										title
-										icon
-										articles 
-                }
-            }
-        }
-		}
-`
-
 	const [{ data, fetching, error }] = useQuery({
-		query: AppQuery
+		query: gql`
+			query getSubscriptions($id: String!) {
+					subscriptionsCollection(filter: { user: { eq: $id }}) {
+							edges {
+									node {
+											id
+											title
+											icon
+											articles 
+									}
+							}
+					}
+			}
+	`,
+	variables: {
+		id: user.id
+	}
 	})
 
 	useEffect(() => {

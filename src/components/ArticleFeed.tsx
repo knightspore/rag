@@ -1,22 +1,26 @@
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
 import { gql, useQuery } from "urql"
-import {container, item} from "../constants/animation"
+import { container, item } from "../constants/animation"
 import { ArticlePreview } from "../types/types"
 import Alert, { Level } from "./Alert"
-import ArticleCard, {SkeletonArticleCard} from "./ArticleCard"
-import {useAppContext} from "./provider/AppContextProvider"
+import ArticleCard, { SkeletonArticleCard } from "./ArticleCard"
+import { useAppContext } from "./provider/AppContextProvider"
 
 type EdgeType = {
-	node: ArticlePreview
+  node: ArticlePreview
 }
 
 export default function ArticleFeed() {
-  
+
   const { articles } = useAppContext()
 
-  const ArticlesQuery = gql`
-    query ($ids: [UUID!]) {
-      articlesCollection(filter: {id: {in: $ids}}, orderBy: {pub_date: DescNullsLast}) {
+  const [{ data, fetching, error }] = useQuery({
+    query: gql`
+    query getArticles($ids: [UUID!]) {
+      items: articlesCollection(
+        filter: {id: {in: $ids}}
+        orderBy: {pub_date: DescNullsLast}
+      ) {
         edges {
           node {
             id
@@ -30,25 +34,22 @@ export default function ArticleFeed() {
         }
       }
     }
-  `
-
-	const [{ data, fetching, error }] = useQuery({
-		query: ArticlesQuery,
+    `,
     variables: {
       ids: articles,
     }
-	})
+  })
 
   if (fetching) return <LoadingState />
 
-	if (error) return <Alert text="Error loading articles..." level={Level.warn} />
+  if (error) return <Alert text="Error loading articles..." level={Level.warn} />
 
   return (
     <motion.ol variants={container} initial="hidden" animate="show">
-      { data && data.articlesCollection.edges.map((edge: EdgeType) => {
+      {data && data.items.edges.map((edge: EdgeType) => {
         return <motion.li key={edge.node.title} variants={item}>
           <ArticleCard article={edge.node} />
-        </motion.li> 
+        </motion.li>
       })}
     </motion.ol>
   )
@@ -58,13 +59,13 @@ export default function ArticleFeed() {
 function LoadingState() {
   return <motion.ol variants={container} initial="hidden" animate="show">
     <motion.li variants={item}>
-    <SkeletonArticleCard/>
+      <SkeletonArticleCard />
     </motion.li>
     <motion.li variants={item}>
-    <SkeletonArticleCard/>
+      <SkeletonArticleCard />
     </motion.li>
     <motion.li variants={item}>
-    <SkeletonArticleCard/>
+      <SkeletonArticleCard />
     </motion.li>
-    </motion.ol>
+  </motion.ol>
 }

@@ -16,6 +16,7 @@
     "@mozilla/readability": "^0.4.2",
     "@supabase/supabase-js": "^2.0.0-rc.10",
     "@tailwindcss/line-clamp": "^0.4.2",
+    "@types/graphql": "^14.5.0",
     "axios": "^0.27.2",
     "cross-fetch": "^3.1.5",
     "feed-reader": "^6.0.2",

@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react"
-import { SUPABASE_LOGIN_REDIRECT_URL } from "../constants/env"
 import { supabase } from "../lib/supabase"
 import Alert, { Level } from "./Alert"
 
@@ -16,7 +15,7 @@ export default function SignIn() {
 		try {
 			setLoading(true)
 			const { error } = await supabase.auth.signInWithOtp({ email, options: {
-				emailRedirectTo: SUPABASE_LOGIN_REDIRECT_URL
+				emailRedirectTo: window.location.origin,
 			} })
 			if (error) {
 				setErrMsg(error.message)
@@ -40,8 +39,8 @@ export default function SignIn() {
 					Sign In
 				</button>
 			</form>
-			{errMsg && <Alert text={errMsg} level={Level.error} />}
 			{loading && <Alert text="Loading..." level={Level.info} />}
+			{errMsg && <Alert text={errMsg} level={Level.error} />}
 			{otpSent && <Alert text="Magic Sign-in Link Sent! Check your Email." level={Level.info} />}
 		</div>
 	)
