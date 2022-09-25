@@ -1,12 +1,13 @@
 import React, { createContext, useContext } from "react"
-import type { CombinedError } from "urql"
+import { CombinedError } from "urql"
 import { gql, useQuery } from "urql"
 import { useUserContext } from "./UserContextProvider"
 
 type AppContextValue = {
 	data: any | undefined,
 	fetching: boolean,
-	error: CombinedError | undefined
+	error: CombinedError | undefined,
+  articles: string[] | []
 } | null
 
 const AppContext = createContext<AppContextValue>(null)
@@ -43,7 +44,16 @@ export default function AppContextProvider({ children }: { children: React.React
 		query: AppQuery
 	})
 
-	return <AppContext.Provider value={{ data, fetching, error }}>
+
+  const subs = data?.subscriptionsCollection.edges.map(({node}) => node)
+  const articles: string[] = []
+  subs && subs.forEach((sub) => {
+  sub.articles.forEach(item => {
+    articles.push(item)
+    })
+  })
+
+	return <AppContext.Provider value={{ data, fetching, error, articles }}>
 		{children}
 	</AppContext.Provider>
 

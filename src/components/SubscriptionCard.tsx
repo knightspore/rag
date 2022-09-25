@@ -20,3 +20,19 @@ export default function SubscriptionCard({ sub }: { sub: SubscriptionPreview }) 
     </div>
   );
 }
+
+export function SkeletonSubscriptionCard() {
+return (
+    <div
+      className="animate-pulse select-none flex cursor-pointer"
+    >
+      <span
+        className="flex items-center gap-2 p-px px-2 font-bold transition-all duration-150 border-2 rounded-sm line-clamp border-slate-700/30 bg-slate-700/30 hover:bg-slate-700">
+        <div className="flex-grow m-auto">
+    <div className="w-4 h-4 m-auto overflow-hidden rounded-full bg-slate-700" />
+        </div>
+        <div className="h-4 rounded-full bg-slate-700/80 my-1 w-24"/>
+      </span>
+    </div>
+  )
+}

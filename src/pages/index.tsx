@@ -28,7 +28,7 @@ export default function HomePage() {
                 <section className="gap-2 overflow-y-scroll md:col-span-6">
                     <h2 className="mb-2 font-medium text-md">Reading List</h2>
                     <div className="flex flex-col gap-2">
-                        <ArticleFeed />
+                      <ArticleFeed />
                     </div>
                 </section>
             </div>
