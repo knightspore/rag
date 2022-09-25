@@ -1,0 +1,16 @@
+{
+  "name": "RAG - RSS Feed Reader",
+  "short_name": "RAG",
+  "theme_color": "#0f172a",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "./favicon.ico",
+      "type": "image/ico"
+    }
+  ],
+  "splash_pages": null
+}
