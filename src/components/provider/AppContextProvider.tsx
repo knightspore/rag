@@ -4,7 +4,7 @@ import { gql, useQuery } from "urql"
 import { useUserContext } from "./UserContextProvider"
 
 type AppContextValue = {
-	data: unknown | undefined,
+	data: any | undefined,
 	fetching: boolean,
 	error: CombinedError | undefined,
   articles: string[] | []

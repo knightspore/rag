@@ -21,7 +21,7 @@ export default function HomePage() {
             <div className="grid flex-initial grid-cols-1 gap-4 md:grid-cols-8 overflow-clip">
                 <section className="md:col-span-2">
                     <h2 className="mb-2 font-medium text-md">Subscriptions</h2>
-                    <div className="flex flex-row flex-wrap gap-2">
+                    <div>
                         <SubscriptionFeed />
                     </div>
                 </section>

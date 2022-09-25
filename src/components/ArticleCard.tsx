@@ -8,14 +8,14 @@ export default function ArticleCard({
 }) {
 
   return (
-    <div className={`text-slate-200 border-b-2 border-slate-800 ${article.is_read && "opacity-50"
+    <div className={`py-1 text-slate-200 border-b-2 border-slate-800 ${article.is_read && "opacity-50"
         }`}>
       <a
         href={article.url}
         target="_blank"
         rel="noreferrer"
       >
-        <h3 className="flex items-center mb-1 text-lg">
+        <h3 className="flex items-center mb-1 md:text-lg">
           <div className="pr-2 my-auto">
             <Icon src={"https://www.google.com/s2/favicons?domain=" + article.url} />
           </div>
