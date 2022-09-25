@@ -1,15 +1,23 @@
-import { ArticlePreview } from "../types/types";
+import { Articles, useReadArticleMutation } from "../generated/graphql";
 import Icon from "./Icon";
 
 export default function ArticleCard({
   article,
 }: {
-  article: ArticlePreview
+  article: Partial<Articles>
 }) {
+
+  const [res, executeMutation] = useReadArticleMutation()
+
+  const handleClick = () => {
+    executeMutation({ id: article.id})
+    console.log(res)
+  }
 
   return (
     <div className={`py-2 text-slate-200 border-slate-800 ${article.is_read && "opacity-50"
-        }`}>
+      }`}
+      onClick={handleClick}>
       <a
         href={article.url}
         target="_blank"
@@ -41,18 +49,18 @@ export default function ArticleCard({
 }
 
 export function SkeletonArticleCard() {
-return (
+  return (
     <div className="py-2 text-slate-200 border-slate-800 animate-pulse">
-        <h3 className="flex items-center mb-1 text-lg">
-          <div className="pr-2 my-auto">
-            <div className="w-4 h-4 m-auto overflow-hidden rounded-full bg-slate-700" />
-          </div>
-          <div className="h-5 rounded-full bg-slate-300/20 my-1 w-64"/>
-        </h3>
+      <h3 className="flex items-center mb-1 text-lg">
+        <div className="pr-2 my-auto">
+          <div className="w-4 h-4 m-auto overflow-hidden rounded-full bg-slate-700" />
+        </div>
+        <div className="w-64 h-5 my-1 rounded-full bg-slate-300/20" />
+      </h3>
       <div className="flex items-center gap-2 text-sm italic font-medium text-slate-300">
-        <div className="h-4 rounded-full bg-slate-300/20 my-1 w-16"/> <span className="opacity-50">&bull;</span>
+        <div className="w-16 h-4 my-1 rounded-full bg-slate-300/20" /> <span className="opacity-50">&bull;</span>
         <time className="text-slate-500">
-          <div className="h-4 rounded-full bg-slate-500/30 my-1 w-12"/>
+          <div className="w-12 h-4 my-1 rounded-full bg-slate-500/30" />
         </time>
       </div>
     </div>

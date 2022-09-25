@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { SubscriptionPreview } from "../types/types";
+import { Subscriptions } from "../generated/graphql";
 import Icon from "./Icon";
 
-export default function SubscriptionCard({ sub }: { sub: SubscriptionPreview }) {
+export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> }) {
   const [hidden, setHidden] = useState(false)
   const hide = () => { setHidden(!hidden) }
   return (
@@ -24,11 +24,11 @@ export default function SubscriptionCard({ sub }: { sub: SubscriptionPreview }) 
 export function SkeletonSubscriptionCard() {
 return (
       <span
-        className="animate-pulse flex items-center gap-2 p-px px-2 font-bold transition-all duration-150 border-2 rounded-sm line-clamp border-slate-700/30 bg-slate-700/30">
+        className="flex items-center gap-2 p-px px-2 font-bold transition-all duration-150 border-2 rounded-sm animate-pulse line-clamp border-slate-700/30 bg-slate-700/30">
         <div className="flex-grow m-auto">
           <div className="w-4 h-4 m-auto overflow-hidden rounded-full bg-slate-700" />
         </div>
-        <div className="h-4 rounded-full bg-slate-700/80 my-1 w-24"/>
+        <div className="w-24 h-4 my-1 rounded-full bg-slate-700/80"/>
       </span>
   )
 }

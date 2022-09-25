@@ -1,0 +1,27 @@
+query getArticles($ids: [UUID!]) {
+  items: articlesCollection(
+    filter: {id: {in: $ids}}
+    orderBy: {pub_date: DescNullsLast}
+  ) {
+    edges {
+      node {
+        id
+        title
+        description
+        url
+        pub_date
+        subscription
+        is_read
+      }
+    }
+  }
+}
+
+mutation readArticle($id: UUID!) {
+  updatearticlesCollection(set: {is_read: true}, filter: {id: {eq: $id}}) {
+    affectedCount
+    records {
+      id
+    }
+  }
+}

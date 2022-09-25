@@ -1,0 +1,12 @@
+query getSubscriptions($id: UUID!) {
+  subscriptionsCollection( filter: { user: { eq: $id } } ) {
+    edges {
+      node {
+        id
+        title
+        icon
+        articles
+      }
+    }
+  }
+}

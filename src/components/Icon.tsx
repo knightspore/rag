@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { Maybe } from "../generated/graphql";
 
-export default function Icon({ src }: { src: string | undefined }) {
+export default function Icon({ src }: { src: Maybe<string> | undefined }) {
 
   const defaultIcon = "https://www.google.com/s2/favicons?domain=" + "http://ciaran.co.za"
 

@@ -1,7 +1,7 @@
-import { Subscription } from "../../types/types"
+import { Subscriptions } from "../../generated/graphql"
 import { supabase } from "../supabase"
 
-export async function addSubscription(sub: Subscription) {
+export async function addSubscription(sub: Subscriptions) {
 	const { error } = await supabase
 		.from('subscriptions')
 		.upsert({

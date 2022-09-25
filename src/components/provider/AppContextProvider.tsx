@@ -1,14 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { CombinedError } from "urql"
-import { gql, useQuery } from "urql"
 import { useUserContext } from "./UserContextProvider"
-import { definitions } from "../../types/supabase"
+import { GetSubscriptionsQuery, useGetSubscriptionsQuery } from "../../generated/graphql"
 
-type AppContextValue = {
-	data: any | undefined,
-	fetching: boolean,
-	error: CombinedError | undefined,
-  articles: string[] | []
+export type AppContextValue = { 
+	subscriptions: GetSubscriptionsQuery["subscriptionsCollection"] | undefined
+	articles: string[] | []
 } | null
 
 const AppContext = createContext<AppContextValue>(null)
@@ -18,46 +14,34 @@ export function useAppContext() {
 	if (value == null) {
 		throw new Error("No AppContext Value")
 	} else {
-		return value
+		return value as AppContextValue
 	}
 }
 
 export default function AppContextProvider({ children }: { children: React.ReactNode }) {
 
 	const user = useUserContext()
-	const [articles, setArticles] = useState<string[]|[]>([])
+	const [articles, setArticles] = useState<string[] | []>([])
 
-	const [{ data, fetching, error }] = useQuery({
-		query: gql`
-			query getSubscriptions($id: String!) {
-					subscriptionsCollection(filter: { user: { eq: $id }}) {
-							edges {
-									node {
-											id
-											title
-											icon
-											articles 
-									}
-							}
-					}
-			}
-	`,
-	variables: {
-		id: user.id
-	}
+	const [{ data, fetching, error }] = useGetSubscriptionsQuery({
+		variables: {
+			id: user.id
+		}
 	})
 
+	const subscriptions = (fetching || error) ? undefined : data?.subscriptionsCollection
+
 	useEffect(() => {
-		data && data.subscriptionsCollection.edges.map(({node}:{node: definitions["subscriptions"]}) => {
+		subscriptions?.edges.map(({ node }) => {
 			node.articles?.forEach((item) => {
-				if (typeof(item) == "string" && item?.length >0 ) {
+				if (typeof (item) == "string" && item?.length > 0) {
 					setArticles((value) => [...value, item])
 				}
 			})
 		})
-	}, [data])
+	}, [subscriptions])
 
-	return <AppContext.Provider value={{ data, fetching, error, articles }}>
+	return <AppContext.Provider value={{ subscriptions, articles }}>
 		{children}
 	</AppContext.Provider>
 
