@@ -10,6 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	return <div className="flex flex-col w-screen h-screen p-8 text-slate-200 bg-gradient-to-b from-slate-900 to-gray-900">
 		<Head>
 			<title>RAG</title>
+      <link rel="manifest" href="/manifest.json" />
 		</Head>
 		<UserContextProvider>
 			<UrqlContextProvider>
