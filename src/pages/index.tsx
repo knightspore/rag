@@ -1,23 +1,13 @@
-import AddSubscriptionForm from "../components/AddSubscriptionForm"
 import ArticleFeed from "../components/ArticleFeed"
-import { useUserContext } from "../components/provider/UserContextProvider"
+import Menu from "../components/Menu"
 import SubscriptionFeed from "../components/SubscriptionFeed"
-import { supabase } from "../lib/supabase"
 
 export default function HomePage() {
 
-    const user = useUserContext()
-    const signOut = () => {
-        supabase.auth.signOut()
-        window.location.reload()
-    }
 
     return (
         <>
-            <div className="flex items-center justify-end gap-2 p-2">
-                <AddSubscriptionForm />
-                <button onClick={signOut}>Log Out: {user.email}</button>
-            </div>
+            <Menu />
             <div className="grid flex-initial grid-cols-1 gap-4 md:grid-cols-8 overflow-clip">
                 <section className="md:col-span-2">
                     <h2 className="mb-2 font-medium text-md">Subscriptions</h2>
