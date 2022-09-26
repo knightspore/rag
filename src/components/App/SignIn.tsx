@@ -34,7 +34,7 @@ export default function SignIn() {
 		<div className="m-auto text-center">
 			<form className="flex flex-col gap-2 mb-4 " onSubmit={handleSubmit}>
 				<label htmlFor="email">Email</label>
-				<input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+				<input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="text-center" />
 				<button type="submit">
 					Sign In
 				</button>

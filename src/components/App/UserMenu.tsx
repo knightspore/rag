@@ -5,14 +5,14 @@ import { useAppContext } from "../provider/AppContextProvider"
 
 export default function UserMenu() {
 
-  const { user } = useAppContext()
+  const { user, setUser } = useAppContext()
   const signOut = () => {
       supabase.auth.signOut()
-      window.location.reload()
+      setUser(null)
   }
 
   return (
-    <nav className="flex justify-end py-1">
+    <nav className="flex justify-end pt-2">
       <Menu as="div" className="relative">
         <div className="flex gap-2">
         <AddSubscriptionForm />

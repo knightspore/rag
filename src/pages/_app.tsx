@@ -6,7 +6,7 @@ import UrqlContextProvider from '../components/provider/UrqlContextProvider'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-	return <div className="flex flex-col w-screen h-screen p-8 text-slate-200 bg-gradient-to-b from-slate-900 to-gray-900">
+	return <div className="w-screen h-screen text-slate-200 bg-gradient-to-b from-slate-900 to-gray-900">
 		<Head>
 			<title>RAG</title>
       <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"/>

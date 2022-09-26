@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { GetSubscriptionsQuery, useGetArticlesQuery, useGetSubscriptionsQuery } from "../../generated/graphql"
 import { supabase } from "../../lib/supabase"
 import { User } from "@supabase/supabase-js"
-import { type } from "os"
+import SignIn from "../App/SignIn"
 
 export type AppContextValue = { 
 	user: User | null
-	subscriptions: GetSubscriptionsQuery["subscriptionsCollection"] | undefined
-	articles: string[] | []
+	setUser: (value: null) => void
+	articleIDs: string[] | [],
+	setArticleIDs: (value: string[]) => void
 }
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue)
@@ -24,8 +24,7 @@ export function useAppContext() {
 export default function AppContextProvider({ children }: { children: React.ReactNode }) {
 
 	const [user, setUser] = useState<User | null>(null)
-	const [loading, setLoading] = useState(true)
-	const [articles, setArticles] = useState<string[] | []>([])
+	const [articleIDs, setArticleIDs] = useState<string[] | []>([])
 
 	useEffect(() => {
 		async function getCurrentUser() {
@@ -36,40 +35,19 @@ export default function AppContextProvider({ children }: { children: React.React
 			session && setUser(session.user)
 		}
 		if (!user) {
-			setLoading(true)
 			getCurrentUser()
-			setLoading(false)
 		}
 	}, [user])
 
-	const [subscriptionsQuery] = useGetSubscriptionsQuery({
-		variables: {
-			id: user?.id
-		}
-	})
+	const appContextValue: AppContextValue = {
+		user,
+		setUser,
+		articleIDs,
+		setArticleIDs,
+	}
 
-	const subscriptions = (loading || subscriptionsQuery.fetching || subscriptionsQuery.error) ? undefined : subscriptionsQuery.data?.subscriptionsCollection
-
-	useEffect(() => {
-		subscriptions?.edges.map(({ node }) => {
-			node.articles?.forEach((item) => {
-				if (typeof (item) == "string" && item?.length > 0) {
-					setArticles((value) => [...value, item])
-				}
-			})
-		})
-	}, [subscriptions])
-
-  const [articlesQuery] = useGetArticlesQuery({
-    variables: {
-      ids: articles,
-    }
-  })
-
-	typeof(articlesQuery)
-
-	return <AppContext.Provider value={{ user, subscriptions, articles }}>
-		{children}
+	return <AppContext.Provider value={appContextValue}>
+		{ user ? children : <SignIn />}
 	</AppContext.Provider>
 
 }

@@ -8,15 +8,15 @@ import SkeletonArticles from "./SkeletonArticles"
 
 export default function ArticleFeed() {
 
-  const app = useAppContext()
+  const { articleIDs } = useAppContext()
 
   const [{ data, fetching, error }] = useGetArticlesQuery({
     variables: {
-      ids: app?.articles,
+      ids: articleIDs,
     }
   })
 
-  if (fetching) return <SkeletonArticles />
+  if (!articleIDs || fetching) return <SkeletonArticles />
 
   if (error) return <Alert text="Error loading articles..." level={Level.warn} />
 
