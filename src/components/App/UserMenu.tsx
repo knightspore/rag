@@ -1,27 +1,27 @@
-import { useUserContext } from "../components/provider/UserContextProvider"
-import { supabase } from "../lib/supabase"
+import { supabase } from "../../lib/supabase"
 import { Menu  } from "@headlessui/react"
 import AddSubscriptionForm from "./AddSubscriptionForm"
+import { useAppContext } from "../provider/AppContextProvider"
 
 export default function UserMenu() {
 
-  const user = useUserContext()
+  const { user } = useAppContext()
   const signOut = () => {
       supabase.auth.signOut()
       window.location.reload()
   }
 
   return (
-    <nav className="flex justify-end py-2">
+    <nav className="flex justify-end py-1">
       <Menu as="div" className="relative">
-        <div className="gap-2 flex">
+        <div className="flex gap-2">
         <AddSubscriptionForm />
         <Menu.Button as="button">Menu</Menu.Button>
         </div>
         <Menu.Items>
-          <div className="absolute top-10 right-0 w-max z-20">
-            <section id="user-menu" className="rounded-sm gap-4 flex flex-col p-4 bg-slate-700 relative">
-              <button disabled>{user.email}</button>
+          <div className="absolute right-0 z-20 bottom-10 w-max">
+            <section id="user-menu" className="relative flex flex-col gap-4 p-4 rounded-sm bg-slate-700">
+              <button disabled>{user?.email}</button>
               <button onClick={signOut}>Log Out</button>
             </section>
           </div>

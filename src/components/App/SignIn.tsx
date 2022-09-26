@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react"
-import { supabase } from "../lib/supabase"
+import { supabase } from "../../lib/supabase"
 import Alert, { Level } from "./Alert"
 
 export default function SignIn() {

@@ -3,7 +3,6 @@ import Head from 'next/head'
 import '../../styles/globals.css'
 import AppContextProvider from '../components/provider/AppContextProvider'
 import UrqlContextProvider from '../components/provider/UrqlContextProvider'
-import UserContextProvider from '../components/provider/UserContextProvider'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -28,13 +27,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png"/>
       <meta name="theme-color" content="#ffffff"/>
 		</Head>
-		<UserContextProvider>
 			<UrqlContextProvider>
 				<AppContextProvider>
 					<Component {...pageProps} />
 				</AppContextProvider>
 			</UrqlContextProvider>
-		</UserContextProvider>
 	</div>
 }
 

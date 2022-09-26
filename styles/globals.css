@@ -18,4 +18,8 @@
     @apply border-2 border-slate-800 text-slate-300 p-1 rounded-sm text-sm bg-slate-800
   }
 
+  input:not([type="submit"]) {
+    @apply p-1 bg-slate-300 placeholder-slate-500 text-slate-800
+  }
+
 }

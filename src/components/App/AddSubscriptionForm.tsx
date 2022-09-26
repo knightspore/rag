@@ -1,14 +1,14 @@
 import { Dialog } from "@headlessui/react";
 import { FormEvent, useState } from "react";
-import { addArticles } from "../lib/db/articles";
-import { addSubscription } from "../lib/db/subscriptions";
-import { parseFeed } from "../lib/parse";
+import { addArticles } from "../../lib/db/articles";
+import { addSubscription } from "../../lib/db/subscriptions";
+import { parseFeed } from "../../lib/parse";
 import Alert, { Level } from "./Alert";
-import { useUserContext } from "./provider/UserContextProvider";
+import { useAppContext } from "../provider/AppContextProvider";
 
 export default function AddSubscriptionForm() {
 
-  const user = useUserContext()
+  const { user } = useAppContext()
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false)
@@ -20,6 +20,10 @@ export default function AddSubscriptionForm() {
     setError(false)
     setIsLoading(true);
     try {
+      if (!user) {
+        setError(true)
+        return
+      }
       const { subscription, articles } = await parseFeed(title, url, user.id)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars 
       const sErr = await addSubscription(subscription)
@@ -71,12 +75,14 @@ export default function AddSubscriptionForm() {
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com/rss.xml"
             />
+            <div>
             <button
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Adding..." : "Add Subscription"}
+            {isLoading ? "Adding..." : "Add Subscription"}
             </button>
+            </div>
           </form>
           {error && <Alert text="Error adding feed." level={Level.error} />}
         </Dialog.Panel>
