@@ -3,8 +3,12 @@ import { Subscriptions } from "../../generated/graphql";
 import Icon from "../App/Icon";
 
 export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> }) {
+
   const [hidden, setHidden] = useState(false)
-  const hide = () => { setHidden(!hidden) }
+
+  const hide = async () => { 
+    setHidden(!hidden)
+  }
   return (
     <div
       className={`select-none flex cursor-pointer ${hidden && 'opacity-50'}`}

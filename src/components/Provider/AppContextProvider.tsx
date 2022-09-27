@@ -6,8 +6,8 @@ import SignIn from "../App/SignIn"
 export type AppContextValue = { 
 	user: User | null
 	setUser: (value: null) => void
-	articleIDs: string[] | [],
-	setArticleIDs: (value: string[]) => void
+	subscriptions: string[] | [],
+	setSubscriptions: (value: string[]) => void
 }
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue)
@@ -24,7 +24,7 @@ export function useAppContext() {
 export default function AppContextProvider({ children }: { children: React.ReactNode }) {
 
 	const [user, setUser] = useState<User | null>(null)
-	const [articleIDs, setArticleIDs] = useState<string[] | []>([])
+	const [subscriptions, setSubscriptions] = useState<string[]|[]>([])
 
 	useEffect(() => {
 		async function getCurrentUser() {
@@ -42,8 +42,8 @@ export default function AppContextProvider({ children }: { children: React.React
 	const appContextValue: AppContextValue = {
 		user,
 		setUser,
-		articleIDs,
-		setArticleIDs,
+		subscriptions,
+		setSubscriptions,
 	}
 
 	return <AppContext.Provider value={appContextValue}>

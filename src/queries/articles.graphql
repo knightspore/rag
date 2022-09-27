@@ -1,6 +1,6 @@
-query getArticles($ids: [UUID!]) {
-  items: articlesCollection(
-    filter: {id: {in: $ids}}
+query getArticlesFromSubscriptions($ids: [String!]!) {
+  articlesCollection(
+    filter: {subscription: {in: $ids}}
     orderBy: {pub_date: DescNullsLast}
   ) {
     edges {
@@ -22,6 +22,20 @@ mutation readArticle($id: UUID!) {
     affectedCount
     records {
       id
+    }
+  }
+}
+
+mutation updateArticle($url: String!, $article: articlesUpdateInput!) {
+  updatearticlesCollection(set: $article, filter: {url: {eq: $url}}) {
+    records {
+      id
+      url
+      title
+      is_read
+      pub_date
+      description
+      subscription
     }
   }
 }

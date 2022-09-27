@@ -1,7 +1,7 @@
 import { supabase } from "../../lib/supabase"
 import { Menu  } from "@headlessui/react"
 import AddSubscriptionForm from "./AddSubscriptionForm"
-import { useAppContext } from "../provider/AppContextProvider"
+import { useAppContext } from "../Provider/AppContextProvider"
 
 export default function UserMenu() {
 

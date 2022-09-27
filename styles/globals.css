@@ -15,7 +15,7 @@
   }
 
   input[type="submit"], button {
-    @apply border-2 border-slate-800 text-slate-300 p-1 rounded-sm text-sm bg-slate-800
+    @apply border-2 border-slate-900 text-slate-300 p-1 rounded-sm text-sm bg-slate-800
   }
 
   input:not([type="submit"]) {

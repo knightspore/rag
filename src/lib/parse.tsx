@@ -4,11 +4,17 @@ import { Articles, Subscriptions } from "../generated/graphql";
 
 export async function parseFeed(title: string, url: string, userId: string): Promise<{ subscription: Subscriptions, articles: Articles[] }> {
 	const feed = await getFeedData(url)
-	const date = new Date().toDateString()
+	if (feed.entries.length === 0) throw new Error("Feed articles could not be parsed.")
 	const id = uuidv4()
-	const articles = getArticlesFromFeed(feed, title, date)
-	const subscription = getSubscriptionFromFeed(feed, id, title, date, url, userId, articles)
+	const articles = getArticlesFromFeed(feed, title, new Date().toDateString())
+	const subscription = getSubscriptionFromFeed(feed, id, title, new Date().toDateString(), url, userId, articles)
 	return { subscription, articles }
+}
+
+export async function parseArticles(subscription: Subscriptions): Promise<Articles[]> {
+	const feed = await getFeedData(subscription.url)
+	const articles = getArticlesFromFeed(feed, subscription.title, new Date().toDateString())
+	return articles
 }
 
 async function getFeedData(url: string): Promise<FeedData> {

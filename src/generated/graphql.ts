@@ -429,12 +429,12 @@ export type SubscriptionsUpdateResponse = {
   records: Array<Subscriptions>;
 };
 
-export type GetArticlesQueryVariables = Exact<{
-  ids?: InputMaybe<Array<Scalars['UUID']> | Scalars['UUID']>;
+export type GetArticlesFromSubscriptionsQueryVariables = Exact<{
+  ids: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
-export type GetArticlesQuery = { __typename?: 'Query', items?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
+export type GetArticlesFromSubscriptionsQuery = { __typename?: 'Query', articlesCollection?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
 
 export type ReadArticleMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -443,18 +443,26 @@ export type ReadArticleMutationVariables = Exact<{
 
 export type ReadArticleMutation = { __typename?: 'Mutation', updatearticlesCollection: { __typename?: 'articlesUpdateResponse', affectedCount: number, records: Array<{ __typename?: 'articles', id: any }> } };
 
+export type UpdateArticleMutationVariables = Exact<{
+  url: Scalars['String'];
+  article: ArticlesUpdateInput;
+}>;
+
+
+export type UpdateArticleMutation = { __typename?: 'Mutation', updatearticlesCollection: { __typename?: 'articlesUpdateResponse', records: Array<{ __typename?: 'articles', id: any, url: string, title: string, is_read?: boolean | null, pub_date: any, description?: string | null, subscription: string }> } };
+
 export type GetSubscriptionsQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type GetSubscriptionsQuery = { __typename?: 'Query', subscriptionsCollection?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null, articles?: Array<any | null> | null } }> } | null };
+export type GetSubscriptionsQuery = { __typename?: 'Query', subscriptionsCollection?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null };
 
 
-export const GetArticlesDocument = gql`
-    query getArticles($ids: [UUID!]) {
-  items: articlesCollection(
-    filter: {id: {in: $ids}}
+export const GetArticlesFromSubscriptionsDocument = gql`
+    query getArticlesFromSubscriptions($ids: [String!]!) {
+  articlesCollection(
+    filter: {subscription: {in: $ids}}
     orderBy: {pub_date: DescNullsLast}
   ) {
     edges {
@@ -472,8 +480,8 @@ export const GetArticlesDocument = gql`
 }
     `;
 
-export function useGetArticlesQuery(options?: Omit<Urql.UseQueryArgs<GetArticlesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetArticlesQuery, GetArticlesQueryVariables>({ query: GetArticlesDocument, ...options });
+export function useGetArticlesFromSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<GetArticlesFromSubscriptionsQueryVariables>, 'query'>) {
+  return Urql.useQuery<GetArticlesFromSubscriptionsQuery, GetArticlesFromSubscriptionsQueryVariables>({ query: GetArticlesFromSubscriptionsDocument, ...options });
 };
 export const ReadArticleDocument = gql`
     mutation readArticle($id: UUID!) {
@@ -489,6 +497,25 @@ export const ReadArticleDocument = gql`
 export function useReadArticleMutation() {
   return Urql.useMutation<ReadArticleMutation, ReadArticleMutationVariables>(ReadArticleDocument);
 };
+export const UpdateArticleDocument = gql`
+    mutation updateArticle($url: String!, $article: articlesUpdateInput!) {
+  updatearticlesCollection(set: $article, filter: {url: {eq: $url}}) {
+    records {
+      id
+      url
+      title
+      is_read
+      pub_date
+      description
+      subscription
+    }
+  }
+}
+    `;
+
+export function useUpdateArticleMutation() {
+  return Urql.useMutation<UpdateArticleMutation, UpdateArticleMutationVariables>(UpdateArticleDocument);
+};
 export const GetSubscriptionsDocument = gql`
     query getSubscriptions($id: UUID!) {
   subscriptionsCollection(filter: {user: {eq: $id}}) {
@@ -497,7 +524,6 @@ export const GetSubscriptionsDocument = gql`
         id
         title
         icon
-        articles
       }
     }
   }

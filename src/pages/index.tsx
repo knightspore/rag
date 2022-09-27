@@ -1,9 +1,14 @@
 import ArticleFeed from "../components/Articles/ArticleFeed"
 import SubscriptionFeed from "../components/Subscriptions/SubscriptionFeed"
 import UserMenu from "../components/App/UserMenu"
+import Head from "next/head"
 
 export default function HomePage() {
     return (
+        <>
+        <Head>
+            <title>Reading List - RAG</title>
+        </Head>
         <div className="flex flex-col justify-between w-screen h-screen p-4">
             <div className="grid flex-initial grid-cols-1 gap-4 md:grid-cols-8 overflow-clip">
                 <section className="md:col-span-2">
@@ -21,5 +26,6 @@ export default function HomePage() {
             </div>
             <UserMenu />
         </div>
+        </>
     )
 }

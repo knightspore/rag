@@ -4,7 +4,7 @@ import { addArticles } from "../../lib/db/articles";
 import { addSubscription } from "../../lib/db/subscriptions";
 import { parseFeed } from "../../lib/parse";
 import Alert, { Level } from "./Alert";
-import { useAppContext } from "../provider/AppContextProvider";
+import { useAppContext } from "../Provider/AppContextProvider";
 
 export default function AddSubscriptionForm() {
 
@@ -54,7 +54,7 @@ export default function AddSubscriptionForm() {
         onClose={() => setOpen(false)}
         className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-slate-700/50"
       >
-        <Dialog.Panel className="z-30 grid gap-2 p-4 rounded-sm min-w-lg bg-slate-900 text-slate-200">
+        <Dialog.Panel className="z-30 grid gap-4 p-4 rounded-sm min-w-lg bg-slate-900 text-slate-200">
           <Dialog.Title>
             <h2>Add Subscription</h2>
           </Dialog.Title>
@@ -75,7 +75,7 @@ export default function AddSubscriptionForm() {
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com/rss.xml"
             />
-            <div>
+            <div className="text-center">
             <button
               type="submit"
               disabled={isLoading}

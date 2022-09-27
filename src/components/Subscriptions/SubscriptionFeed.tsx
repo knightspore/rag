@@ -1,7 +1,7 @@
 import SubscriptionCard from "./SubscriptionCard"
 import {motion} from "framer-motion"
 import {container, item} from "../../constants/animation"
-import { useAppContext } from ".././provider/AppContextProvider"
+import { useAppContext } from "../Provider/AppContextProvider"
 import { useGetSubscriptionsQuery } from "../../generated/graphql"
 import Alert, { Level } from "../App/Alert"
 import { useEffect } from "react"
@@ -9,7 +9,7 @@ import SkeletonSubscriptions from "./SkeletonSubscriptions"
 
 export default function SubscriptionFeed() {
 
-  const { user, setArticleIDs } = useAppContext()
+  const { user, setSubscriptions } = useAppContext()
 
 	const [{data, fetching, error}] = useGetSubscriptionsQuery({
 		variables: {
@@ -17,17 +17,13 @@ export default function SubscriptionFeed() {
 		}
 	})
 
-	useEffect(() => {
+  useEffect(() => {
     const items: string[] = []
-		data?.subscriptionsCollection?.edges.map(({ node }) => {
-			node.articles?.forEach((item) => {
-				if (typeof (item) == "string" && item?.length > 0) {
-          items.push(item)
-				}
-			})
-		})
-    setArticleIDs(items)
-	}, [data, setArticleIDs])
+    data?.subscriptionsCollection?.edges.forEach(({ node: { title } }) => {
+      items.push(title)
+    })
+    setSubscriptions(items)
+  }, [data, setSubscriptions])
 
   if (fetching) return <SkeletonSubscriptions />
 

@@ -1,12 +1,12 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import '../../styles/globals.css'
-import AppContextProvider from '../components/provider/AppContextProvider'
-import UrqlContextProvider from '../components/provider/UrqlContextProvider'
+import AppContextProvider from '../components/Provider/AppContextProvider'
+import UrqlContextProvider from '../components/Provider/UrqlContextProvider'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-	return <div className="w-screen h-screen text-slate-200 bg-gradient-to-b from-slate-900 to-gray-900">
+	return <div className="w-screen h-screen text-white bg-gradient-to-b bg-slate-800">
 		<Head>
 			<title>RAG</title>
       <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"/>
