@@ -1,7 +1,6 @@
 package parse
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -12,14 +11,19 @@ type Feed struct {
 	URL  string
 	Doc  []byte
 	JSON []byte
+	XML  XML
+}
+
+type XML struct {
+	Feed FeedXML `xml:",any"`
 }
 
 type FeedXML struct {
 	Title       string       `xml:"title" json:"title"`
 	Description string       `xml:"description" json:"description"`
-	URL         string       `xml:"link" json:"url"`
-	LastUpdated string       `xml:"updated" json:"lastUpdated"`
-	Articles    []EntriesXML `xml:"entry" json:"articleList"`
+	LastUpdated string       `xml:"lastBuildDate" json:"lastUpdated"`
+	Items       []EntriesXML `xml:"item" json:"items"`
+	Entries     []EntriesXML `xml:"entry" json:"entries"`
 }
 
 type EntriesXML struct {
@@ -31,29 +35,20 @@ type EntriesXML struct {
 	URL         string `xml:"link" json:"url"`
 }
 
-func NewFeed(url string) (Feed, error) {
+func NewFeed(url string) (XML, error) {
 
 	doc, err := Fetch(url)
 	if err != nil || len(doc) == 0 {
-		return Feed{}, err
+		return XML{}, err
 	}
 
-	var f FeedXML
-	err = xml.Unmarshal(doc, &f)
+	var x XML
+	err = xml.Unmarshal(doc, &x)
 	if err != nil {
-		return Feed{}, err
+		return XML{}, err
 	}
 
-	j, err := json.Marshal(f)
-	if err != nil {
-		return Feed{}, err
-	}
-
-	return Feed{
-		URL:  url,
-		Doc:  doc,
-		JSON: j,
-	}, nil
+	return x, nil
 
 }
 

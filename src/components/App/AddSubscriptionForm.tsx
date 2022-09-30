@@ -2,7 +2,6 @@ import { Dialog } from "@headlessui/react";
 import { FormEvent, useState } from "react";
 import { addArticles } from "../../lib/db/articles";
 import { addSubscription } from "../../lib/db/subscriptions";
-import { parseFeed } from "../../lib/parse";
 import Alert, { Level } from "./Alert";
 import { useAppContext } from "../Provider/AppContextProvider";
 
@@ -11,9 +10,21 @@ export default function AddSubscriptionForm() {
   const { user } = useAppContext()
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false)
+  const [error, setError] = useState<boolean|string>(false)
   const [title, setTitle] = useState("")
   const [url, setUrl] = useState("")
+
+  async function parseFeed(url: string, userId: string) {
+      const res = await fetch("/api/feed/get", {
+          method: "POST",
+          body: JSON.stringify({
+              url: url,
+              userId: userId
+          })
+      })
+      const data = await res.json()
+      return data
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,10 +32,10 @@ export default function AddSubscriptionForm() {
     setIsLoading(true);
     try {
       if (!user) {
-        setError(true)
+        setError("No user present")
         return
       }
-      const { subscription, articles } = await parseFeed(title, url, user.id)
+      const { subscription, articles } = await parseFeed(url, user.id)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars 
       const sErr = await addSubscription(subscription)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars 
@@ -35,9 +46,8 @@ export default function AddSubscriptionForm() {
       window.location.reload()
     } catch (e) {
       setIsLoading(false)
-      setError(true)
+      setError((e as Error).message)
     } finally {
-      setOpen(false);
       setIsLoading(false);
     }
   };
@@ -84,7 +94,7 @@ export default function AddSubscriptionForm() {
             </button>
             </div>
           </form>
-          {error && <Alert text="Error adding feed." level={Level.error} />}
+          {error && <Alert text="Error adding feed" level={Level.error} error={error} />}
         </Dialog.Panel>
       </Dialog>
     </>

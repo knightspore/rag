@@ -8,12 +8,11 @@ import (
 	"github.com/knightspore/rag/parse"
 )
 
-type FeedGetResponseData struct {
-	Subscription parse.SubscriptionResponse `json:"subscription"`
-	Articles     []parse.ArticlesResponse   `json:"articles"`
+type ArticlesGetResponseData struct {
+	Articles []parse.ArticlesResponse `json:"articles"`
 }
 
-func FeedGetHandler(w http.ResponseWriter, r *http.Request) {
+func ArticlesGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	var req struct {
 		URL    string `json:"url"`
@@ -31,15 +30,10 @@ func FeedGetHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s", err.Error())
 	}
 
-	icon := "https://www.google.com/s2/favicons?domain=" + req.URL
+	articles, _ := parse.GetArticles(xml, req.URL)
 
-	articles, articleIDs := parse.GetArticles(xml, req.URL)
-	subscription := parse.GetSubscription(xml, req.URL, icon, req.UserID)
-	subscription.Articles = articleIDs
-
-	j, err := json.Marshal(FeedGetResponseData{
-		Subscription: subscription,
-		Articles:     articles,
+	j, err := json.Marshal(ArticlesGetResponseData{
+		Articles: articles,
 	})
 
 	if err != nil {

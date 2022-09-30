@@ -17,7 +17,7 @@ func TestUnmarshal(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !(len(feed.JSON) > 0) {
+	if !(len(feed.Feed.Title) > 0) {
 		t.Fatal("Feed JSON Empty")
 	}
 
