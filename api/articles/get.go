@@ -8,16 +8,9 @@ import (
 	"github.com/knightspore/rag/parse"
 )
 
-type ArticlesGetResponseData struct {
-	Articles []parse.ArticlesResponse `json:"articles"`
-}
-
 func ArticlesGetHandler(w http.ResponseWriter, r *http.Request) {
 
-	var req struct {
-		URL    string `json:"url"`
-		UserID string `json:"userId"`
-	}
+	var req parse.Request
 
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
@@ -30,25 +23,10 @@ func ArticlesGetHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s", err.Error())
 	}
 
-	articles, _ := parse.GetArticles(xml, req.URL)
+	articles := parse.GetArticles(xml, req.URL)
 
-	j, err := json.Marshal(ArticlesGetResponseData{
+	parse.HandleResponse(w, parse.Response{
 		Articles: articles,
-	})
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-
-	if len(articles) > 0 {
-		w.WriteHeader(http.StatusFound)
-		fmt.Fprintf(w, "%s", j)
-		return
-	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(w, "{ \"error\": 400 }")
-	}
+	}, len(articles) > 0)
 
 }

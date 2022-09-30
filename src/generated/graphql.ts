@@ -458,6 +458,13 @@ export type GetSubscriptionsQueryVariables = Exact<{
 
 export type GetSubscriptionsQuery = { __typename?: 'Query', subscriptionsCollection?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null };
 
+export type GetSubscriptionUrLsQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type GetSubscriptionUrLsQuery = { __typename?: 'Query', subscriptionsCollection?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', url: string } }> } | null };
+
 
 export const GetArticlesFromSubscriptionsDocument = gql`
     query getArticlesFromSubscriptions($ids: [String!]!) {
@@ -532,4 +539,19 @@ export const GetSubscriptionsDocument = gql`
 
 export function useGetSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<GetSubscriptionsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetSubscriptionsQuery, GetSubscriptionsQueryVariables>({ query: GetSubscriptionsDocument, ...options });
+};
+export const GetSubscriptionUrLsDocument = gql`
+    query getSubscriptionURLs($id: UUID!) {
+  subscriptionsCollection(filter: {user: {eq: $id}}) {
+    edges {
+      node {
+        url
+      }
+    }
+  }
+}
+    `;
+
+export function useGetSubscriptionUrLsQuery(options: Omit<Urql.UseQueryArgs<GetSubscriptionUrLsQueryVariables>, 'query'>) {
+  return Urql.useQuery<GetSubscriptionUrLsQuery, GetSubscriptionUrLsQueryVariables>({ query: GetSubscriptionUrLsDocument, ...options });
 };

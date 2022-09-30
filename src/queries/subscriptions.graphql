@@ -9,3 +9,13 @@ query getSubscriptions($id: UUID!) {
     }
   }
 }
+
+query getSubscriptionURLs($id: UUID!) {
+  subscriptionsCollection( filter: { user: { eq: $id } } ) {
+    edges {
+      node {
+        url
+      }
+    }
+  }
+}

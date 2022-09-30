@@ -1,17 +1,13 @@
 package handler
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
+	"github.com/knightspore/rag/parse"
 )
-
-type ArticlesReadResponseData struct {
-	Content string `json:"content"`
-}
 
 func SendErr(w http.ResponseWriter) {
 	w.WriteHeader(http.StatusNotFound)
@@ -20,15 +16,7 @@ func SendErr(w http.ResponseWriter) {
 
 func ArticlesReadHandler(w http.ResponseWriter, r *http.Request) {
 
-	var req struct {
-		URL string `json:"url"`
-	}
-
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+	req := parse.HandleRequest(r)
 
 	res, err := http.Get(req.URL)
 	if err != nil {
@@ -46,19 +34,8 @@ func ArticlesReadHandler(w http.ResponseWriter, r *http.Request) {
 		SendErr(w)
 	}
 
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	w.Header().Set("Content-Type", "text/plain")
-
-	if len(content) > 0 {
-		w.WriteHeader(http.StatusFound)
-		fmt.Fprintf(w, "%s", content)
-		return
-	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprint(w, "")
-	}
+	parse.HandleResponse(w, parse.Response{
+		Content: content,
+	}, len(content) > 0)
 
 }

@@ -1,10 +1,27 @@
 package parse
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/google/uuid"
 )
+
+type Request struct {
+	URLs   []string `json:"urls,omitempty"`
+	URL    string   `json:"url,omitempty"`
+	UserID string   `json:"userId,omitempty"`
+}
+
+type Response struct {
+	Content       string                 `json:"content,omitempty"`
+	Articles      []ArticlesResponse     `json:"articles,omitempty"`
+	Subscriptions []SubscriptionResponse `json:"subscriptions,omitempty"`
+	AffectedCount int                    `json:"affectedCount,omitempty"`
+	Error         error                  `json:"error,omitempty"`
+}
 
 type SubscriptionResponse struct {
 	ID          uuid.UUID   `json:"id"`
@@ -24,10 +41,35 @@ type ArticlesResponse struct {
 	Title        string    `json:"title"`
 	URL          string    `json:"url"`
 	PubDate      string    `json:"pub_date"`
-	Description  string    `json:"description"`
+	Description  string    `json:"description,omitempty"`
 	IsRead       bool      `json:"is_read"`
 	Subscription string    `json:"subscription"`
-	Content      string    `json:"content"`
+	Content      string    `json:"content,omitempty"`
+}
+
+func HandleResponse(w http.ResponseWriter, res Response, cond bool) {
+	j, err := json.Marshal(res)
+	if err != nil {
+		panic(err)
+	}
+
+	if cond {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusFound)
+		fmt.Fprintf(w, "%s", j)
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "%s", j)
+	}
+}
+
+func HandleRequest(r *http.Request) Request {
+	var req Request
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		panic(err)
+	}
+	return req
 }
 
 func GetSubscription(xml XML, url string, icon string, user string) SubscriptionResponse {
@@ -44,11 +86,10 @@ func GetSubscription(xml XML, url string, icon string, user string) Subscription
 	}
 }
 
-func GetArticles(xml XML, url string) ([]ArticlesResponse, []uuid.UUID) {
+func GetArticles(xml XML, url string) []ArticlesResponse {
 
 	var feedItems []EntriesXML
 	var articles []ArticlesResponse
-	var articleIDs []uuid.UUID
 
 	if len(xml.Feed.Entries) > len(xml.Feed.Items) {
 		feedItems = append(feedItems, xml.Feed.Entries...)
@@ -69,9 +110,8 @@ func GetArticles(xml XML, url string) ([]ArticlesResponse, []uuid.UUID) {
 			Subscription: xml.Feed.Title,
 			Content:      item.Content,
 		})
-		articleIDs = append(articleIDs, id)
 	}
 
-	return articles, articleIDs
+	return articles
 
 }
