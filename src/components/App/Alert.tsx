@@ -4,7 +4,7 @@ export enum Level {
 	error = "error"
 }
 
-export default function Alert({ text, level, error }:{text: string, level: Level, error: string | boolean }) {
+export default function Alert({ text, level}:{text: string, level: Level }) {
 
 	const styles = {
 		"info": "bg-slate-800/50 border-slate-900/50",
@@ -13,6 +13,6 @@ export default function Alert({ text, level, error }:{text: string, level: Level
 	}
 
 	return (
-		<div title={error||text} className={`p-1 m-auto border-2 rounded-sm ${ styles[level] }`}>{text}</div>
+		<div className={`p-1 m-auto border-2 rounded-sm ${ styles[level] }`}>{text}</div>
 	)
 }

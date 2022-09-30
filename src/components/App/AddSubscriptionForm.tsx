@@ -64,7 +64,7 @@ export default function AddSubscriptionForm() {
         onClose={() => setOpen(false)}
         className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-slate-700/50"
       >
-        <Dialog.Panel className="z-30 grid gap-4 p-4 rounded-sm min-w-lg bg-slate-900 text-slate-200">
+        <Dialog.Panel className="z-30 p-4 rounded-sm grid gap-4 min-w-lg bg-slate-900 text-slate-200">
           <Dialog.Title>
             <h2>Add Subscription</h2>
           </Dialog.Title>
@@ -94,7 +94,7 @@ export default function AddSubscriptionForm() {
             </button>
             </div>
           </form>
-          {error && <Alert text="Error adding feed" level={Level.error} error={error} />}
+          {error && <Alert text="Error adding feed" level={Level.error} />}
         </Dialog.Panel>
       </Dialog>
     </>
