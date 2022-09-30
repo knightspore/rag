@@ -37,14 +37,13 @@ type SubscriptionResponse struct {
 
 type ArticlesResponse struct {
 	ID           uuid.UUID `json:"id"`
-	CreatedAt    time.Time `json:"created_at"`
 	Title        string    `json:"title"`
 	URL          string    `json:"url"`
 	PubDate      string    `json:"pub_date"`
 	Description  string    `json:"description,omitempty"`
-	IsRead       bool      `json:"is_read"`
 	Subscription string    `json:"subscription"`
 	Content      string    `json:"content,omitempty"`
+	UpdatedAt    time.Time `json:"updated_at,omitempty"`
 }
 
 func HandleResponse(w http.ResponseWriter, res Response, cond bool) {
@@ -101,14 +100,13 @@ func GetArticles(xml XML, url string) []ArticlesResponse {
 		id := uuid.New()
 		articles = append(articles, ArticlesResponse{
 			ID:           id,
-			CreatedAt:    time.Now(),
 			Title:        item.Title,
 			URL:          item.URL,
 			PubDate:      item.PubDate,
 			Description:  item.Description,
-			IsRead:       false,
 			Subscription: xml.Feed.Title,
 			Content:      item.Content,
+			UpdatedAt:    time.Now(),
 		})
 	}
 

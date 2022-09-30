@@ -17,16 +17,15 @@ export default function ArticleCard({
   }
 
   return (
-    <div className={`py-2 text-slate-200 border-slate-800 ${article.is_read && "opacity-50"
-      }`}
+    <div className={`mb-2 p-2 card ${article.is_read && "opacity-30"}`}
       onClick={handleClick}>
       <a
         href={article.url}
         target="_blank"
         rel="noreferrer"
       >
-        <h3 className="flex items-center mb-1 text-lg">
-          <div className="pr-2 my-auto">
+        <h3 className="flex items-center mb-1">
+          <div className="mr-2">
             <Icon src={"https://www.google.com/s2/favicons?domain=" + article.url} />
           </div>
           <span className="line-clamp-1">
@@ -34,15 +33,16 @@ export default function ArticleCard({
           </span>
         </h3>
       </a>
-      <div className="flex items-center gap-2 text-sm italic font-medium text-slate-300">
-        <a href={article.url} target="_blank" rel="noreferrer noopener">
+      <div className="flex items-center gap-2 text-sm italic font-medium text-slate-500">
           <span>{article.subscription}</span>
-        </a> &bull;
-        {article.pub_date && <time className="text-slate-500">
-          {new Date(article.pub_date).toLocaleDateString("en-ZA", {
+        &bull;
+        {article.pub_date && <time>
+          {new Date(article.pub_date).toLocaleTimeString("en-ZA", {
             day: "numeric",
             month: "short",
             year: "2-digit",
+            hour: "numeric",
+            minute: "2-digit",
           })}
         </time>}
       </div>

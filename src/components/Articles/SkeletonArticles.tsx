@@ -22,16 +22,22 @@ export default function SkeletonArticles() {
   }
 
   return (
-  <motion.ol variants={container} initial="hidden" animate="show">
-    <motion.li variants={item}>
-      <Card />
-    </motion.li>
-    <motion.li variants={item}>
-      <Card />
-    </motion.li>
-    <motion.li variants={item}>
-      <Card />
-    </motion.li>
-  </motion.ol>
+    <motion.ol variants={container} initial="hidden" animate="show">
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+    </motion.ol>
   )
 }

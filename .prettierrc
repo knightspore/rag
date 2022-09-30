@@ -6,5 +6,5 @@
     "requirePragma": true,
     "insertPragma": true,
     "printWidth": 80,
-    "singleAttributePerLine": false
+    "singleAttributePerLine": true
 }

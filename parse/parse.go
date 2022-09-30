@@ -3,7 +3,7 @@ package parse
 import (
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -63,7 +63,7 @@ func Fetch(url string) ([]byte, error) {
 		return nil, fmt.Errorf("status error: %v", resp.StatusCode)
 	}
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("read body: %v", err)
 	}

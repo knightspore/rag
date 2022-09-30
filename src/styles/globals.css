@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  /* Scrollbar Styles */
+  ::-webkit-scrollbar {
+    @apply w-2
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-700/50 rounded-full
+  }
+
+  .base-transition {
+    @apply transition-all duration-150
+  }
+
+  button {
+    @apply text-sm text-slate-300 hover:text-slate-500 base-transition flex items-center gap-2 border-none disabled:text-slate-500
+  }
+
+  input {
+    @apply  text-sm rounded-sm p-1 bg-slate-700 w-full placeholder:text-slate-800 text-slate-300 outline-none 
+  }
+
+}
+
+@layer utilities {
+  .card {
+    @apply border-2 border-slate-700/30 bg-slate-700/30 hover:bg-slate-800 hover:border-slate-700 hover:text-opacity-50 base-transition rounded-sm 
+  }
+}

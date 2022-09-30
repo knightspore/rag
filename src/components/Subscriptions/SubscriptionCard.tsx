@@ -15,7 +15,7 @@ export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> 
       onClick={hide}
     >
       <span
-        className="flex items-center gap-2 p-px px-2 font-medium transition-all duration-150 border-2 rounded-sm line-clamp border-slate-700/30 bg-slate-700/30 hover:bg-slate-700">
+        className="flex items-center gap-2 p-px px-2 card">
         <div className="flex-grow m-auto">
           <Icon src={sub.icon} />
         </div>
