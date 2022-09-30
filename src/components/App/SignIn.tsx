@@ -38,17 +38,16 @@ export default function SignIn() {
 			<Head>
 				<title>Sign-In - RAG</title>
 			</Head>
-			<div className="flex flex-col w-screen h-screen">
-				<div className="m-auto space-y-4 text-center">
-					<h1 className="text-2xl font-bold text-transparent uppercase bg-clip-text bg-gradient-to-b from-slate-700 to-slate-900">RAG Login</h1>
-					<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
-						<label htmlFor="email">Email</label>
+			<div className="flex flex-col w-screen h-screen items-center">
+				<div className="m-auto w-96">
+					<form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
+            <label htmlFor="email">
+              <h1 className="text-lg mb-2">Login</h1>
+            </label>
 						<input placeholder="you@who.com" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="text-center" />
-						<div className="text-center">
 							<button type="submit">
 								Get Sign-In Link
 							</button>
-						</div>
 					</form>
 					{loading && <Alert text="Loading..." level={Level.info} />}
 					{errMsg && <Alert text={errMsg} level={Level.error} />}
