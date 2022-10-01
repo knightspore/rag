@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/knightspore/rag/parse"
@@ -20,6 +21,12 @@ func FeedGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	articles := parse.GetArticles(xml, req.URL)
 	subscription := parse.GetSubscription(xml, req.URL, icon, req.UserID)
+
+	log.Printf("Get Feed: %q\n", subscription.Title)
+	log.Printf("%d articles found\n", len(articles))
+	for _, a := range articles {
+		log.Printf("%+v", a)
+	}
 
 	parse.HandleResponse(w, parse.Response{
 		Subscriptions: []parse.SubscriptionResponse{subscription},

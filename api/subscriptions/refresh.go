@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/knightspore/rag/parse"
@@ -15,7 +16,7 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 	var results []map[string]string
 	err := supabase.DB.From("subscriptions").Select("url").Eq("user", req.UserID).Execute(&results)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	var urls []string
@@ -34,6 +35,11 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sb_err := supabase.DB.From("articles").Upsert(articles).Execute(nil)
+
+	log.Printf("Affected Articles: %q\n", len(articles))
+	for _, a := range articles {
+		log.Printf("%+v\n", a)
+	}
 
 	parse.HandleResponse(w, parse.Response{
 		AffectedCount: len(articles),

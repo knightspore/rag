@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/knightspore/rag/parse"
@@ -24,6 +25,8 @@ func ArticlesGetHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	articles := parse.GetArticles(xml, req.URL)
+
+	log.Printf("Get %q articles\n", len(articles))
 
 	parse.HandleResponse(w, parse.Response{
 		Articles: articles,

@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
@@ -33,6 +34,8 @@ func ArticlesReadHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		SendErr(w)
 	}
+
+	log.Printf("Read Article: ...\n", content[:20])
 
 	parse.HandleResponse(w, parse.Response{
 		Content: content,
