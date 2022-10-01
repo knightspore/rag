@@ -391,6 +391,7 @@ export type Likes = {
   article_title: Scalars['String'];
   articles?: Maybe<Articles>;
   id: Scalars['UUID'];
+  subscription_title: Scalars['String'];
   user_id: Scalars['UUID'];
 };
 
@@ -417,12 +418,14 @@ export type LikesEdge = {
 export type LikesFilter = {
   article_title?: InputMaybe<StringFilter>;
   id?: InputMaybe<UuidFilter>;
+  subscription_title?: InputMaybe<StringFilter>;
   user_id?: InputMaybe<UuidFilter>;
 };
 
 export type LikesInsertInput = {
   article_title?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
+  subscription_title?: InputMaybe<Scalars['String']>;
   user_id?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -437,12 +440,14 @@ export type LikesInsertResponse = {
 export type LikesOrderBy = {
   article_title?: InputMaybe<OrderByDirection>;
   id?: InputMaybe<OrderByDirection>;
+  subscription_title?: InputMaybe<OrderByDirection>;
   user_id?: InputMaybe<OrderByDirection>;
 };
 
 export type LikesUpdateInput = {
   article_title?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['UUID']>;
+  subscription_title?: InputMaybe<Scalars['String']>;
   user_id?: InputMaybe<Scalars['UUID']>;
 };
 
@@ -618,10 +623,18 @@ export type GetSubscriptionUrLsQueryVariables = Exact<{
 
 export type GetSubscriptionUrLsQuery = { __typename?: 'Query', subscriptionsCollection?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', url: string } }> } | null };
 
+export type DeleteSubscriptionMutationVariables = Exact<{
+  title: Scalars['String'];
+}>;
+
+
+export type DeleteSubscriptionMutation = { __typename?: 'Mutation', deleteFromsubscriptionsCollection: { __typename?: 'subscriptionsDeleteResponse', affectedCount: number }, deleteFromlikesCollection: { __typename?: 'likesDeleteResponse', affectedCount: number }, deleteFromarticlesCollection: { __typename?: 'articlesDeleteResponse', affectedCount: number } };
+
 
 export const GetArticlesFromSubscriptionsDocument = gql`
     query getArticlesFromSubscriptions($ids: [String!]!) {
   articlesCollection(
+    first: 100
     filter: {subscription: {in: $ids}}
     orderBy: {pub_date: DescNullsLast}
   ) {
@@ -764,4 +777,24 @@ export const GetSubscriptionUrLsDocument = gql`
 
 export function useGetSubscriptionUrLsQuery(options: Omit<Urql.UseQueryArgs<GetSubscriptionUrLsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetSubscriptionUrLsQuery, GetSubscriptionUrLsQueryVariables>({ query: GetSubscriptionUrLsDocument, ...options });
+};
+export const DeleteSubscriptionDocument = gql`
+    mutation deleteSubscription($title: String!) {
+  deleteFromsubscriptionsCollection(filter: {title: {eq: $title}}, atMost: 1) {
+    affectedCount
+  }
+  deleteFromlikesCollection(
+    filter: {subscription_title: {eq: $title}}
+    atMost: 1000
+  ) {
+    affectedCount
+  }
+  deleteFromarticlesCollection(filter: {subscription: {eq: $title}}, atMost: 1000) {
+    affectedCount
+  }
+}
+    `;
+
+export function useDeleteSubscriptionMutation() {
+  return Urql.useMutation<DeleteSubscriptionMutation, DeleteSubscriptionMutationVariables>(DeleteSubscriptionDocument);
 };

@@ -19,3 +19,18 @@ query getSubscriptionURLs($id: UUID!) {
     }
   }
 }
+
+mutation deleteSubscription($title: String!) {
+  deleteFromsubscriptionsCollection(filter: {title: {eq: $title}}, atMost: 1) {
+    affectedCount
+  }
+  deleteFromlikesCollection(
+    filter: {subscription_title: {eq: $title}}
+    atMost: 1000
+  ) {
+    affectedCount
+  }
+  deleteFromarticlesCollection(filter: {subscription: {eq: $title}}, atMost: 1000) {
+    affectedCount
+  }
+}
