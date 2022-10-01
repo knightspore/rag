@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
-import { supabase } from "../../lib/supabase"
 import { User } from "@supabase/supabase-js"
-import SignIn from "../App/SignIn"
-import refreshSubscriptions from "../../util/refreshSubscriptions"
+import React, { createContext, useContext, useEffect, useState } from "react"
+import { supabase } from "./lib/supabase"
+import refreshSubscriptions from "./util/refreshSubscriptions"
+import SignIn from "./SignIn"
 
 export type AppContextValue = { 
 	user: User | null
@@ -22,7 +22,7 @@ const AppContext = createContext<AppContextValue>({} as AppContextValue)
 
 export function useAppContext() {
 	const value = useContext(AppContext)
-	if (value == null) {
+	if (value === null) {
 		throw new Error("No AppContext Value")
 	} else {
 		return value as AppContextValue

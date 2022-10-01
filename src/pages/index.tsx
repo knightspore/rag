@@ -3,10 +3,10 @@ import SubscriptionFeed from "../components/Subscriptions/SubscriptionFeed"
 import Head from "next/head"
 import { IoExitSharp, IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoRefreshSharp } from "react-icons/io5"
 import { useState } from "react"
-import { useAppContext } from "../components/Provider/AppContextProvider"
+import { useAppContext } from "../AppContextProvider"
 import { supabase } from "../lib/supabase"
 import refreshSubscriptions from "../util/refreshSubscriptions"
-import AddSubscriptionForm from "../components/App/AddSubscriptionForm"
+import AddSubscriptionForm from "../AddSubscriptionForm"
 
 export default function HomePage() {
 

@@ -1,6 +1,6 @@
 import Head from "next/head"
 import { FormEvent, useState } from "react"
-import { supabase } from "../../lib/supabase"
+import { supabase } from "./lib/supabase"
 import Alert, { Level } from "./Alert"
 
 export default function SignIn() {
@@ -38,11 +38,11 @@ export default function SignIn() {
 			<Head>
 				<title>Sign-In - RAG</title>
 			</Head>
-			<div className="flex flex-col w-screen h-screen items-center">
+			<div className="flex flex-col items-center w-screen h-screen">
 				<div className="m-auto w-96">
 					<form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
             <label htmlFor="email">
-              <h1 className="text-lg mb-2">Login</h1>
+              <h1 className="mb-2 text-lg">Login</h1>
             </label>
 						<input placeholder="you@who.com" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="text-center" />
 							<button type="submit">

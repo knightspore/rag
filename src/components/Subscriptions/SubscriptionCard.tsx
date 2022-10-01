@@ -1,6 +1,6 @@
 import { IoTrashSharp } from "react-icons/io5";
 import { Subscriptions, useDeleteSubscriptionMutation } from "../../generated/graphql";
-import Icon from "../App/Icon";
+import Icon from "../../Icon";
 import { motion } from "framer-motion"
 
 export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> }) {

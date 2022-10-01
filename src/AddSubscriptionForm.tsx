@@ -1,11 +1,11 @@
 import { Disclosure } from "@headlessui/react";
 import { FormEvent, useState } from "react";
 import Alert, { Level } from "./Alert";
-import { useAppContext } from "../Provider/AppContextProvider";
+import { useAppContext } from "./AppContextProvider";
 import { IoListSharp } from "react-icons/io5";
-import { supabase } from "../../lib/supabase";
+import { supabase } from "./lib/supabase";
 import { motion } from "framer-motion"
-import { subscriptionForm } from "../../constants/animation";
+import { subscriptionForm } from "./constants/animation";
 
 export default function AddSubscriptionForm() {
 
@@ -76,7 +76,7 @@ export default function AddSubscriptionForm() {
           />
           <button
             type="submit"
-            disabled={url == "" || isLoading}
+            disabled={url === "" || isLoading}
           >
             {isLoading ? "Adding..." : "Add Subscription"}
           </button>

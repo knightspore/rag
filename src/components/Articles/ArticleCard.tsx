@@ -1,7 +1,7 @@
 import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { Articles, useLikeMutation, useMarkAsReadMutation, useMarkAsUnreadMutation, useUnlikeMutation } from "../../generated/graphql";
-import Icon from "../App/Icon";
-import { useAppContext } from "../Provider/AppContextProvider";
+import Icon from "../../Icon";
+import { useAppContext } from "../../AppContextProvider";
 import { motion } from "framer-motion"
 
 export default function ArticleCard({
@@ -34,7 +34,7 @@ export default function ArticleCard({
   }
 
   const handleLike = () => {
-    if (isLiked != true) {
+    if (isLiked !== true) {
     user && article.title && article.subscription && likeMutation({ userId: user?.id, article: article.title, subscription: article.subscription })
     if (like) {
       return like

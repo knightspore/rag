@@ -656,7 +656,7 @@ export const GetArticlesFromSubscriptionsDocument = gql`
 
 export function useGetArticlesFromSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<GetArticlesFromSubscriptionsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetArticlesFromSubscriptionsQuery, GetArticlesFromSubscriptionsQueryVariables>({ query: GetArticlesFromSubscriptionsDocument, ...options });
-};
+}
 export const MarkAsReadDocument = gql`
     mutation markAsRead($id: UUID!) {
   updatearticlesCollection(set: {is_read: true}, filter: {id: {eq: $id}}) {
@@ -670,7 +670,7 @@ export const MarkAsReadDocument = gql`
 
 export function useMarkAsReadMutation() {
   return Urql.useMutation<MarkAsReadMutation, MarkAsReadMutationVariables>(MarkAsReadDocument);
-};
+}
 export const MarkAsUnreadDocument = gql`
     mutation markAsUnread($id: UUID!) {
   updatearticlesCollection(set: {is_read: false}, filter: {id: {eq: $id}}) {
@@ -684,7 +684,7 @@ export const MarkAsUnreadDocument = gql`
 
 export function useMarkAsUnreadMutation() {
   return Urql.useMutation<MarkAsUnreadMutation, MarkAsUnreadMutationVariables>(MarkAsUnreadDocument);
-};
+}
 export const UpdateArticleDocument = gql`
     mutation updateArticle($url: String!, $article: articlesUpdateInput!) {
   updatearticlesCollection(set: $article, filter: {url: {eq: $url}}) {
@@ -703,7 +703,7 @@ export const UpdateArticleDocument = gql`
 
 export function useUpdateArticleMutation() {
   return Urql.useMutation<UpdateArticleMutation, UpdateArticleMutationVariables>(UpdateArticleDocument);
-};
+}
 export const GetLikesDocument = gql`
     query getLikes($userId: UUID!) {
   likesCollection(filter: {user_id: {eq: $userId}}) {
@@ -718,7 +718,7 @@ export const GetLikesDocument = gql`
 
 export function useGetLikesQuery(options: Omit<Urql.UseQueryArgs<GetLikesQueryVariables>, 'query'>) {
   return Urql.useQuery<GetLikesQuery, GetLikesQueryVariables>({ query: GetLikesDocument, ...options });
-};
+}
 export const LikeDocument = gql`
     mutation like($userId: UUID!, $article: String!, $subscription: String!) {
   insertIntolikesCollection(
@@ -733,7 +733,7 @@ export const LikeDocument = gql`
 
 export function useLikeMutation() {
   return Urql.useMutation<LikeMutation, LikeMutationVariables>(LikeDocument);
-};
+}
 export const UnlikeDocument = gql`
     mutation unlike($articleTitle: String!) {
   deleteFromlikesCollection(filter: {article_title: {eq: $articleTitle}}) {
@@ -746,7 +746,7 @@ export const UnlikeDocument = gql`
 
 export function useUnlikeMutation() {
   return Urql.useMutation<UnlikeMutation, UnlikeMutationVariables>(UnlikeDocument);
-};
+}
 export const GetSubscriptionsDocument = gql`
     query getSubscriptions($id: UUID!) {
   subscriptionsCollection(filter: {user: {eq: $id}}) {
@@ -763,7 +763,7 @@ export const GetSubscriptionsDocument = gql`
 
 export function useGetSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<GetSubscriptionsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetSubscriptionsQuery, GetSubscriptionsQueryVariables>({ query: GetSubscriptionsDocument, ...options });
-};
+}
 export const GetSubscriptionUrLsDocument = gql`
     query getSubscriptionURLs($id: UUID!) {
   subscriptionsCollection(filter: {user: {eq: $id}}) {
@@ -778,7 +778,7 @@ export const GetSubscriptionUrLsDocument = gql`
 
 export function useGetSubscriptionUrLsQuery(options: Omit<Urql.UseQueryArgs<GetSubscriptionUrLsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetSubscriptionUrLsQuery, GetSubscriptionUrLsQueryVariables>({ query: GetSubscriptionUrLsDocument, ...options });
-};
+}
 export const DeleteSubscriptionDocument = gql`
     mutation deleteSubscription($title: String!) {
   deleteFromsubscriptionsCollection(filter: {title: {eq: $title}}, atMost: 1) {
@@ -798,4 +798,4 @@ export const DeleteSubscriptionDocument = gql`
 
 export function useDeleteSubscriptionMutation() {
   return Urql.useMutation<DeleteSubscriptionMutation, DeleteSubscriptionMutationVariables>(DeleteSubscriptionDocument);
-};
+}

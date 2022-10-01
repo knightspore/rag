@@ -1,9 +1,9 @@
 import { motion } from "framer-motion"
 import { container, item } from "../../constants/animation"
 import { useGetArticlesFromSubscriptionsQuery, useGetLikesQuery  } from "../../generated/graphql"
-import Alert, { Level } from ".././App/Alert"
+import Alert, { Level } from "../../Alert"
 import ArticleCard  from "./ArticleCard"
-import { useAppContext } from "../Provider/AppContextProvider"
+import { useAppContext } from "../../AppContextProvider"
 import SkeletonArticles from "./SkeletonArticles"
 
 export default function ArticleFeed() {

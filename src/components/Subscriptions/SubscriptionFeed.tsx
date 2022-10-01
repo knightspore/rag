@@ -1,9 +1,9 @@
 import SubscriptionCard from "./SubscriptionCard"
 import {motion} from "framer-motion"
 import {container, item} from "../../constants/animation"
-import { useAppContext } from "../Provider/AppContextProvider"
+import { useAppContext } from "../../AppContextProvider"
 import { useGetSubscriptionsQuery } from "../../generated/graphql"
-import Alert, { Level } from "../App/Alert"
+import Alert, { Level } from "../../Alert"
 import { useEffect } from "react"
 import SkeletonSubscriptions from "./SkeletonSubscriptions"
 

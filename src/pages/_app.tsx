@@ -1,8 +1,8 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import '../styles/globals.css'
-import AppContextProvider from '../components/Provider/AppContextProvider'
-import UrqlContextProvider from '../components/Provider/UrqlContextProvider'
+import AppContextProvider from '../AppContextProvider'
+import UrqlContextProvider from '../UrqlContextProvider'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
