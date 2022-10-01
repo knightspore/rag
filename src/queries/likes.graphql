@@ -8,9 +8,9 @@ query getLikes($userId: UUID!) {
   }
 }
 
-mutation like($userId: UUID!, $articleTitle: String!) {
+mutation like($userId: UUID!, $article: String!, $subscription: String!) {
   insertIntolikesCollection(
-    objects: {user_id: $userId, article_title: $articleTitle}
+    objects: {user_id: $userId, article_title: $article, subscription_title: $subscription }
   ) {
     records {
       id

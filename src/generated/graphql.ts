@@ -596,7 +596,8 @@ export type GetLikesQuery = { __typename?: 'Query', likesCollection?: { __typena
 
 export type LikeMutationVariables = Exact<{
   userId: Scalars['UUID'];
-  articleTitle: Scalars['String'];
+  article: Scalars['String'];
+  subscription: Scalars['String'];
 }>;
 
 
@@ -719,9 +720,9 @@ export function useGetLikesQuery(options: Omit<Urql.UseQueryArgs<GetLikesQueryVa
   return Urql.useQuery<GetLikesQuery, GetLikesQueryVariables>({ query: GetLikesDocument, ...options });
 };
 export const LikeDocument = gql`
-    mutation like($userId: UUID!, $articleTitle: String!) {
+    mutation like($userId: UUID!, $article: String!, $subscription: String!) {
   insertIntolikesCollection(
-    objects: {user_id: $userId, article_title: $articleTitle}
+    objects: {user_id: $userId, article_title: $article, subscription_title: $subscription}
   ) {
     records {
       id

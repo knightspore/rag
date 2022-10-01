@@ -9,6 +9,13 @@ export type AppContextValue = {
 	setUser: (value: null) => void
 	subscriptions: string[] | [],
 	setSubscriptions: (value: string[]) => void
+	filters: ArticleFilters,
+	setFilters: (value: ArticleFilters) => void
+}
+
+type ArticleFilters = {
+	liked: boolean,
+	unread: boolean,
 }
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue)
@@ -26,6 +33,10 @@ export default function AppContextProvider({ children }: { children: React.React
 
 	const [user, setUser] = useState<User | null>(null)
 	const [subscriptions, setSubscriptions] = useState<string[]|[]>([])
+	const [filters, setFilters] = useState<ArticleFilters>({
+		liked: false,
+		unread: false,
+	})
 
 	useEffect(() => {
 		async function getCurrentUser() {
@@ -46,6 +57,8 @@ export default function AppContextProvider({ children }: { children: React.React
 		setUser,
 		subscriptions,
 		setSubscriptions,
+		filters,
+		setFilters,
 	}
 
 	return <AppContext.Provider value={appContextValue}>

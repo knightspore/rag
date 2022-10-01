@@ -1,6 +1,6 @@
 query getArticlesFromSubscriptions($ids: [String!]!) {
   articlesCollection(
-    first: 100
+    first: 40
     filter: {subscription: {in: $ids}}
     orderBy: {pub_date: DescNullsLast}
   ) {

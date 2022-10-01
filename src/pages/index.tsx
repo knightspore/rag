@@ -1,7 +1,7 @@
 import ArticleFeed from "../components/Articles/ArticleFeed"
 import SubscriptionFeed from "../components/Subscriptions/SubscriptionFeed"
 import Head from "next/head"
-import { IoExitSharp, IoRefreshSharp } from "react-icons/io5"
+import { IoExitSharp, IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoRefreshSharp } from "react-icons/io5"
 import { useState } from "react"
 import { useAppContext } from "../components/Provider/AppContextProvider"
 import { supabase } from "../lib/supabase"
@@ -11,7 +11,7 @@ import AddSubscriptionForm from "../components/App/AddSubscriptionForm"
 export default function HomePage() {
 
     const [refreshing, setRefreshing] = useState(false)
-    const { user, setUser } = useAppContext()
+    const { user, setUser, filters, setFilters } = useAppContext()
 
     function signOut() {
         supabase.auth.signOut()
@@ -28,6 +28,14 @@ export default function HomePage() {
         window.location.reload()
     }
 
+    function toggleLikedArticlesFilter() {
+        setFilters({ ...filters, liked: !filters.liked })
+    }
+
+    function toggleUnreadArticlesFilter() {
+        setFilters({ ...filters, unread: !filters.unread })
+    }
+
     return (
         <>
             <Head>
@@ -36,13 +44,26 @@ export default function HomePage() {
             <div className="flex flex-col justify-between w-screen h-screen p-4 space-y-2">
                 <div className="grid flex-initial grid-cols-1 gap-4 md:grid-cols-8 overflow-clip">
                     <section className="pr-2 space-y-2 overflow-x-hidden overflow-y-scroll md:col-span-6">
-                        <button onClick={refresh}>Reading List <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} /></button>
+                        <div className="flex gap-4">
+                            <button onClick={refresh}>
+                                Reading List 
+                                <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} />
+                            </button>
+                            <button onClick={toggleLikedArticlesFilter}>
+                                Saved 
+                                {filters.liked ? <IoHeartSharp size={16} title="Filter: all articles" /> : <IoHeartOutline size={16} title="Filter: saved articles only" />}
+                            </button>
+                            <button onClick={toggleUnreadArticlesFilter}>
+                                Unread
+                                {filters.unread ? <IoEyeSharp size={16} title="Filter: all articles"/> : <IoEyeOutline size={16} title="Filter: unread articles" />}
+                            </button>
+                        </div>
                         <ArticleFeed />
-                    </section>
+                            </section>
                     <section className="md:col-span-2">
                         <div className="space-y-2">
-                        <AddSubscriptionForm />
-                        <SubscriptionFeed />
+                            <AddSubscriptionForm />
+                            <SubscriptionFeed />
                         </div>
                     </section>
 

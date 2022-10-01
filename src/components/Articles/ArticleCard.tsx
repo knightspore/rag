@@ -6,20 +6,18 @@ import { motion } from "framer-motion"
 
 export default function ArticleCard({
   article,
-  likes,
+  isLiked,
 }: {
   article: Partial<Articles>
-  likes: string[] | null
+  isLiked: boolean
 }) {
 
-  const { user } = useAppContext()
+  const { user  } = useAppContext()
 
   const [read, markRead] = useMarkAsReadMutation()
   const [unread, markUnread] = useMarkAsUnreadMutation()
   const [like, likeMutation] = useLikeMutation()
   const [unlike, unlikeMutation] = useUnlikeMutation()
-
-  const saved = likes && article.title && likes.includes(article.title)
 
   const handleMarkAsRead = () => {
     if (!article.is_read) {
@@ -36,12 +34,12 @@ export default function ArticleCard({
   }
 
   const handleLike = () => {
-    if (!saved) {
-    user && article.title && likeMutation({ userId: user?.id, articleTitle: article.title })
+    if (isLiked != true) {
+    user && article.title && article.subscription && likeMutation({ userId: user?.id, article: article.title, subscription: article.subscription })
     if (like) {
       return like
     }
-    } else if (saved) {
+    } else if (isLiked) {
       article.title && unlikeMutation({articleTitle: article.title})
       if (unlike) {
         return unlike
@@ -67,7 +65,7 @@ export default function ArticleCard({
       </a>
       <div className="flex items-center gap-2 text-sm italic font-medium text-slate-400">
         <motion.div onClick={handleLike} className="cursor-pointer" whileTap={{ scale: 0.8 }}>
-        {saved ? <IoHeartSharp /> : <IoHeartOutline/>}
+        {isLiked ? <IoHeartSharp /> : <IoHeartOutline/>}
         </motion.div>
         <motion.div onClick={handleMarkAsRead} whileTap={{ scale: 0.8 }}>
         {article.is_read ? <IoEyeSharp /> : <IoEyeOutline />}

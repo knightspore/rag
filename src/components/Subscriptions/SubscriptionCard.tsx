@@ -16,7 +16,6 @@ export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> 
     }
   }
 
-
   return (
     <div
       className="flex select-none group"
@@ -27,7 +26,7 @@ export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> 
           <div className="transition-all duration-100 group-hover:hidden">
           <Icon src={sub.icon}  />
           </div>
-          <div className="hidden transition-all duration-100 group-hover:block">
+          <div className="hidden transition-all duration-100 cursor-pointer group-hover:block">
             <IoTrashSharp onClick={handleDeleteSubscription} />
           </div>
         </motion.div>

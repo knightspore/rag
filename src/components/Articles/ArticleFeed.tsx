@@ -8,7 +8,7 @@ import SkeletonArticles from "./SkeletonArticles"
 
 export default function ArticleFeed() {
 
-  const { subscriptions, user } = useAppContext()
+  const { subscriptions, user, filters } = useAppContext()
 
   const [{data, fetching, error}] = useGetArticlesFromSubscriptionsQuery({
     variables: {
@@ -33,8 +33,15 @@ export default function ArticleFeed() {
   return (
     <motion.ol variants={container} initial="hidden" animate="show">
       {data && data?.articlesCollection?.edges.map(({ node }) => {
+        if (filters.unread && node.is_read === true) {
+          return null
+        }
+        const isLiked = likes && node.title && likes.includes(node.title)
+        if (filters.liked && isLiked === false) {
+          return null
+        }
         return <motion.li key={node.title} variants={item}>
-          <ArticleCard likes={likes || null} article={node} />
+          <ArticleCard isLiked={isLiked || false} article={node} />
         </motion.li>
       })}
     </motion.ol>
