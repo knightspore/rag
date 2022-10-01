@@ -43,7 +43,6 @@ type ArticlesResponse struct {
 	Description  string    `json:"description,omitempty"`
 	Subscription string    `json:"subscription"`
 	Content      string    `json:"content,omitempty"`
-	UpdatedAt    time.Time `json:"updated_at,omitempty"`
 }
 
 func HandleResponse(w http.ResponseWriter, res Response, cond bool) {
@@ -106,7 +105,6 @@ func GetArticles(xml XML, url string) []ArticlesResponse {
 			Description:  item.Description,
 			Subscription: xml.Feed.Title,
 			Content:      item.Content,
-			UpdatedAt:    time.Now(),
 		})
 	}
 

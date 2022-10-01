@@ -34,12 +34,12 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 		articles = append(articles, newArticles...)
 	}
 
-	sb_err := supabase.DB.From("articles").Upsert(articles).Execute(nil)
+	var articleResults []map[string]string
+	sb_err := supabase.DB.From("articles").Upsert(articles).Execute(&articleResults)
 
-	log.Printf("Affected Articles: %q\n", len(articles))
-	for _, a := range articles {
-		log.Printf("%+v\n", a)
-	}
+	log.Printf("Article Upsert Result: %+v\n", articleResults)
+
+	log.Printf("Refreshed %d Articles\n", len(articles))
 
 	parse.HandleResponse(w, parse.Response{
 		AffectedCount: len(articles),
