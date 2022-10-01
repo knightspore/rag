@@ -15,7 +15,7 @@ export default function AddSubscriptionForm() {
   const [url, setUrl] = useState("")
 
   async function parseFeed(url: string, userId: string) {
-    const res = await fetch("/api/feed/get", {
+    const res = await fetch("/api/feed/parse", {
       method: "POST",
       body: JSON.stringify({
         url: url,
