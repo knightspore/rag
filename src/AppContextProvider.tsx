@@ -45,11 +45,17 @@ export default function AppContextProvider({ children }: { children: React.React
 				alert(error)
 			}
 			session && setUser(session.user)
-			user && refreshSubscriptions(user?.id)
 		}
 		if (!user) {
 			getCurrentUser()
 		}
+	}, [user])
+
+	useEffect(() => {
+		async function refresh() {
+			user && refreshSubscriptions(user.id)
+		}
+		refresh()
 	}, [user])
 
 	const appContextValue: AppContextValue = {

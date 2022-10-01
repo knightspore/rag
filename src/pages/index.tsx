@@ -21,7 +21,7 @@ export default function HomePage() {
         }, 250)
     }
 
-    async function refresh() {
+    async function handleRefresh() {
         setRefreshing(true)
         user && await refreshSubscriptions(user?.id)
         setRefreshing(false)
@@ -45,7 +45,7 @@ export default function HomePage() {
                 <div className="grid flex-initial grid-cols-1 gap-4 md:grid-cols-8 overflow-clip">
                     <section className="pr-2 space-y-2 overflow-x-hidden overflow-y-scroll md:col-span-6">
                         <div className="flex gap-4">
-                            <button onClick={refresh}>
+                            <button onClick={handleRefresh}>
                                 Reading List 
                                 <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} />
                             </button>
