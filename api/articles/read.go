@@ -29,13 +29,16 @@ func ArticlesReadHandler(w http.ResponseWriter, r *http.Request) {
 		SendErr(w)
 	}
 
-	converter := md.NewConverter("", true, nil)
+	converter := md.NewConverter("", true, &md.Options{
+		CodeBlockStyle: "fenced",
+	})
+
 	content, err := converter.ConvertString(string(html))
 	if err != nil {
 		SendErr(w)
 	}
 
-	log.Printf("Read Article: ...\n", content[:20])
+	log.Printf("Read Article: %s...\n", content[:20])
 
 	parse.HandleResponse(w, parse.Response{
 		Content: content,
