@@ -30,6 +30,6 @@
 
 @layer utilities {
   .card {
-    @apply border-2 border-slate-700/30 bg-slate-700/30 hover:bg-slate-800 hover:border-slate-700 hover:text-opacity-50 base-transition rounded-sm 
+    @apply border-2 border-slate-700/30 bg-slate-700/30 hover:bg-slate-800 hover:border-slate-700 hover:text-opacity-50 base-transition rounded-lg shadow-sm
   }
 }

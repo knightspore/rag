@@ -100,13 +100,19 @@ export type Mutation = {
   /** Deletes zero or more records from the collection */
   deleteFromarticlesCollection: ArticlesDeleteResponse;
   /** Deletes zero or more records from the collection */
+  deleteFromlikesCollection: LikesDeleteResponse;
+  /** Deletes zero or more records from the collection */
   deleteFromsubscriptionsCollection: SubscriptionsDeleteResponse;
   /** Adds one or more `articlesInsertResponse` records to the collection */
   insertIntoarticlesCollection?: Maybe<ArticlesInsertResponse>;
+  /** Adds one or more `likesInsertResponse` records to the collection */
+  insertIntolikesCollection?: Maybe<LikesInsertResponse>;
   /** Adds one or more `subscriptionsInsertResponse` records to the collection */
   insertIntosubscriptionsCollection?: Maybe<SubscriptionsInsertResponse>;
   /** Updates zero or more records in the collection */
   updatearticlesCollection: ArticlesUpdateResponse;
+  /** Updates zero or more records in the collection */
+  updatelikesCollection: LikesUpdateResponse;
   /** Updates zero or more records in the collection */
   updatesubscriptionsCollection: SubscriptionsUpdateResponse;
 };
@@ -116,6 +122,13 @@ export type Mutation = {
 export type MutationDeleteFromarticlesCollectionArgs = {
   atMost?: Scalars['Int'];
   filter?: InputMaybe<ArticlesFilter>;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromlikesCollectionArgs = {
+  atMost?: Scalars['Int'];
+  filter?: InputMaybe<LikesFilter>;
 };
 
 
@@ -133,6 +146,12 @@ export type MutationInsertIntoarticlesCollectionArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationInsertIntolikesCollectionArgs = {
+  objects: Array<LikesInsertInput>;
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntosubscriptionsCollectionArgs = {
   objects: Array<SubscriptionsInsertInput>;
 };
@@ -143,6 +162,14 @@ export type MutationUpdatearticlesCollectionArgs = {
   atMost?: Scalars['Int'];
   filter?: InputMaybe<ArticlesFilter>;
   set: ArticlesUpdateInput;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationUpdatelikesCollectionArgs = {
+  atMost?: Scalars['Int'];
+  filter?: InputMaybe<LikesFilter>;
+  set: LikesUpdateInput;
 };
 
 
@@ -178,6 +205,8 @@ export type Query = {
   __typename?: 'Query';
   /** A pagable collection of type `articles` */
   articlesCollection?: Maybe<ArticlesConnection>;
+  /** A pagable collection of type `likes` */
+  likesCollection?: Maybe<LikesConnection>;
   /** A pagable collection of type `subscriptions` */
   subscriptionsCollection?: Maybe<SubscriptionsConnection>;
 };
@@ -191,6 +220,17 @@ export type QueryArticlesCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<ArticlesOrderBy>>;
+};
+
+
+/** The root type for querying data */
+export type QueryLikesCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<LikesFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LikesOrderBy>>;
 };
 
 
@@ -240,10 +280,22 @@ export type Articles = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   is_read?: Maybe<Scalars['Boolean']>;
+  likesCollection?: Maybe<LikesConnection>;
   pub_date: Scalars['Datetime'];
   subscription: Scalars['String'];
   title: Scalars['String'];
+  updated_at: Scalars['Datetime'];
   url: Scalars['String'];
+};
+
+
+export type ArticlesLikesCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  filter?: InputMaybe<LikesFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<LikesOrderBy>>;
 };
 
 export type ArticlesConnection = {
@@ -275,6 +327,7 @@ export type ArticlesFilter = {
   pub_date?: InputMaybe<DatetimeFilter>;
   subscription?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
+  updated_at?: InputMaybe<DatetimeFilter>;
   url?: InputMaybe<StringFilter>;
 };
 
@@ -287,6 +340,7 @@ export type ArticlesInsertInput = {
   pub_date?: InputMaybe<Scalars['Datetime']>;
   subscription?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['Datetime']>;
   url?: InputMaybe<Scalars['String']>;
 };
 
@@ -307,6 +361,7 @@ export type ArticlesOrderBy = {
   pub_date?: InputMaybe<OrderByDirection>;
   subscription?: InputMaybe<OrderByDirection>;
   title?: InputMaybe<OrderByDirection>;
+  updated_at?: InputMaybe<OrderByDirection>;
   url?: InputMaybe<OrderByDirection>;
 };
 
@@ -319,6 +374,7 @@ export type ArticlesUpdateInput = {
   pub_date?: InputMaybe<Scalars['Datetime']>;
   subscription?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['Datetime']>;
   url?: InputMaybe<Scalars['String']>;
 };
 
@@ -328,6 +384,74 @@ export type ArticlesUpdateResponse = {
   affectedCount: Scalars['Int'];
   /** Array of records impacted by the mutation */
   records: Array<Articles>;
+};
+
+export type Likes = {
+  __typename?: 'likes';
+  article_title: Scalars['String'];
+  articles?: Maybe<Articles>;
+  id: Scalars['UUID'];
+  user_id: Scalars['UUID'];
+};
+
+export type LikesConnection = {
+  __typename?: 'likesConnection';
+  edges: Array<LikesEdge>;
+  pageInfo: PageInfo;
+};
+
+export type LikesDeleteResponse = {
+  __typename?: 'likesDeleteResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int'];
+  /** Array of records impacted by the mutation */
+  records: Array<Likes>;
+};
+
+export type LikesEdge = {
+  __typename?: 'likesEdge';
+  cursor: Scalars['String'];
+  node: Likes;
+};
+
+export type LikesFilter = {
+  article_title?: InputMaybe<StringFilter>;
+  id?: InputMaybe<UuidFilter>;
+  user_id?: InputMaybe<UuidFilter>;
+};
+
+export type LikesInsertInput = {
+  article_title?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  user_id?: InputMaybe<Scalars['UUID']>;
+};
+
+export type LikesInsertResponse = {
+  __typename?: 'likesInsertResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int'];
+  /** Array of records impacted by the mutation */
+  records: Array<Likes>;
+};
+
+export type LikesOrderBy = {
+  article_title?: InputMaybe<OrderByDirection>;
+  id?: InputMaybe<OrderByDirection>;
+  user_id?: InputMaybe<OrderByDirection>;
+};
+
+export type LikesUpdateInput = {
+  article_title?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['UUID']>;
+  user_id?: InputMaybe<Scalars['UUID']>;
+};
+
+export type LikesUpdateResponse = {
+  __typename?: 'likesUpdateResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int'];
+  /** Array of records impacted by the mutation */
+  records: Array<Likes>;
 };
 
 export type Subscriptions = {
@@ -436,12 +560,19 @@ export type GetArticlesFromSubscriptionsQueryVariables = Exact<{
 
 export type GetArticlesFromSubscriptionsQuery = { __typename?: 'Query', articlesCollection?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
 
-export type ReadArticleMutationVariables = Exact<{
+export type MarkAsReadMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type ReadArticleMutation = { __typename?: 'Mutation', updatearticlesCollection: { __typename?: 'articlesUpdateResponse', affectedCount: number, records: Array<{ __typename?: 'articles', id: any }> } };
+export type MarkAsReadMutation = { __typename?: 'Mutation', updatearticlesCollection: { __typename?: 'articlesUpdateResponse', affectedCount: number, records: Array<{ __typename?: 'articles', id: any }> } };
+
+export type MarkAsUnreadMutationVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type MarkAsUnreadMutation = { __typename?: 'Mutation', updatearticlesCollection: { __typename?: 'articlesUpdateResponse', affectedCount: number, records: Array<{ __typename?: 'articles', id: any }> } };
 
 export type UpdateArticleMutationVariables = Exact<{
   url: Scalars['String'];
@@ -450,6 +581,28 @@ export type UpdateArticleMutationVariables = Exact<{
 
 
 export type UpdateArticleMutation = { __typename?: 'Mutation', updatearticlesCollection: { __typename?: 'articlesUpdateResponse', records: Array<{ __typename?: 'articles', id: any, url: string, title: string, is_read?: boolean | null, pub_date: any, description?: string | null, subscription: string }> } };
+
+export type GetLikesQueryVariables = Exact<{
+  userId: Scalars['UUID'];
+}>;
+
+
+export type GetLikesQuery = { __typename?: 'Query', likesCollection?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title: string } }> } | null };
+
+export type LikeMutationVariables = Exact<{
+  userId: Scalars['UUID'];
+  articleTitle: Scalars['String'];
+}>;
+
+
+export type LikeMutation = { __typename?: 'Mutation', insertIntolikesCollection?: { __typename?: 'likesInsertResponse', records: Array<{ __typename?: 'likes', id: any }> } | null };
+
+export type UnlikeMutationVariables = Exact<{
+  articleTitle: Scalars['String'];
+}>;
+
+
+export type UnlikeMutation = { __typename?: 'Mutation', deleteFromlikesCollection: { __typename?: 'likesDeleteResponse', records: Array<{ __typename?: 'likes', id: any }> } };
 
 export type GetSubscriptionsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -490,8 +643,8 @@ export const GetArticlesFromSubscriptionsDocument = gql`
 export function useGetArticlesFromSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<GetArticlesFromSubscriptionsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetArticlesFromSubscriptionsQuery, GetArticlesFromSubscriptionsQueryVariables>({ query: GetArticlesFromSubscriptionsDocument, ...options });
 };
-export const ReadArticleDocument = gql`
-    mutation readArticle($id: UUID!) {
+export const MarkAsReadDocument = gql`
+    mutation markAsRead($id: UUID!) {
   updatearticlesCollection(set: {is_read: true}, filter: {id: {eq: $id}}) {
     affectedCount
     records {
@@ -501,8 +654,22 @@ export const ReadArticleDocument = gql`
 }
     `;
 
-export function useReadArticleMutation() {
-  return Urql.useMutation<ReadArticleMutation, ReadArticleMutationVariables>(ReadArticleDocument);
+export function useMarkAsReadMutation() {
+  return Urql.useMutation<MarkAsReadMutation, MarkAsReadMutationVariables>(MarkAsReadDocument);
+};
+export const MarkAsUnreadDocument = gql`
+    mutation markAsUnread($id: UUID!) {
+  updatearticlesCollection(set: {is_read: false}, filter: {id: {eq: $id}}) {
+    affectedCount
+    records {
+      id
+    }
+  }
+}
+    `;
+
+export function useMarkAsUnreadMutation() {
+  return Urql.useMutation<MarkAsUnreadMutation, MarkAsUnreadMutationVariables>(MarkAsUnreadDocument);
 };
 export const UpdateArticleDocument = gql`
     mutation updateArticle($url: String!, $article: articlesUpdateInput!) {
@@ -522,6 +689,49 @@ export const UpdateArticleDocument = gql`
 
 export function useUpdateArticleMutation() {
   return Urql.useMutation<UpdateArticleMutation, UpdateArticleMutationVariables>(UpdateArticleDocument);
+};
+export const GetLikesDocument = gql`
+    query getLikes($userId: UUID!) {
+  likesCollection(filter: {user_id: {eq: $userId}}) {
+    edges {
+      node {
+        article_title
+      }
+    }
+  }
+}
+    `;
+
+export function useGetLikesQuery(options: Omit<Urql.UseQueryArgs<GetLikesQueryVariables>, 'query'>) {
+  return Urql.useQuery<GetLikesQuery, GetLikesQueryVariables>({ query: GetLikesDocument, ...options });
+};
+export const LikeDocument = gql`
+    mutation like($userId: UUID!, $articleTitle: String!) {
+  insertIntolikesCollection(
+    objects: {user_id: $userId, article_title: $articleTitle}
+  ) {
+    records {
+      id
+    }
+  }
+}
+    `;
+
+export function useLikeMutation() {
+  return Urql.useMutation<LikeMutation, LikeMutationVariables>(LikeDocument);
+};
+export const UnlikeDocument = gql`
+    mutation unlike($articleTitle: String!) {
+  deleteFromlikesCollection(filter: {article_title: {eq: $articleTitle}}) {
+    records {
+      id
+    }
+  }
+}
+    `;
+
+export function useUnlikeMutation() {
+  return Urql.useMutation<UnlikeMutation, UnlikeMutationVariables>(UnlikeDocument);
 };
 export const GetSubscriptionsDocument = gql`
     query getSubscriptions($id: UUID!) {

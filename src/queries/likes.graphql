@@ -1,0 +1,27 @@
+query getLikes($userId: UUID!) {
+  likesCollection(filter: { user_id:{eq:$userId}}) {
+    edges {
+      node {
+        article_title
+      }
+    }
+  }
+}
+
+mutation like($userId: UUID!, $articleTitle: String!) {
+  insertIntolikesCollection(
+    objects: {user_id: $userId, article_title: $articleTitle}
+  ) {
+    records {
+      id
+    }
+  }
+}
+
+mutation unlike($articleTitle: String!) {
+  deleteFromlikesCollection(filter: {article_title: {eq: $articleTitle}}) {
+    records {
+      id
+    }
+  }
+}

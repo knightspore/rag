@@ -17,8 +17,17 @@ query getArticlesFromSubscriptions($ids: [String!]!) {
   }
 }
 
-mutation readArticle($id: UUID!) {
+mutation markAsRead($id: UUID!) {
   updatearticlesCollection(set: {is_read: true}, filter: {id: {eq: $id}}) {
+    affectedCount
+    records {
+      id
+    }
+  }
+}
+
+mutation markAsUnread($id: UUID!) {
+  updatearticlesCollection(set: {is_read: false}, filter: {id: {eq: $id}}) {
     affectedCount
     records {
       id
@@ -39,3 +48,5 @@ mutation updateArticle($url: String!, $article: articlesUpdateInput!) {
     }
   }
 }
+
+
