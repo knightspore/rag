@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { supabase } from "../../lib/supabase"
 import { User } from "@supabase/supabase-js"
 import SignIn from "../App/SignIn"
+import refreshSubscriptions from "../../util/refreshSubscriptions"
 
 export type AppContextValue = { 
 	user: User | null
@@ -33,6 +34,7 @@ export default function AppContextProvider({ children }: { children: React.React
 				alert(error)
 			}
 			session && setUser(session.user)
+			user && refreshSubscriptions(user?.id)
 		}
 		if (!user) {
 			getCurrentUser()

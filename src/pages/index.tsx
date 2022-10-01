@@ -6,6 +6,7 @@ import AddSubscriptionForm from "../components/App/AddSubscriptionForm"
 import { useState } from "react"
 import { useAppContext } from "../components/Provider/AppContextProvider"
 import { supabase } from "../lib/supabase"
+import refreshSubscriptions from "../util/refreshSubscriptions"
 
 export default function HomePage() {
 
@@ -20,14 +21,9 @@ export default function HomePage() {
         }, 250)
     }
 
-    async function refreshSubscriptions() {
+    async function refresh() {
         setRefreshing(true)
-        user && await fetch("/api/subscriptions/refresh", {
-            method: "POST",
-            body: JSON.stringify({
-                userId: user.id
-            })
-        })
+        user && await refreshSubscriptions(user?.id)
         setRefreshing(false)
     }
 
@@ -46,7 +42,7 @@ export default function HomePage() {
                         </div>
                     </section>
                     <section className="space-y-2 overflow-x-hidden overflow-y-scroll md:col-span-6">
-                        <button onClick={refreshSubscriptions}>Reading List <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} /></button>
+                        <button onClick={refresh}>Reading List <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} /></button>
                         <ArticleFeed />
                     </section>
                 </div>
