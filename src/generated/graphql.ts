@@ -558,12 +558,20 @@ export type SubscriptionsUpdateResponse = {
   records: Array<Subscriptions>;
 };
 
-export type GetArticlesFromSubscriptionsQueryVariables = Exact<{
-  ids: Array<Scalars['String']> | Scalars['String'];
+export type AppQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  subscriptions?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
 }>;
 
 
-export type GetArticlesFromSubscriptionsQuery = { __typename?: 'Query', articlesCollection?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
+export type AppQuery = { __typename?: 'Query', subscriptions?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null, likes?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title: string } }> } | null };
+
+export type ReadingListQueryVariables = Exact<{
+  subscriptions?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
+
+
+export type ReadingListQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
 
 export type MarkAsReadMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -587,56 +595,58 @@ export type UpdateArticleMutationVariables = Exact<{
 
 export type UpdateArticleMutation = { __typename?: 'Mutation', updatearticlesCollection: { __typename?: 'articlesUpdateResponse', records: Array<{ __typename?: 'articles', id: any, url: string, title: string, is_read?: boolean | null, pub_date: any, description?: string | null, subscription: string }> } };
 
-export type GetLikesQueryVariables = Exact<{
-  userId: Scalars['UUID'];
-}>;
-
-
-export type GetLikesQuery = { __typename?: 'Query', likesCollection?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title: string } }> } | null };
-
 export type LikeMutationVariables = Exact<{
-  userId: Scalars['UUID'];
-  article: Scalars['String'];
-  subscription: Scalars['String'];
+  userId?: InputMaybe<Scalars['UUID']>;
+  article?: InputMaybe<Scalars['String']>;
+  subscription?: InputMaybe<Scalars['String']>;
 }>;
 
 
 export type LikeMutation = { __typename?: 'Mutation', insertIntolikesCollection?: { __typename?: 'likesInsertResponse', records: Array<{ __typename?: 'likes', id: any }> } | null };
 
 export type UnlikeMutationVariables = Exact<{
-  articleTitle: Scalars['String'];
+  articleTitle?: InputMaybe<Scalars['String']>;
 }>;
 
 
 export type UnlikeMutation = { __typename?: 'Mutation', deleteFromlikesCollection: { __typename?: 'likesDeleteResponse', records: Array<{ __typename?: 'likes', id: any }> } };
 
-export type GetSubscriptionsQueryVariables = Exact<{
-  id: Scalars['UUID'];
-}>;
-
-
-export type GetSubscriptionsQuery = { __typename?: 'Query', subscriptionsCollection?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null };
-
-export type GetSubscriptionUrLsQueryVariables = Exact<{
-  id: Scalars['UUID'];
-}>;
-
-
-export type GetSubscriptionUrLsQuery = { __typename?: 'Query', subscriptionsCollection?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', url: string } }> } | null };
-
 export type DeleteSubscriptionMutationVariables = Exact<{
-  title: Scalars['String'];
+  title?: InputMaybe<Scalars['String']>;
 }>;
 
 
 export type DeleteSubscriptionMutation = { __typename?: 'Mutation', deleteFromsubscriptionsCollection: { __typename?: 'subscriptionsDeleteResponse', affectedCount: number }, deleteFromlikesCollection: { __typename?: 'likesDeleteResponse', affectedCount: number }, deleteFromarticlesCollection: { __typename?: 'articlesDeleteResponse', affectedCount: number } };
 
 
-export const GetArticlesFromSubscriptionsDocument = gql`
-    query getArticlesFromSubscriptions($ids: [String!]!) {
-  articlesCollection(
-    first: 100
-    filter: {subscription: {in: $ids}}
+export const AppDocument = gql`
+    query app($id: UUID!, $subscriptions: [String!]) {
+  subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
+    edges {
+      node {
+        id
+        title
+        icon
+      }
+    }
+  }
+  likes: likesCollection(filter: {user_id: {eq: $id}}) {
+    edges {
+      node {
+        article_title
+      }
+    }
+  }
+}
+    `;
+
+export function useAppQuery(options: Omit<Urql.UseQueryArgs<AppQueryVariables>, 'query'>) {
+  return Urql.useQuery<AppQuery, AppQueryVariables>({ query: AppDocument, ...options });
+};
+export const ReadingListDocument = gql`
+    query readingList($subscriptions: [String!]) {
+  articles: articlesCollection(
+    filter: {subscription: {in: $subscriptions}}
     orderBy: {pub_date: DescNullsLast}
   ) {
     edges {
@@ -654,9 +664,9 @@ export const GetArticlesFromSubscriptionsDocument = gql`
 }
     `;
 
-export function useGetArticlesFromSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<GetArticlesFromSubscriptionsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetArticlesFromSubscriptionsQuery, GetArticlesFromSubscriptionsQueryVariables>({ query: GetArticlesFromSubscriptionsDocument, ...options });
-}
+export function useReadingListQuery(options?: Omit<Urql.UseQueryArgs<ReadingListQueryVariables>, 'query'>) {
+  return Urql.useQuery<ReadingListQuery, ReadingListQueryVariables>({ query: ReadingListDocument, ...options });
+};
 export const MarkAsReadDocument = gql`
     mutation markAsRead($id: UUID!) {
   updatearticlesCollection(set: {is_read: true}, filter: {id: {eq: $id}}) {
@@ -670,7 +680,7 @@ export const MarkAsReadDocument = gql`
 
 export function useMarkAsReadMutation() {
   return Urql.useMutation<MarkAsReadMutation, MarkAsReadMutationVariables>(MarkAsReadDocument);
-}
+};
 export const MarkAsUnreadDocument = gql`
     mutation markAsUnread($id: UUID!) {
   updatearticlesCollection(set: {is_read: false}, filter: {id: {eq: $id}}) {
@@ -684,7 +694,7 @@ export const MarkAsUnreadDocument = gql`
 
 export function useMarkAsUnreadMutation() {
   return Urql.useMutation<MarkAsUnreadMutation, MarkAsUnreadMutationVariables>(MarkAsUnreadDocument);
-}
+};
 export const UpdateArticleDocument = gql`
     mutation updateArticle($url: String!, $article: articlesUpdateInput!) {
   updatearticlesCollection(set: $article, filter: {url: {eq: $url}}) {
@@ -703,24 +713,9 @@ export const UpdateArticleDocument = gql`
 
 export function useUpdateArticleMutation() {
   return Urql.useMutation<UpdateArticleMutation, UpdateArticleMutationVariables>(UpdateArticleDocument);
-}
-export const GetLikesDocument = gql`
-    query getLikes($userId: UUID!) {
-  likesCollection(filter: {user_id: {eq: $userId}}) {
-    edges {
-      node {
-        article_title
-      }
-    }
-  }
-}
-    `;
-
-export function useGetLikesQuery(options: Omit<Urql.UseQueryArgs<GetLikesQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetLikesQuery, GetLikesQueryVariables>({ query: GetLikesDocument, ...options });
-}
+};
 export const LikeDocument = gql`
-    mutation like($userId: UUID!, $article: String!, $subscription: String!) {
+    mutation like($userId: UUID, $article: String, $subscription: String) {
   insertIntolikesCollection(
     objects: {user_id: $userId, article_title: $article, subscription_title: $subscription}
   ) {
@@ -733,9 +728,9 @@ export const LikeDocument = gql`
 
 export function useLikeMutation() {
   return Urql.useMutation<LikeMutation, LikeMutationVariables>(LikeDocument);
-}
+};
 export const UnlikeDocument = gql`
-    mutation unlike($articleTitle: String!) {
+    mutation unlike($articleTitle: String) {
   deleteFromlikesCollection(filter: {article_title: {eq: $articleTitle}}) {
     records {
       id
@@ -746,41 +741,9 @@ export const UnlikeDocument = gql`
 
 export function useUnlikeMutation() {
   return Urql.useMutation<UnlikeMutation, UnlikeMutationVariables>(UnlikeDocument);
-}
-export const GetSubscriptionsDocument = gql`
-    query getSubscriptions($id: UUID!) {
-  subscriptionsCollection(filter: {user: {eq: $id}}) {
-    edges {
-      node {
-        id
-        title
-        icon
-      }
-    }
-  }
-}
-    `;
-
-export function useGetSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<GetSubscriptionsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetSubscriptionsQuery, GetSubscriptionsQueryVariables>({ query: GetSubscriptionsDocument, ...options });
-}
-export const GetSubscriptionUrLsDocument = gql`
-    query getSubscriptionURLs($id: UUID!) {
-  subscriptionsCollection(filter: {user: {eq: $id}}) {
-    edges {
-      node {
-        url
-      }
-    }
-  }
-}
-    `;
-
-export function useGetSubscriptionUrLsQuery(options: Omit<Urql.UseQueryArgs<GetSubscriptionUrLsQueryVariables>, 'query'>) {
-  return Urql.useQuery<GetSubscriptionUrLsQuery, GetSubscriptionUrLsQueryVariables>({ query: GetSubscriptionUrLsDocument, ...options });
-}
+};
 export const DeleteSubscriptionDocument = gql`
-    mutation deleteSubscription($title: String!) {
+    mutation deleteSubscription($title: String) {
   deleteFromsubscriptionsCollection(filter: {title: {eq: $title}}, atMost: 1) {
     affectedCount
   }
@@ -798,4 +761,4 @@ export const DeleteSubscriptionDocument = gql`
 
 export function useDeleteSubscriptionMutation() {
   return Urql.useMutation<DeleteSubscriptionMutation, DeleteSubscriptionMutationVariables>(DeleteSubscriptionDocument);
-}
+};

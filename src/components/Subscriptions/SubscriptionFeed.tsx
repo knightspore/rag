@@ -2,38 +2,34 @@ import SubscriptionCard from "./SubscriptionCard"
 import {motion} from "framer-motion"
 import {container, item} from "../../constants/animation"
 import { useAppContext } from "../../AppContextProvider"
-import { useGetSubscriptionsQuery } from "../../generated/graphql"
 import Alert, { Level } from "../../Alert"
-import { useEffect } from "react"
 import SkeletonSubscriptions from "./SkeletonSubscriptions"
+import { useDeleteSubscriptionMutation } from "../../generated/graphql"
 
 export default function SubscriptionFeed() {
 
-  const { user, setSubscriptions } = useAppContext()
+  const app = useAppContext()
 
-	const [{data, fetching, error}] = useGetSubscriptionsQuery({
-		variables: {
-			id: user?.id
-		}
-	})
+  const [deleted, deleteSubscription] = useDeleteSubscriptionMutation()
 
-  useEffect(() => {
-    const items: string[] = []
-    data?.subscriptionsCollection?.edges.forEach(({ node: { title } }) => {
-      items.push(title)
+  async function handleDeleteSubscription(title?: string) {
+    await deleteSubscription({
+        title: title,
     })
-    setSubscriptions(items)
-  }, [data, setSubscriptions])
+    if (deleted) {
+      return deleted
+    }
+  }
 
-  if (fetching) return <SkeletonSubscriptions />
+  if (app.fetching) return <SkeletonSubscriptions />
 
-  if (error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
+  if (app.error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
   return (
   <motion.ol variants={container} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
-    {data?.subscriptionsCollection?.edges.map((sub) => {
+    {app.subscriptions?.map((sub) => {
       return <motion.li key={sub.node.title} variants={item}>
-        <SubscriptionCard sub={sub.node} />
+        <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
       </motion.li> 
     })}
   </motion.ol>

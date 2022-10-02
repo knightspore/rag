@@ -1,52 +1,19 @@
 import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp } from "react-icons/io5";
-import { Articles, useLikeMutation, useMarkAsReadMutation, useMarkAsUnreadMutation, useUnlikeMutation } from "../../generated/graphql";
+import { Articles } from "../../generated/graphql";
 import Icon from "../../Icon";
-import { useAppContext } from "../../AppContextProvider";
 import { motion } from "framer-motion"
 
 export default function ArticleCard({
   article,
   isLiked,
+  like,
+  markRead,
 }: {
   article: Partial<Articles>
-  isLiked: boolean
+  isLiked: boolean,
+  like: (liked: boolean,  subscription?: string, title?: string) => void,
+  markRead: (id: string, is_read?: boolean | null) => void,
 }) {
-
-  const { user  } = useAppContext()
-
-  const [read, markRead] = useMarkAsReadMutation()
-  const [unread, markUnread] = useMarkAsUnreadMutation()
-  const [like, likeMutation] = useLikeMutation()
-  const [unlike, unlikeMutation] = useUnlikeMutation()
-
-  const handleMarkAsRead = () => {
-    if (!article.is_read) {
-      markRead({ id: article.id})
-      if (read) {
-        return read
-      }
-    } else if (article.is_read) {
-      markUnread({ id: article.id})
-      if (unread) {
-        return unread
-      }
-    }
-  }
-
-  const handleLike = () => {
-    if (isLiked !== true) {
-    user && article.title && article.subscription && likeMutation({ userId: user?.id, article: article.title, subscription: article.subscription })
-    if (like) {
-      return like
-    }
-    } else if (isLiked) {
-      article.title && unlikeMutation({articleTitle: article.title})
-      if (unlike) {
-        return unlike
-      }
-    }
-  }
-
   return (
     <div className={`mb-2 p-2 card ${article.is_read && "opacity-30"}`}
       >
@@ -54,7 +21,7 @@ export default function ArticleCard({
         href={article.url}
         target="_blank"
         rel="noreferrer"
-        onClick={handleMarkAsRead}
+        onClick={() => markRead(article.id, article.is_read)}
       >
         <h3 className="mb-1">
           <div className="inline-block mr-1 translate-y-[2px]">
@@ -64,10 +31,10 @@ export default function ArticleCard({
         </h3>
       </a>
       <div className="flex items-center gap-2 text-sm italic font-medium text-slate-400">
-        <motion.div onClick={handleLike} className="cursor-pointer" whileTap={{ scale: 0.8 }}>
+        <motion.div onClick={() => like(isLiked, article.subscription, article.title)} className="cursor-pointer" whileTap={{ scale: 0.8 }}>
         {isLiked ? <IoHeartSharp /> : <IoHeartOutline/>}
         </motion.div>
-        <motion.div onClick={handleMarkAsRead} whileTap={{ scale: 0.8 }}>
+        <motion.div onClick={() => markRead(article.id, article.is_read)} whileTap={{ scale: 0.8 }}>
         {article.is_read ? <IoEyeSharp /> : <IoEyeOutline />}
         </motion.div>
         <span>{article.subscription}</span>

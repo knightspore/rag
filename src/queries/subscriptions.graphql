@@ -1,26 +1,4 @@
-query getSubscriptions($id: UUID!) {
-  subscriptionsCollection( filter: { user: { eq: $id } } ) {
-    edges {
-      node {
-        id
-        title
-        icon
-      }
-    }
-  }
-}
-
-query getSubscriptionURLs($id: UUID!) {
-  subscriptionsCollection( filter: { user: { eq: $id } } ) {
-    edges {
-      node {
-        url
-      }
-    }
-  }
-}
-
-mutation deleteSubscription($title: String!) {
+mutation deleteSubscription($title: String) {
   deleteFromsubscriptionsCollection(filter: {title: {eq: $title}}, atMost: 1) {
     affectedCount
   }

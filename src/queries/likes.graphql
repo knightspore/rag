@@ -1,14 +1,4 @@
-query getLikes($userId: UUID!) {
-  likesCollection(filter: { user_id:{eq:$userId}}) {
-    edges {
-      node {
-        article_title
-      }
-    }
-  }
-}
-
-mutation like($userId: UUID!, $article: String!, $subscription: String!) {
+mutation like($userId: UUID, $article: String, $subscription: String) {
   insertIntolikesCollection(
     objects: {user_id: $userId, article_title: $article, subscription_title: $subscription }
   ) {
@@ -18,7 +8,7 @@ mutation like($userId: UUID!, $article: String!, $subscription: String!) {
   }
 }
 
-mutation unlike($articleTitle: String!) {
+mutation unlike($articleTitle: String) {
   deleteFromlikesCollection(filter: {article_title: {eq: $articleTitle}}) {
     records {
       id

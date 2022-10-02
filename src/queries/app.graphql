@@ -1,0 +1,38 @@
+query app($id: UUID!, $subscriptions: [String!]) {
+  subscriptions: subscriptionsCollection( filter: { user: { eq: $id } } ) {
+    edges {
+      node {
+        id
+        title
+        icon
+      }
+    }
+  }  
+	likes: likesCollection(filter: { user_id:{eq:$id}}) {
+    edges {
+      node {
+        article_title
+      }
+    }
+  }  
+}
+
+query readingList($subscriptions: [String!]) {
+	articles: articlesCollection(
+    filter: {subscription: {in: $subscriptions}}
+    orderBy: {pub_date: DescNullsLast}
+  ) {
+    edges {
+      node {
+        id
+        title
+        description
+        url
+        pub_date
+        subscription
+        is_read
+      }
+    }
+  }
+}
+

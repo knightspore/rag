@@ -1,21 +1,21 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { supabase } from "./lib/supabase"
-import refreshSubscriptions from "./util/refreshSubscriptions"
+import { CombinedError  } from "urql"
+import { ArticlesEdge, SubscriptionsEdge, useAppQuery, useReadingListQuery } from "./generated/graphql"
+import { getCurrentUser } from "./lib/supabase"
 import SignIn from "./SignIn"
+import refreshSubscriptions from "./util/refreshSubscriptions"
 
 export type AppContextValue = { 
 	user: User | null
 	setUser: (value: null) => void
-	subscriptions: string[] | [],
-	setSubscriptions: (value: string[]) => void
-	filters: ArticleFilters,
-	setFilters: (value: ArticleFilters) => void
-}
-
-type ArticleFilters = {
-	liked: boolean,
-	unread: boolean,
+	filters: { liked: boolean, unread: boolean },
+	setFilters: (value: AppContextValue["filters"]) => void
+	fetching: boolean,
+	error: CombinedError | undefined,
+	subscriptions:  SubscriptionsEdge[] | undefined
+	likes: string[] | undefined,
+	articles: ArticlesEdge[] | undefined,
 }
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue)
@@ -31,43 +31,52 @@ export function useAppContext() {
 
 export default function AppContextProvider({ children }: { children: React.ReactNode }) {
 
-	const [user, setUser] = useState<User | null>(null)
-	const [subscriptions, setSubscriptions] = useState<string[]|[]>([])
-	const [filters, setFilters] = useState<ArticleFilters>({
+	const [user, setUser] = useState<AppContextValue["user"]>(null)
+	const [filters, setFilters] = useState<AppContextValue["filters"]>({
 		liked: false,
 		unread: false,
 	})
 
-	useEffect(() => {
-		async function getCurrentUser() {
-			const { data: { session}, error, } = await supabase.auth.getSession()
-			if (error) {
-				alert(error)
-			}
-			session && setUser(session.user)
+	useEffect(() => {	
+		async function login() {
+		const u = await getCurrentUser()
+		if (!user && u) {
+			refreshSubscriptions(u.id)
+			setUser(u)
 		}
-		if (!user) {
-			getCurrentUser()
-		}
-	}, [user])
+	}
+		login()
+	}, [])
 
-	useEffect(() => {
-		async function refresh() {
-			user && refreshSubscriptions(user.id)
+	const [app] = useAppQuery({
+		variables: {
+			id: user?.id,
 		}
-		refresh()
-	}, [user])
+	})
 
-	const appContextValue: AppContextValue = {
+	const [readingList] = useReadingListQuery({
+		variables: {
+			subscriptions: app.data?.subscriptions?.edges?.map(({node}) => {
+				return node.title
+			})
+		}
+	})
+
+	const value: AppContextValue = {
 		user,
 		setUser,
-		subscriptions,
-		setSubscriptions,
 		filters,
 		setFilters,
+		fetching: app.fetching || readingList.fetching,
+		error: app.error || readingList.error,
+		subscriptions: app.data?.subscriptions?.edges as SubscriptionsEdge[] | undefined,
+		likes: app.data?.likes?.edges.map(({ node}) => {
+			return node.article_title
+		}),
+		articles: readingList.data?.articles?.edges as ArticlesEdge[] | undefined,
 	}
 
-	return <AppContext.Provider value={appContextValue}>
+	return <AppContext.Provider value={value}>
 		{ user ? children : <SignIn />}
 	</AppContext.Provider>
 

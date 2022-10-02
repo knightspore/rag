@@ -1,1 +1,2 @@
-- [] Use Submission title for Parsed Feed
+- [ ] Merge Queries into one AppQuery
+- [ ] Refactor AppContext to Provide & Calculate UI values

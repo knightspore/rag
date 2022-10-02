@@ -38,6 +38,21 @@ export default function SkeletonArticles() {
       <motion.li variants={item}>
         <Card />
       </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
+      <motion.li variants={item}>
+        <Card />
+      </motion.li>
     </motion.ol>
   )
 }

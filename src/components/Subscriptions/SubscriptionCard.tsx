@@ -1,21 +1,11 @@
 import { IoTrashSharp } from "react-icons/io5";
-import { Subscriptions, useDeleteSubscriptionMutation } from "../../generated/graphql";
+import { Subscriptions } from "../../generated/graphql";
 import Icon from "../../Icon";
 import { motion } from "framer-motion"
 
-export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> }) {
+type Props = { sub: Partial<Subscriptions>, remove: (title?: string) => void }
 
-  const [deleted, deleteSubscription] = useDeleteSubscriptionMutation()
-
-  async function handleDeleteSubscription() {
-    sub.title && await deleteSubscription({
-        title: sub.title,
-    })
-    if (deleted) {
-      return deleted
-    }
-  }
-
+export default function SubscriptionCard({ sub, remove }: Props ) {
   return (
     <div
       className="flex select-none group"
@@ -27,7 +17,7 @@ export default function SubscriptionCard({ sub }: { sub: Partial<Subscriptions> 
           <Icon src={sub.icon}  />
           </div>
           <div className="hidden transition-all duration-100 cursor-pointer group-hover:block">
-            <IoTrashSharp onClick={handleDeleteSubscription} />
+            <IoTrashSharp onClick={() => remove(sub.title)} />
           </div>
         </motion.div>
         <p className="line-clamp-1">{sub.title}</p>
