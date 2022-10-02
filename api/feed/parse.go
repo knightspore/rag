@@ -19,7 +19,7 @@ func FeedGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	icon := "https://www.google.com/s2/favicons?domain=" + req.URL
 
-	articles := parse.GetArticles(xml, req.URL)
+	articles := parse.GetArticles(xml, req.URL, req.UserID)
 	subscription := parse.GetSubscription(xml, req.URL, icon, req.UserID)
 
 	log.Printf("Get Feed: %q\n", subscription.Title)

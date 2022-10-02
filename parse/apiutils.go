@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Request struct {
@@ -24,25 +22,23 @@ type Response struct {
 }
 
 type SubscriptionResponse struct {
-	ID          uuid.UUID   `json:"id"`
-	UpdatedAt   time.Time   `json:"updated_at"`
-	Title       string      `json:"title"`
-	Description string      `json:"description"`
-	URL         string      `json:"url"`
-	Icon        string      `json:"icon"`
-	User        string      `json:"user"`
-	Muted       bool        `json:"muted"`
-	Articles    []uuid.UUID `json:"articles"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	URL         string    `json:"url"`
+	Icon        string    `json:"icon"`
+	User        string    `json:"user"`
+	Muted       bool      `json:"muted"`
 }
 
 type ArticlesResponse struct {
-	ID           uuid.UUID `json:"id"`
-	Title        string    `json:"title"`
-	URL          string    `json:"url"`
-	PubDate      string    `json:"pub_date"`
-	Description  string    `json:"description,omitempty"`
-	Subscription string    `json:"subscription"`
-	Content      string    `json:"content,omitempty"`
+	Title        string `json:"title"`
+	URL          string `json:"url"`
+	PubDate      string `json:"pub_date"`
+	Description  string `json:"description,omitempty"`
+	Subscription string `json:"subscription"`
+	Content      string `json:"content,omitempty"`
+	UserID       string `json:"user_id"`
 }
 
 func HandleResponse(w http.ResponseWriter, res Response, cond bool) {
@@ -72,7 +68,6 @@ func HandleRequest(r *http.Request) Request {
 
 func GetSubscription(xml XML, url string, icon string, user string) SubscriptionResponse {
 	return SubscriptionResponse{
-		ID:          uuid.New(),
 		UpdatedAt:   time.Now(),
 		Title:       xml.Feed.Title,
 		Description: xml.Feed.Description,
@@ -80,11 +75,10 @@ func GetSubscription(xml XML, url string, icon string, user string) Subscription
 		Icon:        icon,
 		User:        user,
 		Muted:       false,
-		Articles:    []uuid.UUID{},
 	}
 }
 
-func GetArticles(xml XML, url string) []ArticlesResponse {
+func GetArticles(xml XML, url string, user string) []ArticlesResponse {
 
 	var feedItems []EntriesXML
 	var articles []ArticlesResponse
@@ -96,15 +90,14 @@ func GetArticles(xml XML, url string) []ArticlesResponse {
 	}
 
 	for _, item := range feedItems {
-		id := uuid.New()
 		articles = append(articles, ArticlesResponse{
-			ID:           id,
 			Title:        item.Title,
 			URL:          item.URL,
 			PubDate:      item.PubDate,
 			Description:  item.Description,
 			Subscription: xml.Feed.Title,
 			Content:      item.Content,
+			UserID:       user,
 		})
 	}
 

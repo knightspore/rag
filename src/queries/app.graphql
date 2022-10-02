@@ -1,5 +1,5 @@
-query app($id: UUID!, $subscriptions: [String!]) {
-  subscriptions: subscriptionsCollection( filter: { user: { eq: $id } } ) {
+query app($id: UUID!) {
+  subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
     edges {
       node {
         id
@@ -7,19 +7,16 @@ query app($id: UUID!, $subscriptions: [String!]) {
         icon
       }
     }
-  }  
-	likes: likesCollection(filter: { user_id:{eq:$id}}) {
+  }
+  likes: likesCollection(filter: {user_id: {eq: $id}}) {
     edges {
       node {
         article_title
       }
     }
-  }  
-}
-
-query readingList($subscriptions: [String!]) {
-	articles: articlesCollection(
-    filter: {subscription: {in: $subscriptions}}
+  }
+  articles: articlesCollection(
+    filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
   ) {
     edges {
@@ -35,4 +32,3 @@ query readingList($subscriptions: [String!]) {
     }
   }
 }
-

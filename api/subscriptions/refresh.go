@@ -30,7 +30,7 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Fprintf(w, "%s", err.Error())
 		}
-		newArticles := parse.GetArticles(xml, url)
+		newArticles := parse.GetArticles(xml, url, req.UserID)
 		articles = append(articles, newArticles...)
 	}
 

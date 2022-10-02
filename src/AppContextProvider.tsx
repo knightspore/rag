@@ -1,7 +1,7 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { CombinedError  } from "urql"
-import { ArticlesEdge, SubscriptionsEdge, useAppQuery, useReadingListQuery } from "./generated/graphql"
+import { ArticlesEdge, SubscriptionsEdge, useAppQuery } from "./generated/graphql"
 import { getCurrentUser } from "./lib/supabase"
 import SignIn from "./SignIn"
 import refreshSubscriptions from "./util/refreshSubscriptions"
@@ -14,7 +14,7 @@ export type AppContextValue = {
 	fetching: boolean,
 	error: CombinedError | undefined,
 	subscriptions:  SubscriptionsEdge[] | undefined
-	likes: string[] | undefined,
+	likes: (string | null | undefined)[] | undefined,
 	articles: ArticlesEdge[] | undefined,
 }
 
@@ -54,26 +54,18 @@ export default function AppContextProvider({ children }: { children: React.React
 		}
 	})
 
-	const [readingList] = useReadingListQuery({
-		variables: {
-			subscriptions: app.data?.subscriptions?.edges?.map(({node}) => {
-				return node.title
-			})
-		}
-	})
-
 	const value: AppContextValue = {
 		user,
 		setUser,
 		filters,
 		setFilters,
-		fetching: app.fetching || readingList.fetching,
-		error: app.error || readingList.error,
+		fetching: app.fetching,
+		error: app.error,
 		subscriptions: app.data?.subscriptions?.edges as SubscriptionsEdge[] | undefined,
 		likes: app.data?.likes?.edges.map(({ node}) => {
 			return node.article_title
 		}),
-		articles: readingList.data?.articles?.edges as ArticlesEdge[] | undefined,
+		articles: app.data?.articles?.edges as ArticlesEdge[] | undefined,
 	}
 
 	return <AppContext.Provider value={value}>

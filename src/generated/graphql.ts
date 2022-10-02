@@ -280,22 +280,12 @@ export type Articles = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   is_read?: Maybe<Scalars['Boolean']>;
-  likesCollection?: Maybe<LikesConnection>;
   pub_date: Scalars['Datetime'];
   subscription: Scalars['String'];
   title: Scalars['String'];
   updated_at: Scalars['Datetime'];
   url: Scalars['String'];
-};
-
-
-export type ArticlesLikesCollectionArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  filter?: InputMaybe<LikesFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<LikesOrderBy>>;
+  user_id: Scalars['UUID'];
 };
 
 export type ArticlesConnection = {
@@ -329,6 +319,7 @@ export type ArticlesFilter = {
   title?: InputMaybe<StringFilter>;
   updated_at?: InputMaybe<DatetimeFilter>;
   url?: InputMaybe<StringFilter>;
+  user_id?: InputMaybe<UuidFilter>;
 };
 
 export type ArticlesInsertInput = {
@@ -342,6 +333,7 @@ export type ArticlesInsertInput = {
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['Datetime']>;
   url?: InputMaybe<Scalars['String']>;
+  user_id?: InputMaybe<Scalars['UUID']>;
 };
 
 export type ArticlesInsertResponse = {
@@ -363,6 +355,7 @@ export type ArticlesOrderBy = {
   title?: InputMaybe<OrderByDirection>;
   updated_at?: InputMaybe<OrderByDirection>;
   url?: InputMaybe<OrderByDirection>;
+  user_id?: InputMaybe<OrderByDirection>;
 };
 
 export type ArticlesUpdateInput = {
@@ -376,6 +369,7 @@ export type ArticlesUpdateInput = {
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['Datetime']>;
   url?: InputMaybe<Scalars['String']>;
+  user_id?: InputMaybe<Scalars['UUID']>;
 };
 
 export type ArticlesUpdateResponse = {
@@ -388,10 +382,9 @@ export type ArticlesUpdateResponse = {
 
 export type Likes = {
   __typename?: 'likes';
-  article_title: Scalars['String'];
-  articles?: Maybe<Articles>;
-  id: Scalars['UUID'];
-  subscription_title: Scalars['String'];
+  article_title?: Maybe<Scalars['String']>;
+  id: Scalars['BigInt'];
+  subscription_title?: Maybe<Scalars['String']>;
   user_id: Scalars['UUID'];
 };
 
@@ -417,14 +410,13 @@ export type LikesEdge = {
 
 export type LikesFilter = {
   article_title?: InputMaybe<StringFilter>;
-  id?: InputMaybe<UuidFilter>;
+  id?: InputMaybe<BigIntFilter>;
   subscription_title?: InputMaybe<StringFilter>;
   user_id?: InputMaybe<UuidFilter>;
 };
 
 export type LikesInsertInput = {
   article_title?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['UUID']>;
   subscription_title?: InputMaybe<Scalars['String']>;
   user_id?: InputMaybe<Scalars['UUID']>;
 };
@@ -446,7 +438,6 @@ export type LikesOrderBy = {
 
 export type LikesUpdateInput = {
   article_title?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['UUID']>;
   subscription_title?: InputMaybe<Scalars['String']>;
   user_id?: InputMaybe<Scalars['UUID']>;
 };
@@ -461,7 +452,6 @@ export type LikesUpdateResponse = {
 
 export type Subscriptions = {
   __typename?: 'subscriptions';
-  articles?: Maybe<Array<Maybe<Scalars['UUID']>>>;
   created_at?: Maybe<Scalars['Datetime']>;
   description?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
@@ -526,7 +516,6 @@ export type SubscriptionsInsertResponse = {
 };
 
 export type SubscriptionsOrderBy = {
-  articles?: InputMaybe<OrderByDirection>;
   created_at?: InputMaybe<OrderByDirection>;
   description?: InputMaybe<OrderByDirection>;
   icon?: InputMaybe<OrderByDirection>;
@@ -560,14 +549,13 @@ export type SubscriptionsUpdateResponse = {
 
 export type AppQueryVariables = Exact<{
   id: Scalars['UUID'];
-  subscriptions?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
 }>;
 
 
-export type AppQuery = { __typename?: 'Query', subscriptions?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null, likes?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title: string } }> } | null };
+export type AppQuery = { __typename?: 'Query', subscriptions?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null, likes?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title?: string | null } }> } | null, articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
 
 export type ReadingListQueryVariables = Exact<{
-  subscriptions?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  id: Scalars['UUID'];
 }>;
 
 
@@ -620,7 +608,7 @@ export type DeleteSubscriptionMutation = { __typename?: 'Mutation', deleteFromsu
 
 
 export const AppDocument = gql`
-    query app($id: UUID!, $subscriptions: [String!]) {
+    query app($id: UUID!) {
   subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
     edges {
       node {
@@ -637,16 +625,8 @@ export const AppDocument = gql`
       }
     }
   }
-}
-    `;
-
-export function useAppQuery(options: Omit<Urql.UseQueryArgs<AppQueryVariables>, 'query'>) {
-  return Urql.useQuery<AppQuery, AppQueryVariables>({ query: AppDocument, ...options });
-};
-export const ReadingListDocument = gql`
-    query readingList($subscriptions: [String!]) {
   articles: articlesCollection(
-    filter: {subscription: {in: $subscriptions}}
+    filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
   ) {
     edges {
@@ -664,7 +644,31 @@ export const ReadingListDocument = gql`
 }
     `;
 
-export function useReadingListQuery(options?: Omit<Urql.UseQueryArgs<ReadingListQueryVariables>, 'query'>) {
+export function useAppQuery(options: Omit<Urql.UseQueryArgs<AppQueryVariables>, 'query'>) {
+  return Urql.useQuery<AppQuery, AppQueryVariables>({ query: AppDocument, ...options });
+};
+export const ReadingListDocument = gql`
+    query readingList($id: UUID!) {
+  articles: articlesCollection(
+    filter: {user_id: {eq: $id}}
+    orderBy: {pub_date: DescNullsLast}
+  ) {
+    edges {
+      node {
+        id
+        title
+        description
+        url
+        pub_date
+        subscription
+        is_read
+      }
+    }
+  }
+}
+    `;
+
+export function useReadingListQuery(options: Omit<Urql.UseQueryArgs<ReadingListQueryVariables>, 'query'>) {
   return Urql.useQuery<ReadingListQuery, ReadingListQueryVariables>({ query: ReadingListDocument, ...options });
 };
 export const MarkAsReadDocument = gql`
