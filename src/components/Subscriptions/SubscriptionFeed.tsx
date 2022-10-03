@@ -15,6 +15,7 @@ export default function SubscriptionFeed() {
   async function handleDeleteSubscription(title?: string) {
     await deleteSubscription({
         title: title,
+        id: app.user?.id,
     })
     if (deleted) {
       return deleted

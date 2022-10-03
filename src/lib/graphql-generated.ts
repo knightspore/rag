@@ -594,6 +594,7 @@ export type UnlikeMutation = { __typename?: 'Mutation', deleteFromlikesCollectio
 
 export type DeleteSubscriptionMutationVariables = Exact<{
   title?: InputMaybe<Scalars['String']>;
+  id: Scalars['UUID'];
 }>;
 
 
@@ -716,17 +717,23 @@ export function useUnlikeMutation() {
   return Urql.useMutation<UnlikeMutation, UnlikeMutationVariables>(UnlikeDocument);
 };
 export const DeleteSubscriptionDocument = gql`
-    mutation deleteSubscription($title: String) {
-  deleteFromsubscriptionsCollection(filter: {title: {eq: $title}}, atMost: 1) {
+    mutation deleteSubscription($title: String, $id: UUID!) {
+  deleteFromsubscriptionsCollection(
+    filter: {title: {eq: $title}, user: {eq: $id}}
+    atMost: 1
+  ) {
     affectedCount
   }
   deleteFromlikesCollection(
-    filter: {subscription_title: {eq: $title}}
+    filter: {subscription_title: {eq: $title}, user_id: {eq: $id}}
     atMost: 1000
   ) {
     affectedCount
   }
-  deleteFromarticlesCollection(filter: {subscription: {eq: $title}}, atMost: 1000) {
+  deleteFromarticlesCollection(
+    filter: {subscription: {eq: $title}, user_id: {eq: $id}}
+    atMost: 1000
+  ) {
     affectedCount
   }
 }
