@@ -1,10 +1,10 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { CombinedError  } from "urql"
-import { ArticlesEdge, SubscriptionsEdge, useAppQuery } from "./generated/graphql"
-import { getCurrentUser } from "./lib/supabase"
+import { ArticlesEdge, SubscriptionsEdge, useAppQuery } from "../../lib/graphql-generated"
+import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
-import refreshSubscriptions from "./util/refreshSubscriptions"
+import { refreshSubscriptions } from "../../lib/api"
 
 export type AppContextValue = { 
 	user: User | null

@@ -1,4 +1,4 @@
-export const container = {
+export const feedContainer = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -6,7 +6,7 @@ export const container = {
   }
 }
 
-export const item = {
+export const feedItem = {
   hidden: { opacity: 0, translateX: "-20%" },
   show: { opacity: 1, translateX: "0%" },
   exit: { opacity: 0, translateX: "-20%" },

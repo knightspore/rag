@@ -1,6 +1,6 @@
 import { IoTrashSharp } from "react-icons/io5";
-import { Subscriptions } from "../../generated/graphql";
-import Icon from "../../Icon";
+import { Subscriptions } from "../../lib/graphql-generated";
+import Icon from "../Icon";
 import { motion } from "framer-motion"
 
 type Props = { sub: Partial<Subscriptions>, remove: (title?: string) => void }

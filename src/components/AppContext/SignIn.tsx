@@ -1,7 +1,7 @@
 import Head from "next/head"
 import { FormEvent, useState } from "react"
-import { supabase } from "./lib/supabase"
-import Alert, { Level } from "./Alert"
+import { supabase } from "../../lib/supabase"
+import Alert, { Level } from "../Alert"
 
 export default function SignIn() {
 

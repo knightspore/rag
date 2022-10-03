@@ -1,10 +1,10 @@
 import SubscriptionCard from "./SubscriptionCard"
 import {motion} from "framer-motion"
-import {container, item} from "../../constants/animation"
-import { useAppContext } from "../../AppContextProvider"
-import Alert, { Level } from "../../Alert"
+import {feedContainer, feedItem} from "../../lib/animation"
+import { useAppContext } from "../AppContext/AppContextProvider"
+import Alert, { Level } from "../Alert"
 import SkeletonSubscriptions from "./SkeletonSubscriptions"
-import { useDeleteSubscriptionMutation } from "../../generated/graphql"
+import { useDeleteSubscriptionMutation } from "../../lib/graphql-generated"
 
 export default function SubscriptionFeed() {
 
@@ -26,9 +26,9 @@ export default function SubscriptionFeed() {
   if (app.error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
   return (
-  <motion.ol variants={container} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
+  <motion.ol variants={feedContainer} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
     {app.subscriptions?.map((sub) => {
-      return <motion.li key={sub.node.title} variants={item}>
+      return <motion.li key={sub.node.title} variants={feedItem}>
         <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
       </motion.li> 
     })}

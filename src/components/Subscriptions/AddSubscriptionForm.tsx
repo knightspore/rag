@@ -1,11 +1,12 @@
 import { Disclosure } from "@headlessui/react";
 import { FormEvent, useState } from "react";
-import Alert, { Level } from "./Alert";
-import { useAppContext } from "./AppContextProvider";
+import Alert, { Level } from "../Alert";
+import { useAppContext } from "../AppContext/AppContextProvider";
 import { IoListSharp } from "react-icons/io5";
-import { supabase } from "./lib/supabase";
+import { supabase } from "../../lib/supabase";
 import { motion } from "framer-motion"
-import { subscriptionForm } from "./constants/animation";
+import { subscriptionForm } from "../../lib/animation";
+import { parseFeed } from "../../lib/api";
 
 export default function AddSubscriptionForm() {
 
@@ -13,18 +14,6 @@ export default function AddSubscriptionForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | string>(false)
   const [url, setUrl] = useState("")
-
-  async function parseFeed(url: string, userId: string) {
-    const res = await fetch("/api/feed/parse", {
-      method: "POST",
-      body: JSON.stringify({
-        url: url,
-        userId: userId
-      })
-    })
-    const data = await res.json()
-    return data
-  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -40,12 +29,12 @@ export default function AddSubscriptionForm() {
         .from('subscriptions')
         .upsert([
           ...subscriptions
-        ])
+      ])
       const { error: aErr } = await supabase
         .from('articles')
         .upsert([
           ...articles
-        ])
+      ])
       if (sErr || aErr) {
         throw new Error(sErr ? sErr.message : aErr && aErr.message)
       }

@@ -1,5 +1,5 @@
 import { createClient, User } from "@supabase/supabase-js"
-import { getAuthKeys } from "../constants/env"
+import { getAuthKeys } from "./env"
 
 const {supabaseUrl, supabaseAnonKey} = getAuthKeys()
 

@@ -1,14 +1,14 @@
 import { motion } from "framer-motion"
-import Alert, { Level } from "../../Alert"
-import { useAppContext } from "../../AppContextProvider"
-import { container, item } from "../../constants/animation"
-import { useLikeMutation, useMarkAsReadMutation, useMarkAsUnreadMutation, useUnlikeMutation } from "../../generated/graphql"
+import Alert, { Level } from "../Alert"
+import { useAppContext } from "../AppContext/AppContextProvider"
+import { feedContainer, feedItem } from "../../lib/animation"
+import { useLikeMutation, useMarkAsReadMutation, useMarkAsUnreadMutation, useUnlikeMutation } from "../../lib/graphql-generated"
 import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "./SkeletonArticles"
 
 export default function ArticleFeed() {
 
-  const { filters, error, articles, likes, user } = useAppContext()
+  const app = useAppContext()
 
   const [read, markRead] = useMarkAsReadMutation()
   const [unread, markUnread] = useMarkAsUnreadMutation()
@@ -31,7 +31,7 @@ export default function ArticleFeed() {
 
  async function handleLike (liked: boolean,  subscription?: string, title?: string) {
     if (liked !== true) {
-    await likeMutation({ userId: user?.id, article: title, subscription: subscription })
+    await likeMutation({ userId: app.user?.id, article: title, subscription: subscription })
     if (like) {
       return like
     }
@@ -43,21 +43,21 @@ export default function ArticleFeed() {
     }
   }
 
-  if (!articles) return <SkeletonArticles />
+  if (app.fetching) return <SkeletonArticles />
 
-  if (error) return <Alert text="Error loading articles..." level={Level.warn} />
+  if (app.error) return <Alert text="Error loading articles..." level={Level.warn} />
 
   return (
-    <motion.ol variants={container} initial="hidden" animate="show">
-      {articles?.map(({ node }) => {
-        if (filters.unread && node.is_read === true) {
+    <motion.ol variants={feedContainer} initial="hidden" animate="show">
+      {app.articles?.map(({ node }) => {
+        if (app.filters.unread && node.is_read === true) {
           return null
         }
-        const isLiked = likes?.includes(node.title)
-        if (filters.liked && isLiked === false) {
+        const isLiked = app.likes?.includes(node.title)
+        if (app.filters.liked && isLiked === false) {
           return null
         }
-        return <motion.li key={node.title} variants={item}>
+        return <motion.li key={node.title} variants={feedItem}>
           <ArticleCard isLiked={isLiked || false} article={node} like={handleLike} markRead={handleMarkAsRead} />
         </motion.li>
       })}

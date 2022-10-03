@@ -2,9 +2,9 @@ import ArticleFeed from "../components/Articles/ArticleFeed"
 import SubscriptionFeed from "../components/Subscriptions/SubscriptionFeed"
 import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoRefreshSharp } from "react-icons/io5"
 import { useState } from "react"
-import { useAppContext } from "../AppContextProvider"
-import refreshSubscriptions from "../util/refreshSubscriptions"
-import AddSubscriptionForm from "../AddSubscriptionForm"
+import { useAppContext } from "../components/AppContext/AppContextProvider"
+import { refreshSubscriptions } from "../lib/api"
+import AddSubscriptionForm from "../components/Subscriptions/AddSubscriptionForm"
 import Layout from "../components/Layout"
 
 export default function HomePage() {

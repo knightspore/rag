@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion"
-import { container, item } from "../../constants/animation"
+import { feedContainer, feedItem } from "../../lib/animation"
 
 export default function SkeletonArticles() {
 
@@ -22,35 +22,35 @@ export default function SkeletonArticles() {
   }
 
   return (
-    <motion.ol variants={container} initial="hidden" animate="show">
-      <motion.li variants={item}>
+    <motion.ol variants={feedContainer} initial="hidden" animate="show">
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={item}>
+      <motion.li variants={feedItem}>
         <Card />
       </motion.li>
     </motion.ol>

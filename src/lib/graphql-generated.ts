@@ -554,13 +554,6 @@ export type AppQueryVariables = Exact<{
 
 export type AppQuery = { __typename?: 'Query', subscriptions?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null, likes?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title?: string | null } }> } | null, articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
 
-export type ReadingListQueryVariables = Exact<{
-  id: Scalars['UUID'];
-}>;
-
-
-export type ReadingListQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
-
 export type MarkAsReadMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -646,30 +639,6 @@ export const AppDocument = gql`
 
 export function useAppQuery(options: Omit<Urql.UseQueryArgs<AppQueryVariables>, 'query'>) {
   return Urql.useQuery<AppQuery, AppQueryVariables>({ query: AppDocument, ...options });
-};
-export const ReadingListDocument = gql`
-    query readingList($id: UUID!) {
-  articles: articlesCollection(
-    filter: {user_id: {eq: $id}}
-    orderBy: {pub_date: DescNullsLast}
-  ) {
-    edges {
-      node {
-        id
-        title
-        description
-        url
-        pub_date
-        subscription
-        is_read
-      }
-    }
-  }
-}
-    `;
-
-export function useReadingListQuery(options: Omit<Urql.UseQueryArgs<ReadingListQueryVariables>, 'query'>) {
-  return Urql.useQuery<ReadingListQuery, ReadingListQueryVariables>({ query: ReadingListDocument, ...options });
 };
 export const MarkAsReadDocument = gql`
     mutation markAsRead($id: UUID!) {

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { container, item } from "../../constants/animation"
+import { feedContainer, feedItem } from "../../lib/animation"
 
 export default function SkeletonSubscriptions() {
 
@@ -13,14 +13,14 @@ export default function SkeletonSubscriptions() {
       </span>
 	}
 
-  return <motion.ol variants={container} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
-    <motion.li variants={item}>
+  return <motion.ol variants={feedContainer} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
+    <motion.li variants={feedItem}>
     <Card/>
     </motion.li>
-    <motion.li variants={item}>
+    <motion.li variants={feedItem}>
     <Card/>
     </motion.li>
-    <motion.li variants={item}>
+    <motion.li variants={feedItem}>
     <Card/>
     </motion.li>
     </motion.ol>

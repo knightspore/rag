@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { IoExitSharp } from "react-icons/io5";
-import { useAppContext } from "../AppContextProvider";
+import { useAppContext } from "./AppContext/AppContextProvider";
 import { supabase } from "../lib/supabase";
 
 type Props = {

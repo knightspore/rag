@@ -1,6 +1,6 @@
 import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp } from "react-icons/io5";
-import { Articles } from "../../generated/graphql";
-import Icon from "../../Icon";
+import { Articles } from "../../lib/graphql-generated";
+import Icon from "../Icon";
 import { motion } from "framer-motion"
 
 export default function ArticleCard({

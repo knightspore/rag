@@ -1,5 +1,7 @@
+import React from "react"
+import { Provider } from "urql"
 import { createClient, defaultExchanges } from "urql"
-import { getAuthKeys } from "../constants/env"
+import { getAuthKeys } from "../../lib/env"
 
 const { supabaseAnonKey } = getAuthKeys()
 
@@ -15,3 +17,10 @@ export const client = createClient({
 		}
 	}
 })
+
+
+export default function UrqlContextProvider({ children }: { children: React.ReactNode }) {
+	return <Provider value={client}>
+		{children}
+	</Provider>
+}
