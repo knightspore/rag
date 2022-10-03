@@ -36,7 +36,7 @@ export default function ArticleFeed() {
       return like
     }
     } else if (liked) {
-      await unlikeMutation({articleTitle: title})
+      await unlikeMutation({userId: app.user?.id, articleTitle: title})
       if (unlike) {
         return unlike
       }

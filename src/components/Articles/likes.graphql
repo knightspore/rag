@@ -8,7 +8,7 @@ mutation like($userId: UUID, $article: String, $subscription: String) {
   }
 }
 
-mutation unlike($articleTitle: String) {
+mutation unlike($userId: UUID, $articleTitle: String) {
   deleteFromlikesCollection(filter: {article_title: {eq: $articleTitle}}) {
     records {
       id

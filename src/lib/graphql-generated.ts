@@ -586,6 +586,7 @@ export type LikeMutationVariables = Exact<{
 export type LikeMutation = { __typename?: 'Mutation', insertIntolikesCollection?: { __typename?: 'likesInsertResponse', records: Array<{ __typename?: 'likes', id: any }> } | null };
 
 export type UnlikeMutationVariables = Exact<{
+  userId?: InputMaybe<Scalars['UUID']>;
   articleTitle?: InputMaybe<Scalars['String']>;
 }>;
 
@@ -704,7 +705,7 @@ export function useLikeMutation() {
   return Urql.useMutation<LikeMutation, LikeMutationVariables>(LikeDocument);
 };
 export const UnlikeDocument = gql`
-    mutation unlike($articleTitle: String) {
+    mutation unlike($userId: UUID, $articleTitle: String) {
   deleteFromlikesCollection(filter: {article_title: {eq: $articleTitle}}) {
     records {
       id
