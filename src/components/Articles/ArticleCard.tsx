@@ -12,14 +12,14 @@ export default function ArticleCard({
   return (
     <div className={`mb-2 p-2 card ${article.is_read && "opacity-30"}`}>
       <Link prefetch={false} href={`/read/${article.id}`}>
-        <h3 className="mb-1">
+        <h2 className="mb-1 font-medium">
           <div className="inline-block mr-1 translate-y-[2px]">
             <Icon src={"https://www.google.com/s2/favicons?domain=" + article.url} />
           </div>
           {article.title}
-        </h3>
+        </h2>
       </Link>
-      <div className="flex items-center text-sm italic font-medium gap-2 text-slate-400">
+      <div className="flex items-center gap-2 text-slate-400">
         <LikeButton title={article?.title} subscription={article?.subscription} />
         <MarkAsReadButton id={article?.id} is_read={article?.is_read || false}  />
         <span>{article.subscription}</span>
@@ -28,7 +28,6 @@ export default function ArticleCard({
           {new Date(article.pub_date).toLocaleTimeString("en-ZA", {
             day: "numeric",
             month: "short",
-            year: "2-digit",
             hour: "numeric",
             minute: "2-digit",
           })}
