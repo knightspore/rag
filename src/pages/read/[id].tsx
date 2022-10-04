@@ -51,11 +51,19 @@ export default function ReadArticlePage() {
 
 	return (
 		<div className="p-4 overflow-x-hidden bg-slate-800">
-			<article className="pb-12 mx-auto space-y-4 overflow-x-hidden prose prose-invert line-clamp">
+			<article className="pb-12 mx-auto overflow-x-hidden space-y-4 prose prose-invert line-clamp">
 			<button onClick={() => router.back()}>
 				<IoReturnUpBackSharp size={16} /> Back
 			</button>
-			{ domain ? <ContentHeader title={article?.title} description={article?.description} url={article.url} hostname={domain?.hostname} /> : <SkeletonHeader />}
+			{ domain ? <ContentHeader 
+        id={article.id}
+        title={article?.title} 
+        subscription={article?.subscription} 
+        description={article?.description} 
+        is_read={article?.is_read || false}
+        url={article.url} 
+        hostname={domain?.hostname} 
+        /> : <SkeletonHeader />}
 			{content === ""	? <SkeletonContent/> : 
 			<ReactMarkdown className="break-all">
 				{content}
