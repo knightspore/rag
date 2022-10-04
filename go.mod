@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown v1.3.6
-	github.com/google/uuid v1.3.0
 	github.com/nedpals/postgrest-go v0.1.2
 )
 

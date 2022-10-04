@@ -2,6 +2,7 @@ import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp } from "react-ic
 import { Articles } from "../../lib/graphql-generated";
 import Icon from "../Icon";
 import { motion } from "framer-motion"
+import Link from "next/link";
 
 export default function ArticleCard({
   article,
@@ -17,19 +18,15 @@ export default function ArticleCard({
   return (
     <div className={`mb-2 p-2 card ${article.is_read && "opacity-30"}`}
       >
-      <a
-        href={article.url}
-        target="_blank"
-        rel="noreferrer"
-        onClick={() => markRead(article.id, article.is_read)}
-      >
+
+      <Link prefetch={false} href={`/read/${article.id}`}>
         <h3 className="mb-1">
           <div className="inline-block mr-1 translate-y-[2px]">
             <Icon src={"https://www.google.com/s2/favicons?domain=" + article.url} />
           </div>
           {article.title}
         </h3>
-      </a>
+      </Link>
       <div className="flex items-center gap-2 text-sm italic font-medium text-slate-400">
         <motion.div onClick={() => like(isLiked, article.subscription, article.title)} className="cursor-pointer" whileTap={{ scale: 0.8 }}>
         {isLiked ? <IoHeartSharp /> : <IoHeartOutline/>}

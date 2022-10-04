@@ -19,6 +19,7 @@ func ArticlesReadHandler(w http.ResponseWriter, r *http.Request) {
 
 	req := parse.HandleRequest(r)
 
+	log.Println("Read URL: ", req.URL)
 	res, err := http.Get(req.URL)
 	if err != nil {
 		SendErr(w)

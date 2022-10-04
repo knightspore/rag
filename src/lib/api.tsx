@@ -20,12 +20,12 @@ export async function parseFeed(url: string, userId: string) {
 }
 
 export async function readArticle(url: string) { 
-    const res = await fetch("/api/feed/read", {
+    const res = await fetch("/api/articles/read", {
         method: "POST",
         body: JSON.stringify({
             url: url
         })
     })
-    const content = await res.text()
-    return content
+    const data = await res.json()
+    return data
 }
