@@ -38,7 +38,6 @@ export default function AddSubscriptionForm() {
       if (sErr || aErr) {
         throw new Error(sErr ? sErr.message : aErr && aErr.message)
       }
-      window.location.reload()
     } catch (e) {
       setError((e as Error).message)
     } finally {
@@ -49,7 +48,7 @@ export default function AddSubscriptionForm() {
   return (
     <Disclosure>
       <Disclosure.Button
-        className="flex items-center gap-2 border-none"
+        className="flex items-center border-none gap-2"
       >
         <h2>Subscriptions</h2> <IoListSharp size={16} />
       </Disclosure.Button>

@@ -10,16 +10,14 @@ export default function SubscriptionFeed() {
 
   const app = useAppContext()
 
-  const [deleted, deleteSubscription] = useDeleteSubscriptionMutation()
+  const [, deleteSubscription] = useDeleteSubscriptionMutation()
 
   async function handleDeleteSubscription(title?: string) {
     await deleteSubscription({
         title: title,
         id: app.user?.id,
     })
-    if (deleted) {
-      return deleted
-    }
+    app.refreshAppContext()
   }
 
   if (app.fetching) return <SkeletonSubscriptions />
@@ -28,11 +26,13 @@ export default function SubscriptionFeed() {
 
   return (
   <motion.ol variants={feedContainer} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
-    {app.subscriptions?.map((sub) => {
-      return <motion.li key={sub.node.title} variants={feedItem}>
-        <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
-      </motion.li> 
-    })}
+    {
+      app.subscriptions?.map((sub) => {
+        return <motion.li key={sub.node.title} variants={feedItem}>
+          <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
+        </motion.li> 
+      })
+    }
   </motion.ol>
   )
 

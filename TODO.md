@@ -1,14 +1,16 @@
+# Fix
 
-- [X] Move Like and Read Buttons to components with their corresponding mutations (Size Props, etc)
+- [ ] Restore functionality to likes filter
 
-- [ ] Work on Article Handling
-
-- [ ] Fetching Data: Instead of refreshing the app, use a refetchQuery to refresh the data instead. 
+# Articles
 
 - [ ] Add Pagination to the Articles Feed on Scroll
 
-- [ ] Fix Loading States on the Read Articles Page
+- [ ] Adjust loading method on the Read Articles Page
+
+# Etc
+
+- [ ] Try out LCA or other method of Article clean-up
 
 - [ ] Rewrite Parser or use gofeed
 
-- [ ] Remove unused returns in Mutations

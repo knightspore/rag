@@ -1,6 +1,6 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { CombinedError  } from "urql"
+import type { CombinedError, OperationContext} from "urql"
 import { ArticlesEdge, SubscriptionsEdge, useAppQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
@@ -16,6 +16,7 @@ export type AppContextValue = {
 	subscriptions:  SubscriptionsEdge[] | undefined
 	likes: (string | null | undefined)[] | undefined,
 	articles: ArticlesEdge[] | undefined,
+  refreshAppContext: (args?: Partial<OperationContext>) => void 
 }
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue)
@@ -41,14 +42,14 @@ export default function AppContextProvider({ children }: { children: React.React
 		async function login() {
 		const u = await getCurrentUser()
 		if (!user && u) {
-			refreshSubscriptions(u.id)
+			await refreshSubscriptions(u.id)
 			setUser(u)
 		}
 	}
 		login()
 	}, [])
 
-	const [app] = useAppQuery({
+	const [app, appQuery] = useAppQuery({
 		variables: {
 			id: user?.id,
 		}
@@ -66,6 +67,7 @@ export default function AppContextProvider({ children }: { children: React.React
 			return node.article_title
 		}),
 		articles: app.data?.articles?.edges as ArticlesEdge[] | undefined,
+    refreshAppContext: () => appQuery({ requestPolicy: "network-only" })
 	}
 
 	return <AppContext.Provider value={value}>

@@ -9,12 +9,12 @@ type Props = {
 
 export default function Layout({ children }: Props) {
 
-    const { setUser } = useAppContext()
+    const { setUser, refreshAppContext } = useAppContext()
 
     function signOut() {
         supabase.auth.signOut().finally(() => {
             setUser(null)
-            window.location.reload()
+            refreshAppContext()
         })
     }
 
@@ -24,7 +24,7 @@ export default function Layout({ children }: Props) {
                 <title>Reading List - RAG</title>
             </Head>
             <div className="flex flex-col justify-between w-screen h-screen p-4 space-y-2">
-                <div className="grid flex-initial grid-cols-1 gap-4 md:grid-cols-8 overflow-clip">
+                <div className="flex-initial grid grid-cols-1 gap-4 md:grid-cols-8 overflow-clip">
                     {children}
                 </div>
                 <div>
