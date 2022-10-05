@@ -4,7 +4,7 @@ import type { CombinedError, OperationContext} from "urql"
 import { ArticlesEdge, SubscriptionsEdge, useAppQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
-import { refreshSubscriptions } from "../../lib/api"
+import SkeletonApp from "./SkeletonApp"
 
 export type AppContextValue = { 
 	user: User | null
@@ -32,6 +32,7 @@ export function useAppContext() {
 
 export default function AppContextProvider({ children }: { children: React.ReactNode }) {
 
+  const [loading, setLoading] = useState(true)
 	const [user, setUser] = useState<AppContextValue["user"]>(null)
 	const [filters, setFilters] = useState<AppContextValue["filters"]>({
 		liked: false,
@@ -40,14 +41,15 @@ export default function AppContextProvider({ children }: { children: React.React
 
 	useEffect(() => {	
 		async function login() {
-		const u = await getCurrentUser()
-		if (!user && u) {
-			await refreshSubscriptions(u.id)
-			setUser(u)
-		}
-	}
-		login()
-	}, [])
+      setLoading(true)
+      const u = await getCurrentUser()
+      setUser(u)
+      setLoading(false)
+    }
+    if (!user) {
+      login()
+    }
+	}, [user])
 
 	const [app, appQuery] = useAppQuery({
 		variables: {
@@ -70,7 +72,7 @@ export default function AppContextProvider({ children }: { children: React.React
     refreshAppContext: () => appQuery({ requestPolicy: "network-only" })
 	}
 
-	return <AppContext.Provider value={value}>
+  return loading ? <SkeletonApp /> :<AppContext.Provider value={value}>
 		{ user ? children : <SignIn />}
 	</AppContext.Provider>
 

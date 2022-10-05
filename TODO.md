@@ -1,6 +1,7 @@
 # Fix
 - [X] Restore functionality to likes filter
-- [ ] Add Loading Screen to AppContext
+- [X] Add Loading Screen to AppContext
+- [ ] Refreshing should indicate when app is logged in (Lift filter context?)
 # Articles
 - [ ] Add Pagination to the Articles Feed on Scroll
 - [ ] Adjust loading method on the Read Articles Page
