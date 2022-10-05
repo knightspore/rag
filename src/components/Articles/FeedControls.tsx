@@ -1,28 +1,40 @@
 
 import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoRefreshSharp } from "react-icons/io5"
-import { useState } from "react"
-import { useAppContext } from "../../components/AppContext/AppContextProvider"
+import { useEffect, useState } from "react"
 import { refreshSubscriptions } from "../../lib/api"
+import {useFilterContext} from "../FilterContext/FilterContextProvider"
+import {useAppContext} from "../AppContext/AppContextProvider"
 
 export default function FeedControls() {
 
-    const app = useAppContext()
+    const { user, refreshAppContext } = useAppContext()
+    const { filters, setFilters } = useFilterContext()
     const [refreshing, setRefreshing] = useState(false)
 
     async function handleRefresh() {
         setRefreshing(true)
-        await refreshSubscriptions(app.user?.id)
+        await refreshSubscriptions(user?.id)
         setRefreshing(false)
-        app.refreshAppContext()
+        refreshAppContext()
     }
 
     function toggleLikedArticlesFilter() {
-        app.setFilters({ ...app.filters, liked: !app.filters.liked })
+        setFilters({ ...filters, liked: !filters.liked })
     }
 
     function toggleUnreadArticlesFilter() {
-        app.setFilters({ ...app.filters, unread: !app.filters.unread })
+        setFilters({ ...filters, unread: !filters.unread })
     }
+
+    useEffect(() => {
+      async function refresh() {
+        setRefreshing(true)
+        await refreshSubscriptions(user?.id)
+        setRefreshing(false)
+        refreshAppContext()
+      }
+      refresh()
+    }, [])
 
     return (
         <div className="flex gap-4">
@@ -32,11 +44,11 @@ export default function FeedControls() {
             </button>
             <button onClick={toggleLikedArticlesFilter}>
                 Saved 
-                {app.filters.liked ? <IoHeartSharp size={16} title="Filter: all articles" /> : <IoHeartOutline size={16} title="Filter: saved articles only" />}
+                {filters.liked ? <IoHeartSharp size={16} title="Filter: all articles" /> : <IoHeartOutline size={16} title="Filter: saved articles only" />}
             </button>
             <button onClick={toggleUnreadArticlesFilter}>
                 Unread
-                {app.filters.unread ? <IoEyeSharp size={16} title="Filter: all articles"/> : <IoEyeOutline size={16} title="Filter: unread articles" />}
+                {filters.unread ? <IoEyeSharp size={16} title="Filter: all articles"/> : <IoEyeOutline size={16} title="Filter: unread articles" />}
             </button>
         </div>
 	)

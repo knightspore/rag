@@ -4,13 +4,15 @@ import { useAppContext } from "../AppContext/AppContextProvider"
 import { feedContainer, feedItem } from "../../lib/animation"
 import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "./SkeletonArticles"
+import {useFilterContext} from "../FilterContext/FilterContextProvider"
 
 export default function ArticleFeed() {
 
   const app = useAppContext()
+  const { filters } = useFilterContext()
 
-  const hideWhenUnreadOnly = (is_read: boolean) => app.filters.unread && is_read === true
-  const hideWhenLiked = (title: string) => app.filters.liked && app.likes && !app?.likes.includes(title)
+  const hideWhenUnreadOnly = (is_read: boolean) => filters.unread && is_read === true
+  const hideWhenLiked = (title: string) => filters.liked && app.likes && !app?.likes.includes(title)
 
   if (app.fetching) return <SkeletonArticles />
 

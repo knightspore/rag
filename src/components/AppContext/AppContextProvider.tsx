@@ -9,8 +9,6 @@ import SkeletonApp from "./SkeletonApp"
 export type AppContextValue = { 
 	user: User | null
 	setUser: (value: null) => void
-	filters: { liked: boolean, unread: boolean },
-	setFilters: (value: AppContextValue["filters"]) => void
 	fetching: boolean,
 	error: CombinedError | undefined,
 	subscriptions:  SubscriptionsEdge[] | undefined
@@ -34,10 +32,6 @@ export default function AppContextProvider({ children }: { children: React.React
 
   const [loading, setLoading] = useState(true)
 	const [user, setUser] = useState<AppContextValue["user"]>(null)
-	const [filters, setFilters] = useState<AppContextValue["filters"]>({
-		liked: false,
-		unread: false,
-	})
 
 	useEffect(() => {	
 		async function login() {
@@ -60,8 +54,6 @@ export default function AppContextProvider({ children }: { children: React.React
 	const value: AppContextValue = {
 		user,
 		setUser,
-		filters,
-		setFilters,
 		fetching: app.fetching,
 		error: app.error,
 		subscriptions: app.data?.subscriptions?.edges as SubscriptionsEdge[] | undefined,

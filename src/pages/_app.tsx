@@ -3,6 +3,7 @@ import Head from 'next/head'
 import '../styles/globals.css'
 import AppContextProvider from '../components/AppContext/AppContextProvider'
 import UrqlContextProvider from '../components/AppContext/UrqlContextProvider'
+import FilterContextProvider from '../components/FilterContext/FilterContextProvider'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 		</Head>
 			<UrqlContextProvider>
 				<AppContextProvider>
-					<Component {...pageProps} />
+          <FilterContextProvider>
+            <Component {...pageProps} />
+          </FilterContextProvider>
 				</AppContextProvider>
 			</UrqlContextProvider>
 	</div>
