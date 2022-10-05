@@ -1,7 +1,7 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import type { CombinedError, OperationContext} from "urql"
-import { ArticlesEdge, Likes, SubscriptionsEdge, useArticlesQuery, useLikesQuery, useSubscriptionsQuery } from "../../lib/graphql-generated"
+import { ArticlesEdge, SubscriptionsEdge, useArticlesQuery, useLikesQuery, useSubscriptionsQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
 import SkeletonApp from "./SkeletonApp"
@@ -9,12 +9,22 @@ import SkeletonApp from "./SkeletonApp"
 export type AppContextValue = { 
 	user: User | null
 	setUser: (value: null) => void
-	fetching: boolean,
-	error: CombinedError | undefined,
+  fetching: {
+    subscriptions: boolean,
+    articles: boolean,
+    likes: boolean,
+  },
+  error: {
+    subscriptions: CombinedError | undefined,
+    articles: CombinedError | undefined,
+    likes: CombinedError | undefined,
+  },
 	subscriptions:  SubscriptionsEdge[] | undefined
+  refreshSubscriptions: (args?: Partial<OperationContext>) => void 
 	likes: (string | null | undefined)[] | undefined,
+  refreshLikes: (args?: Partial<OperationContext>) => void 
 	articles: ArticlesEdge[] | undefined,
-  refreshAppContext: (args?: Partial<OperationContext>) => void 
+  refreshArticles: (args?: Partial<OperationContext>) => void 
 }
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue)
@@ -62,27 +72,27 @@ export default function AppContextProvider({ children }: { children: React.React
     }
   })
 
-  const fetching = subs.fetching || articles.fetching || likes.fetching
-  const error = subs.error || articles.error || likes.error
-
-  // TODO: Split refreshes contextually
-  function refreshAppContext(args?: Partial<OperationContext>) {
-    subsQuery({ ...args, requestPolicy: "network-only" })
-    articlesQuery({ ...args, requestPolicy: "network-only" })
-    likesQuery({ ...args, requestPolicy: "network-only" })
-  }
-
 	const value: AppContextValue = {
 		user,
 		setUser,
-    fetching,
-    error,
+    fetching: {
+      subscriptions: subs.fetching,
+      articles: articles.fetching,
+      likes: likes.fetching
+    },
+    error:{
+      subscriptions: subs.error,
+      articles: articles.error,
+      likes: likes.error
+    },
 		subscriptions: subs.data?.subscriptions?.edges as SubscriptionsEdge[] | undefined,
+    refreshSubscriptions: (args) => subsQuery({ ...args, requestPolicy: "network-only" }),
     likes: likes.data?.likes?.edges.map(({ node }) => {
 			return node?.article_title
 		}),
+    refreshLikes: (args) => likesQuery({ ...args, requestPolicy: "network-only" }),
 		articles: articles.data?.articles?.edges as ArticlesEdge[] | undefined,
-    refreshAppContext,
+    refreshArticles: (args) => articlesQuery({ ...args, requestPolicy: "network-only" }),
 	}
 
   return loading ? <SkeletonApp /> :<AppContext.Provider value={value}>

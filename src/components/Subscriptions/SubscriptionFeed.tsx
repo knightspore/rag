@@ -17,12 +17,12 @@ export default function SubscriptionFeed() {
         title: title,
         id: app.user?.id,
     })
-    app.refreshAppContext()
+    app.refreshSubscriptions()
   }
 
-  if (app.fetching) return <SkeletonSubscriptions />
+  if (app.fetching.subscriptions) return <SkeletonSubscriptions />
 
-  if (app.error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
+  if (app.error.subscriptions) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
   return (
   <motion.ol variants={feedContainer} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">

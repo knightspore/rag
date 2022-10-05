@@ -14,9 +14,9 @@ export default function ArticleFeed() {
   const hideWhenUnreadOnly = (is_read: boolean) => filters.unread && is_read === true
   const hideWhenLiked = (title: string) => filters.liked && app.likes && !app?.likes.includes(title)
 
-  if (app.fetching) return <SkeletonArticles />
+  if (app.fetching.articles) return <SkeletonArticles />
 
-  if (app.error) return <Alert text="Error loading articles..." level={Level.warn} />
+  if (app.error.articles) return <Alert text="Error loading articles..." level={Level.warn} />
 
   return (
     <motion.ol variants={feedContainer} initial="hidden" animate="show">

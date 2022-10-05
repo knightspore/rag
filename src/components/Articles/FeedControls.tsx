@@ -1,13 +1,13 @@
 
 import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoRefreshSharp } from "react-icons/io5"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { refreshSubscriptions } from "../../lib/api"
 import {useFilterContext} from "../FilterContext/FilterContextProvider"
 import {useAppContext} from "../AppContext/AppContextProvider"
 
 export default function FeedControls() {
 
-    const { user, refreshAppContext } = useAppContext()
+    const { user, refreshArticles } = useAppContext()
     const { filters, setFilters } = useFilterContext()
     const [refreshing, setRefreshing] = useState(false)
 
@@ -15,7 +15,7 @@ export default function FeedControls() {
         setRefreshing(true)
         await refreshSubscriptions(user?.id)
         setRefreshing(false)
-        refreshAppContext()
+        refreshArticles()
     }
 
     function toggleLikedArticlesFilter() {
@@ -26,15 +26,7 @@ export default function FeedControls() {
         setFilters({ ...filters, unread: !filters.unread })
     }
 
-    useEffect(() => {
-      async function refresh() {
-        setRefreshing(true)
-        await refreshSubscriptions(user?.id)
-        setRefreshing(false)
-        refreshAppContext()
-      }
-      refresh()
-    }, [])
+    // TODO: Auto refresh subscriptions
 
     return (
         <div className="flex gap-4">
