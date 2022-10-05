@@ -55,17 +55,17 @@ func NewFeed(url string) (XML, error) {
 func Fetch(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		return nil, fmt.Errorf("GET error: %v", err)
+		return nil, fmt.Errorf("GET error: Fetch %s", url)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("status error: %v", resp.StatusCode)
+		return nil, fmt.Errorf("status error: %s", resp.StatusCode)
 	}
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("read body: %v", err)
+		return nil, fmt.Errorf("Error reading read body: %s", url)
 	}
 
 	return data, nil

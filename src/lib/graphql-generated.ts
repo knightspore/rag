@@ -547,12 +547,26 @@ export type SubscriptionsUpdateResponse = {
   records: Array<Subscriptions>;
 };
 
-export type AppQueryVariables = Exact<{
+export type ArticlesQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type AppQuery = { __typename?: 'Query', subscriptions?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null, likes?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title?: string | null } }> } | null, articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
+export type ArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
+
+export type SubscriptionsQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type SubscriptionsQuery = { __typename?: 'Query', subscriptions?: { __typename?: 'subscriptionsConnection', edges: Array<{ __typename?: 'subscriptionsEdge', node: { __typename?: 'subscriptions', id: any, title: string, icon?: string | null } }> } | null };
+
+export type LikesQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type LikesQuery = { __typename?: 'Query', likes?: { __typename?: 'likesConnection', edges: Array<{ __typename?: 'likesEdge', node: { __typename?: 'likes', article_title?: string | null } }> } | null };
 
 export type MarkAsReadMutationVariables = Exact<{
   id: Scalars['UUID'];
@@ -602,24 +616,8 @@ export type DeleteSubscriptionMutationVariables = Exact<{
 export type DeleteSubscriptionMutation = { __typename?: 'Mutation', deleteFromsubscriptionsCollection: { __typename?: 'subscriptionsDeleteResponse', affectedCount: number }, deleteFromlikesCollection: { __typename?: 'likesDeleteResponse', affectedCount: number }, deleteFromarticlesCollection: { __typename?: 'articlesDeleteResponse', affectedCount: number } };
 
 
-export const AppDocument = gql`
-    query app($id: UUID!) {
-  subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
-    edges {
-      node {
-        id
-        title
-        icon
-      }
-    }
-  }
-  likes: likesCollection(filter: {user_id: {eq: $id}}) {
-    edges {
-      node {
-        article_title
-      }
-    }
-  }
+export const ArticlesDocument = gql`
+    query articles($id: UUID!) {
   articles: articlesCollection(
     filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
@@ -639,8 +637,40 @@ export const AppDocument = gql`
 }
     `;
 
-export function useAppQuery(options: Omit<Urql.UseQueryArgs<AppQueryVariables>, 'query'>) {
-  return Urql.useQuery<AppQuery, AppQueryVariables>({ query: AppDocument, ...options });
+export function useArticlesQuery(options: Omit<Urql.UseQueryArgs<ArticlesQueryVariables>, 'query'>) {
+  return Urql.useQuery<ArticlesQuery, ArticlesQueryVariables>({ query: ArticlesDocument, ...options });
+};
+export const SubscriptionsDocument = gql`
+    query subscriptions($id: UUID!) {
+  subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
+    edges {
+      node {
+        id
+        title
+        icon
+      }
+    }
+  }
+}
+    `;
+
+export function useSubscriptionsQuery(options: Omit<Urql.UseQueryArgs<SubscriptionsQueryVariables>, 'query'>) {
+  return Urql.useQuery<SubscriptionsQuery, SubscriptionsQueryVariables>({ query: SubscriptionsDocument, ...options });
+};
+export const LikesDocument = gql`
+    query likes($id: UUID!) {
+  likes: likesCollection(filter: {user_id: {eq: $id}}) {
+    edges {
+      node {
+        article_title
+      }
+    }
+  }
+}
+    `;
+
+export function useLikesQuery(options: Omit<Urql.UseQueryArgs<LikesQueryVariables>, 'query'>) {
+  return Urql.useQuery<LikesQuery, LikesQueryVariables>({ query: LikesDocument, ...options });
 };
 export const MarkAsReadDocument = gql`
     mutation markAsRead($id: UUID!) {

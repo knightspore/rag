@@ -1,7 +1,7 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import type { CombinedError, OperationContext} from "urql"
-import { ArticlesEdge, SubscriptionsEdge, useAppQuery } from "../../lib/graphql-generated"
+import { ArticlesEdge, Likes, SubscriptionsEdge, useArticlesQuery, useLikesQuery, useSubscriptionsQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
 import SkeletonApp from "./SkeletonApp"
@@ -45,23 +45,44 @@ export default function AppContextProvider({ children }: { children: React.React
     }
 	}, [user])
 
-	const [app, appQuery] = useAppQuery({
-		variables: {
-			id: user?.id,
-		}
-	})
+
+  const [subs, subsQuery] = useSubscriptionsQuery({
+    variables: {
+      id: user?.id
+    }
+  })
+  const [articles, articlesQuery] = useArticlesQuery({
+    variables: {
+      id: user?.id
+    }
+  }) 
+  const [likes, likesQuery] = useLikesQuery({
+    variables: {
+      id: user?.id
+    }
+  })
+
+  const fetching = subs.fetching || articles.fetching || likes.fetching
+  const error = subs.error || articles.error || likes.error
+
+  // TODO: Split refreshes contextually
+  function refreshAppContext(args?: Partial<OperationContext>) {
+    subsQuery({ ...args, requestPolicy: "network-only" })
+    articlesQuery({ ...args, requestPolicy: "network-only" })
+    likesQuery({ ...args, requestPolicy: "network-only" })
+  }
 
 	const value: AppContextValue = {
 		user,
 		setUser,
-		fetching: app.fetching,
-		error: app.error,
-		subscriptions: app.data?.subscriptions?.edges as SubscriptionsEdge[] | undefined,
-		likes: app.data?.likes?.edges.map(({ node}) => {
-			return node.article_title
+    fetching,
+    error,
+		subscriptions: subs.data?.subscriptions?.edges as SubscriptionsEdge[] | undefined,
+    likes: likes.data?.likes?.edges.map(({ node }) => {
+			return node?.article_title
 		}),
-		articles: app.data?.articles?.edges as ArticlesEdge[] | undefined,
-    refreshAppContext: () => appQuery({ requestPolicy: "network-only" })
+		articles: articles.data?.articles?.edges as ArticlesEdge[] | undefined,
+    refreshAppContext,
 	}
 
   return loading ? <SkeletonApp /> :<AppContext.Provider value={value}>

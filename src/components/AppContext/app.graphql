@@ -1,20 +1,4 @@
-query app($id: UUID!) {
-  subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
-    edges {
-      node {
-        id
-        title
-        icon
-      }
-    }
-  }
-  likes: likesCollection(filter: {user_id: {eq: $id}}) {
-    edges {
-      node {
-        article_title
-      }
-    }
-  }
+query articles($id: UUID!) {
   articles: articlesCollection(
     filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
@@ -28,6 +12,29 @@ query app($id: UUID!) {
         pub_date
         subscription
         is_read
+      }
+    }
+  }
+}
+
+query subscriptions($id: UUID!) {
+  subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
+    edges {
+      node {
+        id
+        title
+        icon
+      }
+    }
+  }
+}
+
+
+query likes($id: UUID!) {
+  likes: likesCollection(filter: {user_id: {eq: $id}}) {
+    edges {
+      node {
+        article_title
       }
     }
   }

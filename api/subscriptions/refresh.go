@@ -28,6 +28,8 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 		urls = append(urls, r["url"])
 	}
 
+	log.Printf("Refreshing URLs: %+v", urls)
+
 	var articles []parse.ArticlesResponse
 	var wg sync.WaitGroup
 	for _, url := range urls {
@@ -35,7 +37,7 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 		go func() {
 			xml, err := parse.NewFeed(url)
 			if err != nil {
-				fmt.Fprintf(w, "%s", err.Error())
+				fmt.Printf("%s", err)
 			}
 			newArticles := parse.GetArticles(xml, url, req.UserID)
 			articles = append(articles, newArticles...)
