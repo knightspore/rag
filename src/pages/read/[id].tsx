@@ -19,33 +19,27 @@ export default function ReadArticlePage() {
 	const [, markRead] = useMarkAsReadMutation()
 
 	useEffect(() => {
-		if (article === null ) {
-			articles?.map(({ node }) => {
+		if (article === null) {
+			articles?.forEach(({ node }) => {
 				if (node.id === id) {
 					setArticle(node)
 				}
 			})
 		}
-	}, [])
+	}, [article, articles, id])
 
 	useEffect(() => {		
 		async function getContent() {
-			if (article !== null) {
-				const data = await readArticle(article.url)
+				const data = article?.url && await readArticle(article.url)
 				setContent(data.content)
-			}
 		}
-			getContent()
-	}, [article])
-
-
-	useEffect(() => {
-		if (article) {
+    if (article) {
+      getContent()
 			markRead({
 					id: article?.id,
 			})
-		}
-	},[article, markRead])
+    }
+	}, [article, markRead])
 
 	const domain = article?.url && new URL(article?.url)
 
