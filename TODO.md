@@ -1,3 +1,5 @@
+# Fix
+- [X] Fix refresh subscriptions - Use go wg
 # Articles
 - [ ] Add Pagination to the Articles Feed on Scroll
 - [ ] Adjust loading method on the Read Articles Page

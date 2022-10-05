@@ -4,11 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
+	"time"
 
 	"github.com/knightspore/rag/parse"
 )
 
 func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
+
+	start := time.Now()
 
 	supabase := parse.CreateClient("https://sgzquvqpyebgqnecoaoa.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnenF1dnFweWViZ3FuZWNvYW9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjM0NjE0MjcsImV4cCI6MTk3OTAzNzQyN30.o0BiNeWuUxDTC77mbzjJ2nMOvXrbxPWL8Mx6eHDeMdk")
 
@@ -25,21 +29,30 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var articles []parse.ArticlesResponse
+	var wg sync.WaitGroup
 	for _, url := range urls {
-		xml, err := parse.NewFeed(url)
-		if err != nil {
-			fmt.Fprintf(w, "%s", err.Error())
-		}
-		newArticles := parse.GetArticles(xml, url, req.UserID)
-		articles = append(articles, newArticles...)
+		wg.Add(1)
+		go func() {
+			xml, err := parse.NewFeed(url)
+			if err != nil {
+				fmt.Fprintf(w, "%s", err.Error())
+			}
+			newArticles := parse.GetArticles(xml, url, req.UserID)
+			articles = append(articles, newArticles...)
+			wg.Done()
+		}()
 	}
+
+	wg.Wait()
 
 	var articleResults []map[string]string
 	sb_err := supabase.DB.From("articles").Upsert(articles).Execute(&articleResults)
 
+	elapsed := time.Since(start)
+
 	log.Printf("Article Upsert Result: %+v\n", articleResults)
 
-	log.Printf("Refreshed %d Articles\n", len(articles))
+	log.Printf("Refreshed %d Articles in %s\n", len(articles), elapsed)
 
 	parse.HandleResponse(w, parse.Response{
 		AffectedCount: len(articles),
