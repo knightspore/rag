@@ -1,5 +1,7 @@
-query articles($id: UUID!) {
+query articles($id: UUID!, $cursor: Cursor) {
   articles: articlesCollection(
+    first: 10,
+    after: $cursor
     filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
   ) {
@@ -13,6 +15,10 @@ query articles($id: UUID!) {
         subscription
         is_read
       }
+    }
+    pageInfo {
+      startCursor
+      endCursor
     }
   }
 }

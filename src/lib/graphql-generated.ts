@@ -549,10 +549,11 @@ export type SubscriptionsUpdateResponse = {
 
 export type ArticlesQueryVariables = Exact<{
   id: Scalars['UUID'];
+  cursor?: InputMaybe<Scalars['Cursor']>;
 }>;
 
 
-export type ArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }> } | null };
+export type ArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }>, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null } } | null };
 
 export type SubscriptionsQueryVariables = Exact<{
   id: Scalars['UUID'];
@@ -617,8 +618,10 @@ export type DeleteSubscriptionMutation = { __typename?: 'Mutation', deleteFromsu
 
 
 export const ArticlesDocument = gql`
-    query articles($id: UUID!) {
+    query articles($id: UUID!, $cursor: Cursor) {
   articles: articlesCollection(
+    first: 10
+    after: $cursor
     filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
   ) {
@@ -632,6 +635,10 @@ export const ArticlesDocument = gql`
         subscription
         is_read
       }
+    }
+    pageInfo {
+      startCursor
+      endCursor
     }
   }
 }
