@@ -3,6 +3,7 @@ package parse
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -66,7 +67,11 @@ func HandleRequest(r *http.Request) Request {
 	return req
 }
 
-func GetSubscription(xml XML, url string, icon string, user string) SubscriptionResponse {
+func GetSubscription(url string, icon string, user string) SubscriptionResponse {
+	xml, err := NewFeed(url)
+	if err != nil {
+		log.Printf("Get Subscription Error: %s", url)
+	}
 	return SubscriptionResponse{
 		UpdatedAt:   time.Now(),
 		Title:       xml.Feed.Title,
@@ -78,7 +83,12 @@ func GetSubscription(xml XML, url string, icon string, user string) Subscription
 	}
 }
 
-func GetArticles(xml XML, url string, user string) []ArticlesResponse {
+func GetArticles(url string, user string) []ArticlesResponse {
+
+	xml, err := NewFeed(url)
+	if err != nil {
+		log.Printf("Get Articles Error: %s", url)
+	}
 
 	var feedItems []EntriesXML
 	var articles []ArticlesResponse

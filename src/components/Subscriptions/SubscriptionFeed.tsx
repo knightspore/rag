@@ -18,6 +18,7 @@ export default function SubscriptionFeed() {
         id: app.user?.id,
     })
     app.refreshSubscriptions()
+    app.refreshArticles()
   }
 
   if (app.fetching.subscriptions) return <SkeletonSubscriptions />
