@@ -9,12 +9,11 @@ type Props = {
 
 export default function Layout({ children }: Props) {
 
-    const { setUser, refreshAppContext } = useAppContext()
+    const { setUser } = useAppContext()
 
     function signOut() {
         supabase.auth.signOut().finally(() => {
             setUser(null)
-            refreshAppContext()
         })
     }
 
