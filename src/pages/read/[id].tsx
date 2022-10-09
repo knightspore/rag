@@ -44,8 +44,8 @@ export default function ReadArticlePage() {
 	const domain = article?.url && new URL(article?.url)
 
 	return (
-		<div className="p-4 overflow-x-hidden bg-slate-800">
-			<article className="pb-12 mx-auto overflow-x-hidden space-y-4 prose prose-invert line-clamp">
+		<div className="bg-slate-800">
+			<article className="py-12 mx-auto space-y-4 prose prose-invert line-clamp">
 			<button onClick={() => router.back()}>
 				<IoReturnUpBackSharp size={16} /> Back
 			</button>
@@ -59,9 +59,11 @@ export default function ReadArticlePage() {
         hostname={domain?.hostname} 
         /> : <SkeletonHeader />}
 			{content === ""	? <SkeletonContent/> : 
-			<ReactMarkdown className="break-all">
-				{content}
-			</ReactMarkdown>
+			<div>
+				<ReactMarkdown>
+					{content}
+				</ReactMarkdown>
+			</div>
 			} 
 			<button onClick={() => router.back()}>
 				<IoReturnUpBackSharp size={16} /> Back

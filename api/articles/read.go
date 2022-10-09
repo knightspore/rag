@@ -2,11 +2,12 @@ package handler
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"net/http"
+	"time"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
+	readability "github.com/go-shiori/go-readability"
 	"github.com/knightspore/rag/parse"
 )
 
@@ -20,12 +21,8 @@ func ArticlesReadHandler(w http.ResponseWriter, r *http.Request) {
 	req := parse.HandleRequest(r)
 
 	log.Println("Read URL: ", req.URL)
-	res, err := http.Get(req.URL)
-	if err != nil {
-		SendErr(w)
-	}
-	defer res.Body.Close()
-	html, err := io.ReadAll(res.Body)
+
+	article, err := readability.FromURL(req.URL, 30*time.Second)
 	if err != nil {
 		SendErr(w)
 	}
@@ -34,7 +31,7 @@ func ArticlesReadHandler(w http.ResponseWriter, r *http.Request) {
 		CodeBlockStyle: "fenced",
 	})
 
-	content, err := converter.ConvertString(string(html))
+	content, err := converter.ConvertString(string(article.Content))
 	if err != nil {
 		SendErr(w)
 	}
