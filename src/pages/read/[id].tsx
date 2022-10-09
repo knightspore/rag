@@ -45,7 +45,7 @@ export default function ReadArticlePage() {
 
 	return (
 		<div className="bg-slate-800">
-			<article className="py-12 mx-auto space-y-4 prose prose-invert line-clamp">
+			<article className="p-4 pb-12 mx-auto space-y-4 prose prose-invert line-clamp">
 			<button onClick={() => router.back()}>
 				<IoReturnUpBackSharp size={16} /> Back
 			</button>
@@ -65,6 +65,7 @@ export default function ReadArticlePage() {
 				</ReactMarkdown>
 			</div>
 			} 
+			<hr/>
 			<button onClick={() => router.back()}>
 				<IoReturnUpBackSharp size={16} /> Back
 			</button>

@@ -7,22 +7,22 @@
 
   /* Scrollbar Styles */
   ::-webkit-scrollbar {
-    @apply w-2
+    @apply w-2 h-2 
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-slate-700/50 rounded-full
+    @apply bg-slate-500/50 rounded-full shadow-lg
   }
 
   /* Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 
   .base-transition {
     @apply transition-all duration-150

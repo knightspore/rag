@@ -6,19 +6,21 @@ export default function ContentHeader({ id, title, subscription,  is_read, descr
 	return (
 		<>
 				<h1 className="text-slate-200">{title}</h1>
-				<p>{description}</p>
-        <div className="flex gap-2">
-          <LikeButton title={title} subscription={subscription} />
-          <MarkAsReadButton id={id} is_read={is_read} />
-        </div>
+				{ description && description.startsWith("<") 
+					? <p dangerouslySetInnerHTML={{ __html: description }} /> 
+					: <p>{description}</p>
+				}
 				<a
 						href={url}
 						target="_blank"
 						rel="noreferrer"
-						className="block px-2 py-1 w-max card"
 				>
 						Read on {hostname}
 				</a>
+        <div className="flex gap-2">
+          <LikeButton title={title} subscription={subscription} />
+          <MarkAsReadButton id={id} is_read={is_read} />
+        </div>
 				<hr />
 		</>
 	)

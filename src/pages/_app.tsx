@@ -7,7 +7,7 @@ import FilterContextProvider from '../components/FilterContext/FilterContextProv
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-	return <div className="text-slate-50 bg-slate-800">
+	return <div className="text-slate-50 bg-slate-800 min-h-screen">
 		<Head>
 			<title>RAG</title>
       <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"/>
