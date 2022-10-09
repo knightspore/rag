@@ -26,7 +26,7 @@ export default function SubscriptionFeed() {
   if (app.error.subscriptions) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
   return (
-  <motion.ol variants={feedContainer} initial="hidden" animate="show" className="flex flex-row flex-wrap gap-2">
+  <motion.ol variants={feedContainer} initial="hidden" animate="show" className="no-scrollbar flex overflow-x-auto flex-space flex-nowrap md:flex-wrap gap-2">
     {
       app.subscriptions?.map((sub) => {
         return <motion.li key={sub.node.title} variants={feedItem}>
