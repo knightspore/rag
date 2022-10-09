@@ -23,7 +23,7 @@ export default function SubscriptionFeed() {
         id: app.user?.id,
     })
     subsQuery({ requestPolicy: "network-only" })
-    app.refreshArticles()
+    // TODO: Refresh Articles
   }
 
   if (subs.fetching) return <SkeletonSubscriptions />

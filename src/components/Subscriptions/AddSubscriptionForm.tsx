@@ -10,7 +10,7 @@ import { parseFeed } from "../../lib/api";
 
 export default function AddSubscriptionForm() {
 
-  const { user, refreshArticles } = useAppContext()
+  const { user } = useAppContext()
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<boolean | string>(false)
   const [url, setUrl] = useState("")
@@ -39,7 +39,7 @@ export default function AddSubscriptionForm() {
         throw new Error(sErr ? sErr.message : aErr && aErr.message)
       }
       // TODO: Refresh Subscriptions
-      refreshArticles()
+      // TODO: Refresh Articles
     } catch (e) {
       setError((e as Error).message)
     } finally {

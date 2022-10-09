@@ -6,28 +6,43 @@ import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "./SkeletonArticles"
 import {useFilterContext} from "../FilterContext/FilterContextProvider"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
+import { useArticlesQuery } from "../../lib/graphql-generated"
 
 export default function ArticleFeed() {
 
   const app = useAppContext()
   const { filters } = useFilterContext()
 
+  const [articles, refreshArticles] = useArticlesQuery({
+    variables: {
+      id: app.user?.id,
+    }
+  }) 
+
   const hideWhenUnreadOnly = (is_read: boolean) => filters.unread && is_read === true
   const hideWhenLiked = (title: string) => filters.liked && app.likes && !app?.likes.includes(title)
+
+  // TODO: Handle Pagination
   const handleNextPage = () => {
-    app.setCursor([app.cursor.startCursor,app.cursor?.endCursor]) 
+    refreshArticles({
+      id: app.user?.id,
+      after: articles.data?.articles?.pageInfo?.endCursor,
+    })
   }
   const handlePrevPage = () => {
-    app.setCursor([null,app.cursor?.startCursor]) 
+    refreshArticles({
+      id: app.user?.id,
+      after: articles?.data?.articles?.pageInfo.startCursor
+    })
   }
 
-  if (app.fetching.articles) return <SkeletonArticles />
+  if (articles.fetching) return <SkeletonArticles />
 
-  if (app.error.articles) return <Alert text="Error loading articles..." level={Level.warn} />
+  if (articles.error) return <Alert text="Error loading articles..." level={Level.warn} />
 
   return (
     <motion.ol variants={feedContainer} initial="hidden" animate="show">
-      {app.articles?.map(({ node }) => {
+      {articles.data?.articles?.edges.map(({ node }) => {
         if (hideWhenLiked(node.title) || hideWhenUnreadOnly(node.is_read || false)) {
           return null
         }

@@ -1,7 +1,7 @@
-query articles($id: UUID!, $cursor: Cursor) {
+query articles($id: UUID!, $after: Cursor, $before: Cursor) {
   articles: articlesCollection(
     first: 10,
-    after: $cursor
+    after: $after
     filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
   ) {

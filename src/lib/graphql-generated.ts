@@ -549,7 +549,8 @@ export type SubscriptionsUpdateResponse = {
 
 export type ArticlesQueryVariables = Exact<{
   id: Scalars['UUID'];
-  cursor?: InputMaybe<Scalars['Cursor']>;
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
 }>;
 
 
@@ -608,6 +609,13 @@ export type UnlikeMutationVariables = Exact<{
 
 export type UnlikeMutation = { __typename?: 'Mutation', deleteFromlikesCollection: { __typename?: 'likesDeleteResponse', records: Array<{ __typename?: 'likes', id: any }> } };
 
+export type ArticleQueryVariables = Exact<{
+  id: Scalars['UUID'];
+}>;
+
+
+export type ArticleQuery = { __typename?: 'Query', article?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }>, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null } } | null };
+
 export type DeleteSubscriptionMutationVariables = Exact<{
   title?: InputMaybe<Scalars['String']>;
   id: Scalars['UUID'];
@@ -618,10 +626,10 @@ export type DeleteSubscriptionMutation = { __typename?: 'Mutation', deleteFromsu
 
 
 export const ArticlesDocument = gql`
-    query articles($id: UUID!, $cursor: Cursor) {
+    query articles($id: UUID!, $after: Cursor, $before: Cursor) {
   articles: articlesCollection(
     first: 10
-    after: $cursor
+    after: $after
     filter: {user_id: {eq: $id}}
     orderBy: {pub_date: DescNullsLast}
   ) {
@@ -753,6 +761,31 @@ export const UnlikeDocument = gql`
 
 export function useUnlikeMutation() {
   return Urql.useMutation<UnlikeMutation, UnlikeMutationVariables>(UnlikeDocument);
+};
+export const ArticleDocument = gql`
+    query article($id: UUID!) {
+  article: articlesCollection(first: 1, filter: {id: {eq: $id}}) {
+    edges {
+      node {
+        id
+        title
+        description
+        url
+        pub_date
+        subscription
+        is_read
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+  }
+}
+    `;
+
+export function useArticleQuery(options: Omit<Urql.UseQueryArgs<ArticleQueryVariables>, 'query'>) {
+  return Urql.useQuery<ArticleQuery, ArticleQueryVariables>({ query: ArticleDocument, ...options });
 };
 export const DeleteSubscriptionDocument = gql`
     mutation deleteSubscription($title: String, $id: UUID!) {

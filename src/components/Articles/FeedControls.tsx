@@ -7,7 +7,7 @@ import {useAppContext} from "../AppContext/AppContextProvider"
 
 export default function FeedControls() {
 
-    const { user, refreshArticles } = useAppContext()
+    const { user } = useAppContext()
     const { filters, setFilters } = useFilterContext()
     const [refreshing, setRefreshing] = useState(false)
 
@@ -15,7 +15,7 @@ export default function FeedControls() {
         setRefreshing(true)
         await refreshSubscriptions(user?.id)
         setRefreshing(false)
-        refreshArticles()
+        // TODO: Refresh Articles
     }
 
     function toggleLikedArticlesFilter() {

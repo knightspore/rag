@@ -2,46 +2,43 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { IoReturnUpBackSharp } from "react-icons/io5"
 import { ReactMarkdown } from "react-markdown/lib/react-markdown"
-import { useAppContext } from "../../components/AppContext/AppContextProvider"
 import ContentHeader from "../../components/Read/ContentHeader"
 import SkeletonContent from "../../components/Read/SkeletonContent"
 import SkeletonHeader from "../../components/Read/SkeletonHeader"
 import { readArticle } from "../../lib/api"
-import { Articles, useMarkAsReadMutation } from "../../lib/graphql-generated"
+import { useArticleQuery, useMarkAsReadMutation } from "../../lib/graphql-generated"
 
 export default function ReadArticlePage() {
 
 	const router = useRouter()
 	const { id } = router.query
-	const { articles } = useAppContext()
-	const [article, setArticle] = useState<Articles|null>(null)
 	const [content, setContent] = useState<string>("")
 	const [, markRead] = useMarkAsReadMutation()
 
-	useEffect(() => {
-		if (article === null) {
-			articles?.forEach(({ node }) => {
-				if (node.id === id) {
-					setArticle(node)
-				}
-			})
+	const [article] = useArticleQuery({
+		variables: {
+			id: id
 		}
-	}, [article, articles, id])
+	})
+
+	const url = article.data?.article?.edges[0]?.node.url
 
 	useEffect(() => {		
 		async function getContent() {
-				const data = article?.url && await readArticle(article.url)
-				setContent(data.content)
+				const data = url && await readArticle(url)
+				if (data) {
+					setContent(data.content)
+				}
 		}
-    if (article) {
+    if (id) {
       getContent()
 			markRead({
-					id: article?.id,
+					id: id,
 			})
     }
-	}, [article, markRead])
+	}, [id, url, markRead])
 
-	const domain = article?.url && new URL(article?.url)
+	const domain = url && new URL(url)
 
 	return (
 		<div className="bg-slate-800">
@@ -50,12 +47,12 @@ export default function ReadArticlePage() {
 				<IoReturnUpBackSharp size={16} /> Back
 			</button>
 			{ domain ? <ContentHeader 
-        id={article.id}
-        title={article?.title} 
-        subscription={article?.subscription} 
-        description={article?.description} 
-        is_read={article?.is_read || false}
-        url={article.url} 
+        id={article.data?.article?.edges[0]?.node.id}
+        title={article.data?.article?.edges[0]?.node.title} 
+        subscription={article.data?.article?.edges[0]?.node?.subscription} 
+        description={article.data?.article?.edges[0]?.node?.description} 
+        is_read={article.data?.article?.edges[0]?.node?.is_read || false}
+        url={article.data?.article?.edges[0]?.node.url || ""} 
         hostname={domain?.hostname} 
         /> : <SkeletonHeader />}
 			{content === ""	? <SkeletonContent/> : 
