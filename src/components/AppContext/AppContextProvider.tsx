@@ -2,7 +2,7 @@ import { User } from "@supabase/supabase-js"
 import {Maybe} from "graphql/jsutils/Maybe"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import type { CombinedError, OperationContext} from "urql"
-import { ArticlesEdge, PageInfo, SubscriptionsEdge, useArticlesQuery, useLikesQuery, useSubscriptionsQuery } from "../../lib/graphql-generated"
+import { ArticlesEdge, PageInfo, useArticlesQuery, useLikesQuery, useSubscriptionsQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
 import SkeletonApp from "./SkeletonApp"
@@ -11,17 +11,13 @@ export type AppContextValue = {
 	user: User | null
 	setUser: (value: null) => void
   fetching: {
-    subscriptions: boolean,
     articles: boolean,
     likes: boolean,
   },
   error: {
-    subscriptions: CombinedError | undefined,
     articles: CombinedError | undefined,
     likes: CombinedError | undefined,
   },
-	subscriptions:  SubscriptionsEdge[] | undefined
-  refreshSubscriptions: (args?: Partial<OperationContext>) => void 
 	likes: (string | null | undefined)[] | undefined,
   refreshLikes: (args?: Partial<OperationContext>) => void 
 	articles: ArticlesEdge[] | undefined,
@@ -81,17 +77,13 @@ export default function AppContextProvider({ children }: { children: React.React
 		user,
 		setUser,
     fetching: {
-      subscriptions: subs.fetching,
       articles: articles.fetching,
       likes: likes.fetching
     },
     error:{
-      subscriptions: subs.error,
       articles: articles.error,
       likes: likes.error
     },
-		subscriptions: subs.data?.subscriptions?.edges as SubscriptionsEdge[] | undefined,
-    refreshSubscriptions: (args) => subsQuery({ ...args, requestPolicy: "network-only" }),
     likes: likes.data?.likes?.edges.map(({ node }) => {
 			return node?.article_title
 		}),

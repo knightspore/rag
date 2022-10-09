@@ -1,5 +1,6 @@
 # Articles
-- [X] Split App Query Again
+- [ ] Split App Query Again
+	- [ ] Share Refresh Queries Across App
 - [ ] Add Pagination to the Articles Feed on Scroll
 - [ ] Adjust loading method on the Read Articles Page
 # Refactor

@@ -26,8 +26,6 @@ export default function FeedControls() {
         setFilters({ ...filters, unread: !filters.unread })
     }
 
-    // TODO: Auto refresh subscriptions
-
     return (
         <div className="flex gap-4">
             <button onClick={handleRefresh}>

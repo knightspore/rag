@@ -4,12 +4,17 @@ import {feedContainer, feedItem} from "../../lib/animation"
 import { useAppContext } from "../AppContext/AppContextProvider"
 import Alert, { Level } from "../Alert"
 import SkeletonSubscriptions from "./SkeletonSubscriptions"
-import { useDeleteSubscriptionMutation } from "../../lib/graphql-generated"
+import { useDeleteSubscriptionMutation, useSubscriptionsQuery } from "../../lib/graphql-generated"
 
 export default function SubscriptionFeed() {
 
   const app = useAppContext()
 
+  const [subs, subsQuery] = useSubscriptionsQuery({
+    variables: {
+      id: app?.user?.id
+    }
+  })
   const [, deleteSubscription] = useDeleteSubscriptionMutation()
 
   async function handleDeleteSubscription(title?: string) {
@@ -17,18 +22,18 @@ export default function SubscriptionFeed() {
         title: title,
         id: app.user?.id,
     })
-    app.refreshSubscriptions()
+    subsQuery({ requestPolicy: "network-only" })
     app.refreshArticles()
   }
 
-  if (app.fetching.subscriptions) return <SkeletonSubscriptions />
+  if (subs.fetching) return <SkeletonSubscriptions />
 
-  if (app.error.subscriptions) return <Alert text="Error loading subscriptions..." level={Level.warn} />
+  if (subs.error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
   return (
   <motion.ol variants={feedContainer} initial="hidden" animate="show" className="no-scrollbar flex overflow-x-auto flex-space flex-nowrap md:flex-wrap gap-2">
     {
-      app.subscriptions?.map((sub) => {
+      subs.data?.subscriptions?.edges.map((sub: any) => {
         return <motion.li key={sub.node.title} variants={feedItem}>
           <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
         </motion.li> 
