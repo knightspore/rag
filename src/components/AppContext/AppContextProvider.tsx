@@ -1,6 +1,6 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import type { CombinedError, OperationContext} from "urql"
+import type { OperationContext} from "urql"
 import { useLikesQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
@@ -9,12 +9,6 @@ import SkeletonApp from "./SkeletonApp"
 export type AppContextValue = { 
 	user: User | null
 	setUser: (value: null) => void
-  fetching: {
-    likes: boolean,
-  },
-  error: {
-    likes: CombinedError | undefined,
-  },
 	likes: (string | null | undefined)[] | undefined,
   refreshLikes: (args?: Partial<OperationContext>) => void 
 }
@@ -57,12 +51,6 @@ export default function AppContextProvider({ children }: { children: React.React
 	const value: AppContextValue = {
 		user,
 		setUser,
-    fetching: {
-      likes: likes.fetching
-    },
-    error:{
-      likes: likes.error
-    },
     likes: likes.data?.likes?.edges.map(({ node }) => {
 			return node?.article_title
 		}),
