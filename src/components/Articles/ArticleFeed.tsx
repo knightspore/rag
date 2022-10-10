@@ -7,33 +7,40 @@ import SkeletonArticles from "./SkeletonArticles"
 import {useFilterContext} from "../FilterContext/FilterContextProvider"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
 import { useArticlesQuery } from "../../lib/graphql-generated"
+import { useState } from "react"
 
 export default function ArticleFeed() {
 
   const app = useAppContext()
   const { filters } = useFilterContext()
+  const [after, setAfter] = useState<string|null|undefined>(null)
+  const [cursorHist, setCursorHist] = useState<[]|string[]>([])
 
-  const [articles, refreshArticles] = useArticlesQuery({
+  const [articles, articlesQuery] = useArticlesQuery({
     variables: {
       id: app.user?.id,
+      after: after,
     }
   }) 
 
   const hideWhenUnreadOnly = (is_read: boolean) => filters.unread && is_read === true
   const hideWhenLiked = (title: string) => filters.liked && app.likes && !app?.likes.includes(title)
 
-  // TODO: Handle Pagination
   const handleNextPage = () => {
-    refreshArticles({
-      id: app.user?.id,
-      after: articles.data?.articles?.pageInfo?.endCursor,
-    })
+    const cursor =  articles.data?.articles?.pageInfo.endCursor
+    if (cursor) {
+    setCursorHist([...cursorHist, cursor])
+    setAfter(cursor)
+    articlesQuery()
+    }
   }
   const handlePrevPage = () => {
-    refreshArticles({
-      id: app.user?.id,
-      after: articles?.data?.articles?.pageInfo.startCursor
-    })
+    const cursor = cursorHist[cursorHist.length - 1]
+    const hist = cursorHist
+    hist.pop()
+    setCursorHist([...hist])
+    setAfter(cursor)
+    articlesQuery()
   }
 
   if (articles.fetching) return <SkeletonArticles />
@@ -51,8 +58,11 @@ export default function ArticleFeed() {
         </motion.li>
       })}
       <div className="flex justify-between py-4 gap-4">
-        <button onClick={handlePrevPage}>
+        <button onClick={handlePrevPage} className={cursorHist.length === 0 ? "opacity-0" : ""}>
           <IoArrowBackSharp size={18} /> Prev 
+        </button>
+        <button disabled>
+          {cursorHist.length+1}
         </button>
         <button onClick={handleNextPage}>
           Next <IoArrowForwardSharp size={18} />
