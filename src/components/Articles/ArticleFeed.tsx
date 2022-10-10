@@ -13,7 +13,7 @@ export default function ArticleFeed() {
 
   const app = useAppContext()
   const { filters } = useFilterContext()
-  const [after, setAfter] = useState<string|null|undefined>(null)
+  const [after, setAfter] = useState<string|null>(null)
   const [cursorHist, setCursorHist] = useState<[]|string[]>([])
 
   const [articles, articlesQuery] = useArticlesQuery({
@@ -29,18 +29,21 @@ export default function ArticleFeed() {
   const handleNextPage = () => {
     const cursor =  articles.data?.articles?.pageInfo.endCursor
     if (cursor) {
-    setCursorHist([...cursorHist, cursor])
-    setAfter(cursor)
-    articlesQuery()
+      after === null 
+        ? setCursorHist([""]) 
+        : setCursorHist([...cursorHist, after])
+      setAfter(cursor)
+      articlesQuery()
     }
   }
   const handlePrevPage = () => {
-    const cursor = cursorHist[cursorHist.length - 1]
-    const hist = cursorHist
-    hist.pop()
-    setCursorHist([...hist])
-    setAfter(cursor)
-    articlesQuery()
+    if (cursorHist.length > 0) {
+      const hist = cursorHist
+      const cursor = hist.pop()
+      setCursorHist(hist)
+      cursor === "" ? setAfter(null) : setAfter(cursor ?? null)
+      articlesQuery()
+    }
   }
 
   if (articles.fetching) return <SkeletonArticles />
@@ -48,15 +51,17 @@ export default function ArticleFeed() {
   if (articles.error) return <Alert text="Error loading articles..." level={Level.warn} />
 
   return (
-    <motion.ol variants={feedContainer} initial="hidden" animate="show">
-      {articles.data?.articles?.edges.map(({ node }) => {
-        if (hideWhenLiked(node.title) || hideWhenUnreadOnly(node.is_read || false)) {
-          return null
-        }
-        return <motion.li key={node.title} variants={feedItem}>
-          <ArticleCard article={node} />
-        </motion.li>
-      })}
+    <>
+      <motion.ol variants={feedContainer} initial="hidden" animate="show" className="relative">
+        {articles.data?.articles?.edges.map(({ node }) => {
+          if (hideWhenLiked(node.title) || hideWhenUnreadOnly(node.is_read || false)) {
+            return null
+          }
+          return <motion.li key={node.title} variants={feedItem}>
+            <ArticleCard article={node} />
+          </motion.li>
+        })}
+      </motion.ol>      
       <div className="flex justify-between py-4 gap-4">
         <button onClick={handlePrevPage} className={cursorHist.length === 0 ? "opacity-0" : ""}>
           <IoArrowBackSharp size={18} /> Prev 
@@ -68,7 +73,7 @@ export default function ArticleFeed() {
           Next <IoArrowForwardSharp size={18} />
         </button>
       </div>
-    </motion.ol>
+    </>
   )
 
 }
