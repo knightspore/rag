@@ -10,7 +10,7 @@ export default function SubscriptionCard({ sub  }: Props ) {
   
   const filtered = filters.subscriptions?.length > 0
   
-  const selected = sub.title && filters.subscriptions.includes(sub.title)
+  const selected = sub.title && filters.subscriptions.toString().includes(sub.title)
 
   function handleFilter() {
     if (selected) {
