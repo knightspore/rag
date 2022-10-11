@@ -3,8 +3,8 @@ import { useEffect, useState } from "react"
 import { IoReturnUpBackSharp } from "react-icons/io5"
 import { ReactMarkdown } from "react-markdown/lib/react-markdown"
 import ContentHeader from "../../components/Read/ContentHeader"
-import SkeletonContent from "../../components/Read/SkeletonContent"
-import SkeletonHeader from "../../components/Read/SkeletonHeader"
+import SkeletonContent from "../../components/SkeletonComponents/SkeletonContent"
+import SkeletonHeader from "../../components/SkeletonComponents/SkeletonHeader"
 import { readArticle } from "../../lib/api"
 import { useArticleQuery, useMarkAsReadMutation } from "../../lib/graphql-generated"
 
@@ -56,7 +56,7 @@ export default function ReadArticlePage() {
         hostname={domain?.hostname} 
         /> : <SkeletonHeader />}
 			{content === ""	? <SkeletonContent/> : 
-			<div>
+			<div className="prose-a:text-slate-300">
 				<ReactMarkdown>
 					{content}
 				</ReactMarkdown>

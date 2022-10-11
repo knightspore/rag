@@ -4,7 +4,6 @@ import type { OperationContext} from "urql"
 import { useLikesQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
-import SkeletonApp from "./SkeletonApp"
 
 export type AppContextValue = { 
 	user: User | null
@@ -57,7 +56,7 @@ export default function AppContextProvider({ children }: { children: React.React
     refreshLikes: (args) => likesQuery({ ...args, requestPolicy: "network-only" }),
 	}
 
-  return loading ? <SkeletonApp /> :<AppContext.Provider value={value}>
+  return loading ? <div className="w-screen h-screen bg-slate-800" /> :<AppContext.Provider value={value}>
 		{ user ? children : <SignIn />}
 	</AppContext.Provider>
 

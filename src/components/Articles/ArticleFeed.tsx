@@ -3,7 +3,7 @@ import Alert, { Level } from "../Alert"
 import { useAppContext } from "../AppContext/AppContextProvider"
 import { feedContainer, feedItem } from "../../lib/animation"
 import ArticleCard from "./ArticleCard"
-import SkeletonArticles from "./SkeletonArticles"
+import SkeletonArticles from "../SkeletonComponents/SkeletonArticles"
 import {useFilterContext} from "../FilterContext/FilterContextProvider"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
 import { useArticlesQuery } from "../../lib/graphql-generated"
@@ -33,7 +33,7 @@ export default function ArticleFeed() {
         ? setCursorHist([""]) 
         : setCursorHist([...cursorHist, after])
       setAfter(cursor)
-      articlesQuery()
+      articlesQuery({ requestPolicy: "network-only" })
     }
   }
   const handlePrevPage = () => {
@@ -42,7 +42,7 @@ export default function ArticleFeed() {
       const cursor = hist.pop()
       setCursorHist(hist)
       cursor === "" ? setAfter(null) : setAfter(cursor ?? null)
-      articlesQuery()
+      articlesQuery({ requestPolicy: "network-only" })
     }
   }
 
@@ -52,7 +52,7 @@ export default function ArticleFeed() {
 
   return (
     <>
-      <motion.ol variants={feedContainer} initial="hidden" animate="show" className="relative">
+      <motion.ol variants={feedContainer} initial="hidden" animate="show" className="m-2 p-2 overflow-y-scroll">
         {articles.data?.articles?.edges.map(({ node }) => {
           if (hideWhenLiked(node.title) || hideWhenUnreadOnly(node.is_read || false)) {
             return null
@@ -62,8 +62,8 @@ export default function ArticleFeed() {
           </motion.li>
         })}
       </motion.ol>      
-      <div className="flex justify-between py-4 gap-4">
-        <button onClick={handlePrevPage} className={cursorHist.length === 0 ? "opacity-0" : ""}>
+      <div className="flex justify-between p-4">
+        <button onClick={handlePrevPage} className={cursorHist.length === 0 ? "opacity-0" : ""} disabled={cursorHist.length === 0}>
           <IoArrowBackSharp size={18} /> Prev 
         </button>
         <button disabled>

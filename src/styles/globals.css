@@ -29,11 +29,11 @@
   }
 
   button {
-    @apply text-slate-300 hover:text-slate-500 base-transition flex items-center gap-2 border-none disabled:text-slate-500
+    @apply text-sm md:text-base text-slate-300 hover:text-slate-500 base-transition flex items-center gap-2 border-none disabled:text-slate-500
   }
 
   input {
-    @apply  text-sm rounded-sm p-1 bg-slate-700 w-full placeholder:text-slate-800 text-slate-300 outline-none 
+    @apply  text-sm md:text-base rounded-sm p-1 bg-slate-700 w-full placeholder:text-slate-800 text-slate-300 outline-none 
   }
 
 }

@@ -1,25 +1,24 @@
+import Head from "next/head";
 import ArticleFeed from "../components/Articles/ArticleFeed"
 import SubscriptionFeed from "../components/Subscriptions/SubscriptionFeed"
-import AddSubscriptionForm from "../components/Subscriptions/AddSubscriptionForm"
-import Layout from "../components/Layout"
 import FeedControls from "../components/Articles/FeedControls"
-import FilterContextProvider from "../components/FilterContext/FilterContextProvider"
+import FilterContextProvider from '../components/FilterContext/FilterContextProvider'
 
 export default function HomePage() {
-    return (
-        <Layout>
-          <FilterContextProvider>
-            <section className="pr-2 overflow-x-hidden overflow-y-scroll space-y-2 md:col-span-6">
-                  <FeedControls /> 
-                  <ArticleFeed />
-            </section>
-            <section className="md:col-span-2">
-                <div className="space-y-2">
-                      <AddSubscriptionForm />
-                      <SubscriptionFeed />
+	return (
+        <div className="h-screen flex flex-col overflow-hidden">
+            <Head>
+                <title>Reading List - RAG</title>
+            </Head>
+            <FilterContextProvider>
+                <div className="p-4">
+                    <FeedControls /> 
                 </div>
-            </section>
-          </FilterContextProvider>
-        </Layout>
-    )
+                <div className="bg-slate-900 p-4 shadow-inner">
+                    <SubscriptionFeed />
+                </div>
+                <ArticleFeed />
+            </FilterContextProvider>
+        </div>
+	)
 }

@@ -1,9 +1,12 @@
 
-import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoRefreshSharp } from "react-icons/io5"
+import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoListSharp, IoRefreshSharp } from "react-icons/io5"
 import { useState } from "react"
 import { refreshSubscriptions } from "../../lib/api"
 import {useFilterContext} from "../FilterContext/FilterContextProvider"
 import {useAppContext} from "../AppContext/AppContextProvider"
+import AddSubscriptionForm from "../Subscriptions/AddSubscriptionForm"
+import { Disclosure } from "@headlessui/react"
+import SignOut from "../AppContext/SignOut"
 
 export default function FeedControls() {
 
@@ -27,19 +30,30 @@ export default function FeedControls() {
     }
 
     return (
-        <div className="flex gap-4">
-            <button onClick={handleRefresh}>
-                Reading List 
-                <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} />
-            </button>
-            <button onClick={toggleLikedArticlesFilter}>
-                Saved 
-                {filters.liked ? <IoHeartSharp size={16} title="Filter: all articles" /> : <IoHeartOutline size={16} title="Filter: saved articles only" />}
-            </button>
-            <button onClick={toggleUnreadArticlesFilter}>
-                Unread
-                {filters.unread ? <IoEyeSharp size={16} title="Filter: all articles"/> : <IoEyeOutline size={16} title="Filter: unread articles" />}
-            </button>
-        </div>
+        <Disclosure>
+            <div className="flex justify-between">
+                <div className="flex gap-4">
+                    <button onClick={handleRefresh}>
+                        Reading List 
+                        <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} />
+                    </button>
+                    <button onClick={toggleLikedArticlesFilter}>
+                        Saved 
+                        {filters.liked ? <IoHeartSharp size={16} title="Filter: all articles" /> : <IoHeartOutline size={16} title="Filter: saved articles only" />}
+                    </button>
+                    <button onClick={toggleUnreadArticlesFilter}>
+                        Unread
+                        {filters.unread ? <IoEyeSharp size={16} title="Filter: all articles"/> : <IoEyeOutline size={16} title="Filter: unread articles" />}
+                    </button>
+                    <Disclosure.Button as="button">
+                        <h2>Subscriptions</h2> <IoListSharp size={16} />
+                    </Disclosure.Button>
+                </div>
+            <SignOut />
+            </div>
+            <Disclosure.Panel>
+                <AddSubscriptionForm />
+            </Disclosure.Panel>
+        </Disclosure>
 	)
 }

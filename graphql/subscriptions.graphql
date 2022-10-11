@@ -1,3 +1,15 @@
+query subscriptions($id: UUID!) {
+  subscriptions: subscriptionsCollection(filter: {user: {eq: $id}}) {
+    edges {
+      node {
+        id
+        title
+        icon
+      }
+    }
+  }
+}
+
 mutation deleteSubscription($title: String, $id: UUID!) {
   deleteFromsubscriptionsCollection(
     filter: {title: {eq: $title}, user: {eq: $id}}

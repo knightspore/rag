@@ -1,3 +1,13 @@
+query likes($id: UUID!) {
+  likes: likesCollection(filter: {user_id: {eq: $id}}) {
+    edges {
+      node {
+        article_title
+      }
+    }
+  }
+}
+
 mutation like($userId: UUID, $article: String, $subscription: String) {
   insertIntolikesCollection(
     objects: {user_id: $userId, article_title: $article, subscription_title: $subscription }
