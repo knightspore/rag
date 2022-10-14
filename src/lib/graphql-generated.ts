@@ -556,6 +556,16 @@ export type ArticlesQueryVariables = Exact<{
 
 export type ArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }>, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null } } | null };
 
+export type LikedArticlesQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  likes?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
+
+
+export type LikedArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }>, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null } } | null };
+
 export type MarkAsReadMutationVariables = Exact<{
   id: Scalars['UUID'];
 }>;
@@ -654,6 +664,36 @@ export const ArticlesDocument = gql`
 
 export function useArticlesQuery(options: Omit<Urql.UseQueryArgs<ArticlesQueryVariables>, 'query'>) {
   return Urql.useQuery<ArticlesQuery, ArticlesQueryVariables>({ query: ArticlesDocument, ...options });
+};
+export const LikedArticlesDocument = gql`
+    query likedArticles($id: UUID!, $after: Cursor, $before: Cursor, $likes: [String!]) {
+  articles: articlesCollection(
+    first: 10
+    after: $after
+    filter: {title: {in: $likes}, user_id: {eq: $id}}
+    orderBy: {pub_date: DescNullsLast}
+  ) {
+    edges {
+      node {
+        id
+        title
+        description
+        url
+        pub_date
+        subscription
+        is_read
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+  }
+}
+    `;
+
+export function useLikedArticlesQuery(options: Omit<Urql.UseQueryArgs<LikedArticlesQueryVariables>, 'query'>) {
+  return Urql.useQuery<LikedArticlesQuery, LikedArticlesQueryVariables>({ query: LikedArticlesDocument, ...options });
 };
 export const MarkAsReadDocument = gql`
     mutation markAsRead($id: UUID!) {

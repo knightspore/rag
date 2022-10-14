@@ -2,11 +2,11 @@
 import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoListSharp, IoRefreshSharp } from "react-icons/io5"
 import { useState } from "react"
 import { refreshSubscriptions } from "../../lib/api"
-import {useFilterContext} from "../FilterContext/FilterContextProvider"
-import {useAppContext} from "../AppContext/AppContextProvider"
+import {useFilterContext} from "../Providers/FilterContextProvider"
+import {useAppContext} from "../Providers/AppContextProvider"
 import AddSubscriptionForm from "../Subscriptions/AddSubscriptionForm"
 import { Disclosure } from "@headlessui/react"
-import SignOut from "../AppContext/SignOut"
+import SignOut from "../Auth/SignOut"
 
 export default function FeedControls() {
 

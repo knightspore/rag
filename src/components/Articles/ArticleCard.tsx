@@ -1,8 +1,8 @@
 import { Articles } from "../../lib/graphql-generated";
 import Icon from "../Icon";
 import Link from "next/link";
-import LikeButton from "../LikeButton";
-import MarkAsReadButton from "../MarkAsReadButton";
+import LikeButton from "./LikeButton";
+import MarkAsReadButton from "./MarkAsReadButton";
 import { IoShareSharp } from "react-icons/io5";
 
 export default function ArticleCard({

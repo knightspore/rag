@@ -1,14 +1,14 @@
 import { motion } from "framer-motion"
 import Alert, { Level } from "../Alert"
-import { useAppContext } from "../AppContext/AppContextProvider"
 import { feedContainer, feedItem } from "../../lib/animation"
 import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "../SkeletonComponents/SkeletonArticles"
-import {useFilterContext} from "../FilterContext/FilterContextProvider"
+import {useFilterContext} from "../Providers/FilterContextProvider"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
 import { useArticlesQuery } from "../../lib/graphql-generated"
 import { useState } from "react"
-import { useQueryContext } from "../QueryContext/QueryContextProvider"
+import { useQueryContext } from "../Providers/QueryContextProvider"
+import { useAppContext } from "../Providers/AppContextProvider"
 
 export default function ArticleFeed() {
 

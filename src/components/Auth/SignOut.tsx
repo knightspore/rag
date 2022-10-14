@@ -1,6 +1,7 @@
 import { IoExitSharp } from "react-icons/io5";
 import { supabase } from "../../lib/supabase";
-import { useAppContext } from "./AppContextProvider";
+import { useAppContext } from "../Providers/AppContextProvider";
+
 
 export default function SignOut() {
     const { setUser } = useAppContext()

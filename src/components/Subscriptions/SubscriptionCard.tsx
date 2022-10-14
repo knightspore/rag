@@ -1,5 +1,5 @@
 import { Subscriptions } from "../../lib/graphql-generated";
-import { useFilterContext } from "../FilterContext/FilterContextProvider";
+import { useFilterContext } from "../Providers/FilterContextProvider";
 import Icon from "../Icon";
 
 type Props = { sub: Partial<Subscriptions>, remove: (title?: string) => void }

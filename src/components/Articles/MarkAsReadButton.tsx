@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { IoEyeOutline, IoEyeSharp } from "react-icons/io5";
-import {useMarkAsReadMutation, useMarkAsUnreadMutation } from "../lib/graphql-generated";
+import {useMarkAsReadMutation, useMarkAsUnreadMutation } from "../../lib/graphql-generated";
 
 export default function MarkAsReadButton({ id, is_read }:{ id: string, is_read: boolean }) {
 

@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react"
-import { OperationContext } from "urql"
+import { OperationContext  } from "urql"
 import { useLikesQuery } from "../../lib/graphql-generated"
-import { useAppContext } from "../AppContext/AppContextProvider"
+import { useAppContext } from "../Providers/AppContextProvider"
 
 export type QueryContextValue = {
 	likes: (string | null | undefined)[] | undefined,

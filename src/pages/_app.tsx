@@ -1,10 +1,10 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import '../styles/globals.css'
-import AppContextProvider from '../components/AppContext/AppContextProvider'
-import UrqlContextProvider from '../components/AppContext/UrqlContextProvider'
-import FilterContextProvider from '../components/FilterContext/FilterContextProvider'
-import QueryContextProvider from "../components/QueryContext/QueryContextProvider";
+import AppContextProvider from '../components/Providers/AppContextProvider'
+import UrqlContextProvider from '../components/Providers/UrqlContextProvider'
+import FilterContextProvider from '../components/Providers/FilterContextProvider'
+import QueryContextProvider from "../components/Providers/QueryContextProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return <div className="text-slate-50 bg-slate-800 min-h-screen">
@@ -30,11 +30,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 		</Head>
 			<UrqlContextProvider>
 				<AppContextProvider>
-            <FilterContextProvider>
-                <QueryContextProvider>
-                  <Component {...pageProps} />          
-                </QueryContextProvider>
-            </FilterContextProvider>
+               <FilterContextProvider>
+                  <QueryContextProvider>
+                     <Component {...pageProps} />          
+                  </QueryContextProvider>
+               </FilterContextProvider>
 				</AppContextProvider>
 			</UrqlContextProvider>
 	</div>

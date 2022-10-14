@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import Alert, { Level } from "../Alert";
-import { useAppContext } from "../AppContext/AppContextProvider";
+import { useAppContext } from "../Providers/AppContextProvider";
 import { supabase } from "../../lib/supabase";
 import { motion } from "framer-motion"
 import { subscriptionForm } from "../../lib/animation";

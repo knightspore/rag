@@ -1,7 +1,7 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { getCurrentUser } from "../../lib/supabase"
-import SignIn from "./SignIn"
+import SignIn from "../Auth/SignIn"
 
 export type AppContextValue = { 
 	user: User | null
