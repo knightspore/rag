@@ -1,15 +1,11 @@
 import { User } from "@supabase/supabase-js"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import type { OperationContext} from "urql"
-import { useLikesQuery } from "../../lib/graphql-generated"
 import { getCurrentUser } from "../../lib/supabase"
 import SignIn from "./SignIn"
 
 export type AppContextValue = { 
 	user: User | null
 	setUser: (value: null) => void
-	likes: (string | null | undefined)[] | undefined,
-  refreshLikes: (args?: Partial<OperationContext>) => void 
 }
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue)
@@ -40,20 +36,9 @@ export default function AppContextProvider({ children }: { children: React.React
     }
 	}, [user])
 
-
-  const [likes, likesQuery] = useLikesQuery({
-    variables: {
-      id: user?.id
-    }
-  })
-
 	const value: AppContextValue = {
 		user,
 		setUser,
-    likes: likes.data?.likes?.edges.map(({ node }) => {
-			return node?.article_title
-		}),
-    refreshLikes: (args) => likesQuery({ ...args, requestPolicy: "network-only" }),
 	}
 
   return loading ? <div className="w-screen h-screen bg-slate-800" /> :<AppContext.Provider value={value}>

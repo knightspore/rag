@@ -1,7 +1,7 @@
 import { Maybe } from "graphql/jsutils/Maybe";
 import LikeButton from "../../components/LikeButton"
 import MarkAsReadButton from "../MarkAsReadButton";
-export default function ContentHeader({ id, title = "", subscription = "",  is_read = true, description = "", url, hostname}: { id: string, title: Maybe<string>, subscription: Maybe<string>, is_read: boolean, description: Maybe<string> | undefined, url: string, hostname: Maybe<string>}) {
+export default function ContentHeader({ id, title, subscription,  is_read = true, description = "", url, hostname}: { id: string, title: Maybe<string>, subscription: Maybe<string>, is_read: boolean, description: Maybe<string> | undefined, url: string, hostname: Maybe<string>}) {
 
 	return (
 		<>

@@ -3,6 +3,8 @@ import Head from 'next/head'
 import '../styles/globals.css'
 import AppContextProvider from '../components/AppContext/AppContextProvider'
 import UrqlContextProvider from '../components/AppContext/UrqlContextProvider'
+import FilterContextProvider from '../components/FilterContext/FilterContextProvider'
+import QueryContextProvider from "../components/QueryContext/QueryContextProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return <div className="text-slate-50 bg-slate-800 min-h-screen">
@@ -28,7 +30,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 		</Head>
 			<UrqlContextProvider>
 				<AppContextProvider>
-            <Component {...pageProps} />
+            <FilterContextProvider>
+                <QueryContextProvider>
+                  <Component {...pageProps} />          
+                </QueryContextProvider>
+            </FilterContextProvider>
 				</AppContextProvider>
 			</UrqlContextProvider>
 	</div>

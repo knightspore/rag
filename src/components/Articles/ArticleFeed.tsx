@@ -8,10 +8,12 @@ import {useFilterContext} from "../FilterContext/FilterContextProvider"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
 import { useArticlesQuery } from "../../lib/graphql-generated"
 import { useState } from "react"
+import { useQueryContext } from "../QueryContext/QueryContextProvider"
 
 export default function ArticleFeed() {
 
   const app = useAppContext()
+  const { likes } = useQueryContext()
   const { filters } = useFilterContext()
   const [after, setAfter] = useState<string|null>(null)
   const [cursorHist, setCursorHist] = useState<[]|string[]>([])
@@ -24,7 +26,7 @@ export default function ArticleFeed() {
   }) 
 
   const hideWhenUnreadOnly = (is_read: boolean) => filters.unread && is_read === true
-  const hideWhenLiked = (title: string) => filters.liked && app.likes && !app?.likes.includes(title)
+  const hideWhenLiked = (title: string) => filters.liked && likes && !likes.includes(title)
 
   const handleNextPage = () => {
     const cursor =  articles.data?.articles?.pageInfo.endCursor
