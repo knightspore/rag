@@ -54,7 +54,7 @@ export default function ArticleFeed() {
 
   return (
     <>
-      <motion.ol variants={feedContainer} initial="hidden" animate="show" className="m-2 p-2 overflow-y-scroll">
+      <motion.ol variants={feedContainer} initial="hidden" animate="show" className="p-2 m-2 overflow-y-scroll">
         {articles.data?.articles?.edges.map(({ node }) => {
           if (hideWhenLiked(node.title) || hideWhenUnreadOnly(node.is_read || false)) {
             return null

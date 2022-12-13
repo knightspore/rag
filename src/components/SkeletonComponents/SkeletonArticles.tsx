@@ -12,7 +12,7 @@ export default function SkeletonArticles() {
         </div>
         <div className="w-64 h-5 my-1 rounded-full bg-slate-300/20" />
       </h3>
-      <div className="flex items-center gap-2 text-sm italic font-medium text-slate-300">
+      <div className="flex items-center text-sm italic font-medium gap-2 text-slate-300">
         <div className="w-16 h-4 my-1 rounded-full bg-slate-300/20" /> <span className="opacity-50">&bull;</span>
         <time className="text-slate-500">
           <div className="w-12 h-4 my-1 rounded-full bg-slate-500/30" />
@@ -22,7 +22,7 @@ export default function SkeletonArticles() {
   }
 
   return (
-    <motion.ol variants={feedContainer} initial="hidden" animate="show">
+    <motion.ol variants={feedContainer} initial="hidden" animate="show" className="p-2 m-2 overflow-y-scroll">
       <motion.li variants={feedItem}>
         <Card />
       </motion.li>
