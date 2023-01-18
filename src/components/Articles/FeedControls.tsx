@@ -1,5 +1,5 @@
 
-import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoListSharp, IoRefreshSharp } from "react-icons/io5"
+import { IoEyeOutline, IoEyeSharp, IoHeartOutline, IoHeartSharp, IoAddSharp, IoRefreshSharp } from "react-icons/io5"
 import { useState } from "react"
 import { refreshSubscriptions } from "../../lib/api"
 import {useFilterContext} from "../Providers/FilterContextProvider"
@@ -34,7 +34,7 @@ export default function FeedControls() {
             <div className="flex justify-between">
                 <div className="flex gap-4">
                     <button onClick={handleRefresh}>
-                        Reading List 
+                        Refresh 
                         <IoRefreshSharp size={16} title="Hide previously read posts." className={refreshing ? "animate-spin opacity-50" : ""} />
                     </button>
                     <button onClick={toggleLikedArticlesFilter}>
@@ -46,7 +46,7 @@ export default function FeedControls() {
                         {filters.unread ? <IoEyeSharp size={16} title="Filter: all articles"/> : <IoEyeOutline size={16} title="Filter: unread articles" />}
                     </button>
                     <Disclosure.Button as="button">
-                        <h2>Subscriptions</h2> <IoListSharp size={16} />
+                        <h2>Add</h2> <IoAddSharp size={16} />
                     </Disclosure.Button>
                 </div>
             <SignOut />

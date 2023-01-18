@@ -29,7 +29,7 @@
   }
 
   button {
-    @apply text-sm md:text-base text-slate-300 hover:text-slate-500 base-transition flex items-center gap-2 border-none disabled:text-slate-500
+    @apply text-xs md:text-base text-slate-300 hover:text-slate-500 base-transition flex items-center gap-2 border-none disabled:text-slate-500
   }
 
   input {
