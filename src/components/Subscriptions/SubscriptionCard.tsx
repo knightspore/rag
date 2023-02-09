@@ -25,7 +25,7 @@ export default function SubscriptionCard({ sub  }: Props ) {
   return (
       <button
         onClick={handleFilter}
-        className={`select-none flex items-center p-px px-2 gap-2 card ${filtered && !selected && "opacity-50"}`}>
+        className={`select-none flex items-center p-1 px-2 gap-2 card ${filtered && !selected && "opacity-50"}`}>
           <div className="transition-all duration-100">
           <Icon src={sub.icon}  />
           </div>

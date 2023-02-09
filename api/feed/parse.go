@@ -33,9 +33,6 @@ func FeedGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Get Feed: %q\n", subscription.Title)
 	log.Printf("%d articles found\n", len(articles))
-	for _, a := range articles {
-		log.Printf("%+v", a)
-	}
 
 	parse.HandleResponse(w, parse.Response{
 		Subscriptions: []parse.SubscriptionResponse{subscription},

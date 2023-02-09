@@ -62,7 +62,9 @@ export default function AddSubscriptionForm() {
             disabled={url === "" || isLoading}
             className="col-span-2"
           >
+          <p className="mt-2">
             {isLoading ? "Adding..." : "Add Subscription"}
+          </p>
           </button>
         </motion.form>
         {error && <Alert text="Error adding feed" level={Level.error} />}
