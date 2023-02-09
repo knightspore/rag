@@ -18,7 +18,7 @@ export default function FeedControls() {
         setRefreshing(true)
         await refreshSubscriptions(user?.id)
         setRefreshing(false)
-        // TODO: Refresh Articles
+        location.reload()
     }
 
     function toggleLikedArticlesFilter() {

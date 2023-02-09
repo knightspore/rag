@@ -36,8 +36,7 @@ export default function AddSubscriptionForm() {
       if (sErr || aErr) {
         throw new Error(sErr ? sErr.message : aErr && aErr.message)
       }
-      // TODO: Refresh Subscriptions
-      // TODO: Refresh Articles
+      location.reload()
     } catch (e) {
       setError((e as Error).message)
     } finally {
