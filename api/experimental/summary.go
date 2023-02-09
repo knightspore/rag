@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"context"
@@ -68,7 +68,7 @@ func SummarizeHandler(w http.ResponseWriter, r *http.Request) {
 
 	// req := parse.HandleRequest(r)
 	var results []map[string]string
-	err := supabase.DB.From("articles").Select("title", "subscription").Limit(10).Eq("user_id", "06bdc570-41d1-4563-9b24-64ff34233b44").Gte("updated_at", since).Execute(&results)
+	err = supabase.DB.From("articles").Select("title", "subscription").Limit(10).Eq("user_id", "06bdc570-41d1-4563-9b24-64ff34233b44").Gte("updated_at", since).Execute(&results)
 	if err != nil {
 		log.Println(err)
 	}
