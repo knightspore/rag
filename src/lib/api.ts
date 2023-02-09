@@ -7,6 +7,17 @@ export async function refreshSubscriptions(id?: string) {
         })
 }
 
+export async function getSummary(userId: string) {
+  const res = await fetch("/api/experimental/summary", {
+    method: "POST",
+    body: JSON.stringify({
+      userId: userId
+    })
+  })
+  const data = await res.json()
+  return data
+}
+
 export async function parseFeed(url: string, userId: string) {
     const res = await fetch("/api/feed/parse", {
       method: "POST",
