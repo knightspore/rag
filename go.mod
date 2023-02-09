@@ -6,6 +6,7 @@ require (
 	github.com/JohannesKaufmann/html-to-markdown v1.3.6
 	github.com/PullRequestInc/go-gpt3 v1.1.11
 	github.com/go-shiori/go-readability v0.0.0-20220215145315-dd6828d2f09b
+	github.com/joho/godotenv v1.3.0
 	github.com/nedpals/postgrest-go v0.1.2
 )
 

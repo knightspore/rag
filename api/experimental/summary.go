@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/PullRequestInc/go-gpt3"
+	"github.com/joho/godotenv"
 	"github.com/knightspore/rag/parse"
 )
 
@@ -46,13 +48,27 @@ Summary:`
 
 func SummarizeHandler(w http.ResponseWriter, r *http.Request) {
 
-	supabase := parse.CreateClient("https://sgzquvqpyebgqnecoaoa.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnenF1dnFweWViZ3FuZWNvYW9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjM0NjE0MjcsImV4cCI6MTk3OTAzNzQyN30.o0BiNeWuUxDTC77mbzjJ2nMOvXrbxPWL8Mx6eHDeMdk")
+	godotenv.Load()
+
+	apiKey := os.Getenv("OPENAI_API_KEY")
+	if apiKey == "" {
+		log.Fatalln("Missing OPENAI_API_KEY")
+	}
+
+	client := gpt3.NewClient(apiKey)
+
+	supabase, err := parse.CreateClient()
+	if err != nil {
+		parse.HandleResponse(w, parse.Response{
+			Content: "Could not connect to database",
+		}, false)
+	}
 
 	since := (time.Now().Add(-(7 * 24 * time.Hour))).Format("2006-01-02")
 
-	req := parse.HandleRequest(r)
+	// req := parse.HandleRequest(r)
 	var results []map[string]string
-	err := supabase.DB.From("articles").Select("title", "subscription").Limit(8).Eq("user_id", req.UserID).Gte("updated_at", since).Execute(&results)
+	err := supabase.DB.From("articles").Select("title", "subscription").Limit(10).Eq("user_id", "06bdc570-41d1-4563-9b24-64ff34233b44").Gte("updated_at", since).Execute(&results)
 	if err != nil {
 		log.Println(err)
 	}
@@ -65,8 +81,6 @@ func SummarizeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	client := gpt3.NewClient("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")
-
 	resp, err := client.Completion(ctx, gpt3.CompletionRequest{
 		Prompt:           []string{fmt.Sprintf(prompt, inputs)},
 		MaxTokens:        gpt3.IntPtr(max_len),

@@ -11,11 +11,16 @@ import (
 
 func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 
-	supabase := parse.CreateClient("https://sgzquvqpyebgqnecoaoa.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnenF1dnFweWViZ3FuZWNvYW9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjM0NjE0MjcsImV4cCI6MTk3OTAzNzQyN30.o0BiNeWuUxDTC77mbzjJ2nMOvXrbxPWL8Mx6eHDeMdk")
+	supabase, err := parse.CreateClient()
+	if err != nil {
+		parse.HandleResponse(w, parse.Response{
+			Content: "Could not connect to database",
+		}, false)
+	}
 
 	req := parse.HandleRequest(r)
 	var results []map[string]string
-	err := supabase.DB.From("subscriptions").Select("url").Eq("user", req.UserID).Execute(&results)
+	err = supabase.DB.From("subscriptions").Select("url").Eq("user", req.UserID).Execute(&results)
 	if err != nil {
 		log.Println(err)
 	}
