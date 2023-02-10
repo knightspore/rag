@@ -60,7 +60,7 @@ func Fetch(url string) ([]byte, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("status error: %s", resp.StatusCode)
+		return nil, fmt.Errorf("status error: %d", resp.StatusCode)
 	}
 
 	data, err := io.ReadAll(resp.Body)
