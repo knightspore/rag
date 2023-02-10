@@ -4,12 +4,12 @@ import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import {useLikeMutation, useUnlikeMutation} from "../../lib/graphql-generated";
 import {useAppContext} from "../Providers/AppContextProvider";
 
-export default function LikeButton({ subscription, title }:{ subscription: Maybe<string>, title: string }) {
+export default function LikeButton({ subscription, title }:{ subscription: Maybe<string>, title: Maybe<string> }) {
 
   const { user, likes} = useAppContext()
   const [,likeMutation] = useLikeMutation()
   const [,unlikeMutation] = useUnlikeMutation()
-  const liked = likes?.includes(title)
+  const liked = title && likes?.includes(title)
 
   async function handleLike (liked: boolean,  subscription?: string, title?: string) {
     if (liked !== true) {

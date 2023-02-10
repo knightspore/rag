@@ -1,62 +1,77 @@
-import { User } from "@supabase/supabase-js"
-import React, { createContext, useContext, useEffect, useState } from "react"
-import {OperationContext} from "urql"
-import {useLikesQuery} from "../../lib/graphql-generated"
-import { getCurrentUser } from "../../lib/supabase"
-import SignIn from "../Auth/SignIn"
+/** @format */
 
-export type AppContextValue = { 
-	user: User | null
-	setUser: (value: null) => void
-	likes: (string|null|undefined)[] | []
-  refreshLikes: (args?: Partial<OperationContext>) => void 
-}
+import {User} from '@supabase/supabase-js';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {useLikesQuery} from '../../lib/graphql-generated';
+import {getCurrentUser} from '../../lib/supabase';
+import SignIn from '../Auth/SignIn';
 
-const AppContext = createContext<AppContextValue>({} as AppContextValue)
+export type AppContextValue = {
+    user: User | null;
+    setUser: (value: null) => void;
+    likes: Array<string>;
+};
+
+const AppContext = createContext<AppContextValue>({} as AppContextValue);
 
 export function useAppContext() {
-	const value = useContext(AppContext)
-	if (value === null) {
-		throw new Error("No AppContext Value")
-	} else {
-		return value as AppContextValue
-	}
+    const value = useContext(AppContext);
+    if (value === null) {
+        throw new Error('No AppContext Value');
+    } else {
+        return value as AppContextValue;
+    }
 }
 
-export default function AppContextProvider({ children }: { children: React.ReactNode }) {
+export default function AppContextProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<AppContextValue['user']>(null);
 
-  const [loading, setLoading] = useState(true)
-	const [user, setUser] = useState<AppContextValue["user"]>(null)
+    useEffect(() => {
+        async function login() {
+            setLoading(true);
+            const u = await getCurrentUser();
+            setUser(u);
+            setLoading(false);
+        }
+        if (!user) {
+            login();
+        }
+    }, [user]);
 
-	useEffect(() => {	
-		async function login() {
-      setLoading(true)
-      const u = await getCurrentUser()
-      setUser(u)
-      setLoading(false)
+    const [likes] = useLikesQuery({
+        variables: {
+            id: user?.id,
+        },
+    });
+
+    function filteredLikes(): Array<string> {
+        const valid: Array<string> = [];
+        likes.data?.likes?.edges.forEach(({node}) => {
+            const title = node?.article_title;
+            if (title !== null && title !== undefined) {
+                valid.push(title);
+            }
+        });
+
+        return valid;
     }
-    if (!user) {
-      login()
-    }
-	}, [user])
 
-	const [likes, likesQuery] = useLikesQuery({
-		variables: {
-			id: user?.id
-		}
-	})
+    const value: AppContextValue = {
+        user,
+        setUser,
+        likes: filteredLikes(),
+    };
 
-	const value: AppContextValue = {
-		user,
-		setUser,
-		likes: likes.data?.likes?.edges.map(({ node }) => {
-			return node?.article_title
-		}) ?? [], 
-    refreshLikes: (args) => likesQuery({ ...args, requestPolicy: "network-only" }),
-	}
-
-  return loading ? <div className="w-screen h-screen bg-slate-800" /> :<AppContext.Provider value={value}>
-		{ user ? children : <SignIn />}
-	</AppContext.Provider>
-
+    return loading ? (
+        <div className="w-screen h-screen bg-slate-800" />
+    ) : (
+        <AppContext.Provider value={value}>
+            {user ? children : <SignIn />}
+        </AppContext.Provider>
+    );
 }

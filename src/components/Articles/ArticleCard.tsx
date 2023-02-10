@@ -21,7 +21,7 @@ export default function ArticleCard({
         </h2>
       </Link>
       <div className="flex items-center gap-2 text-slate-400">
-        <LikeButton title={article?.title} subscription={article?.subscription} />
+        <LikeButton title={article.title} subscription={article.subscription} />
         <MarkAsReadButton id={article?.id} is_read={article?.is_read || false}  />
         <button onClick={() => navigator.share({url: article.url, text: article.title + " - Shared from Rag Reader"})}><IoShareSharp /></button>
         <span>{article.subscription}</span>
