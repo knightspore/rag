@@ -1,4 +1,5 @@
 import Head from "next/head"
+import Image from "next/image"
 import { FormEvent, useState } from "react"
 import { supabase } from "../../lib/supabase"
 import Alert, { Level } from "../Alert"
@@ -38,8 +39,9 @@ export default function SignIn() {
 			<Head>
 				<title>Sign-In - RAG</title>
 			</Head>
-			<div className="flex flex-col items-center w-screen h-screen">
-				<div className="m-auto w-96">
+      <div className="w-screen h-screen grid lg:grid-cols-4">
+        <div className="col-span-1"/>
+        <div className="w-full px-4 m-auto lg:col-span-1 col-span-2">
 					<form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
             <label htmlFor="email">
               <h1 className="mb-2 text-lg">Login</h1>
@@ -53,6 +55,9 @@ export default function SignIn() {
 					{errMsg && <Alert text={errMsg} level={Level.error} />}
 					{otpSent && <Alert text="Magic Sign-in Link Sent! Check your Email." level={Level.info} />}
 				</div>
+        <div className="flex items-center select-none col-span-2">
+          <Image className="lg:translate-y-12" src="/home_hero.png" alt="Hero Image" width={690} height={773} placeholder="blur" blurDataURL="/home_hero.png" />
+        </div>
 			</div>
 		</>
 	)

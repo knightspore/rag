@@ -42,4 +42,16 @@
   .card {
     @apply border-2 border-slate-700/30 bg-slate-700/30 rounded-lg shadow-sm
   }
+
+  .info {
+    @apply !bg-slate-800/50 !border-slate-900/50
+  }
+
+  .warn {
+    @apply !bg-yellow-800/50 !border-yellow-900/50
+  }
+
+  .error {
+    @apply !bg-red-800/50 !border-red-900/50
+  }
 }

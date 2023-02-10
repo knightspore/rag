@@ -4,7 +4,7 @@ import { useLikesQuery } from "../../lib/graphql-generated"
 import { useAppContext } from "../Providers/AppContextProvider"
 
 export type QueryContextValue = {
-	likes: (string | null | undefined)[] | undefined,
+	likes: (string|null|undefined)[] | []
   refreshLikes: (args?: Partial<OperationContext>) => void 
 }
 
@@ -32,7 +32,7 @@ export default function QueryContextProvider({ children }: { children: React.Rea
 	const value: QueryContextValue = {
 		likes: likes.data?.likes?.edges.map(({ node }) => {
 			return node?.article_title
-		}), 
+		}) ?? [], 
     refreshLikes: (args) => likesQuery({ ...args, requestPolicy: "network-only" }),
 	}
 

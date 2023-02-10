@@ -77,6 +77,11 @@ export type FloatFilter = {
   neq?: InputMaybe<Scalars['Float']>;
 };
 
+/** Boolean expression comparing fields on type "ID" */
+export type IdFilter = {
+  eq?: InputMaybe<Scalars['ID']>;
+};
+
 /** Boolean expression comparing fields on type "Int" */
 export type IntFilter = {
   eq?: InputMaybe<Scalars['Int']>;
@@ -88,32 +93,26 @@ export type IntFilter = {
   neq?: InputMaybe<Scalars['Int']>;
 };
 
-/** Boolean expression comparing fields on type "JSON" */
-export type JsonFilter = {
-  eq?: InputMaybe<Scalars['JSON']>;
-  neq?: InputMaybe<Scalars['JSON']>;
-};
-
 /** The root type for creating and mutating data */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Deletes zero or more records from the collection */
+  /** Deletes zero or more records from the `articles` collection */
   deleteFromarticlesCollection: ArticlesDeleteResponse;
-  /** Deletes zero or more records from the collection */
+  /** Deletes zero or more records from the `likes` collection */
   deleteFromlikesCollection: LikesDeleteResponse;
-  /** Deletes zero or more records from the collection */
+  /** Deletes zero or more records from the `subscriptions` collection */
   deleteFromsubscriptionsCollection: SubscriptionsDeleteResponse;
-  /** Adds one or more `articlesInsertResponse` records to the collection */
+  /** Adds one or more `articles` records to the collection */
   insertIntoarticlesCollection?: Maybe<ArticlesInsertResponse>;
-  /** Adds one or more `likesInsertResponse` records to the collection */
+  /** Adds one or more `likes` records to the collection */
   insertIntolikesCollection?: Maybe<LikesInsertResponse>;
-  /** Adds one or more `subscriptionsInsertResponse` records to the collection */
+  /** Adds one or more `subscriptions` records to the collection */
   insertIntosubscriptionsCollection?: Maybe<SubscriptionsInsertResponse>;
-  /** Updates zero or more records in the collection */
+  /** Updates zero or more records in the `articles` collection */
   updatearticlesCollection: ArticlesUpdateResponse;
-  /** Updates zero or more records in the collection */
+  /** Updates zero or more records in the `likes` collection */
   updatelikesCollection: LikesUpdateResponse;
-  /** Updates zero or more records in the collection */
+  /** Updates zero or more records in the `subscriptions` collection */
   updatesubscriptionsCollection: SubscriptionsUpdateResponse;
 };
 
@@ -180,6 +179,11 @@ export type MutationUpdatesubscriptionsCollectionArgs = {
   set: SubscriptionsUpdateInput;
 };
 
+export type Node = {
+  /** Retrieves a record by `ID` */
+  nodeId: Scalars['ID'];
+};
+
 /** Defines a per-field sorting order */
 export enum OrderByDirection {
   /** Ascending order, nulls first */
@@ -207,6 +211,8 @@ export type Query = {
   articlesCollection?: Maybe<ArticlesConnection>;
   /** A pagable collection of type `likes` */
   likesCollection?: Maybe<LikesConnection>;
+  /** Retrieve a record by its `ID` */
+  node?: Maybe<Node>;
   /** A pagable collection of type `subscriptions` */
   subscriptionsCollection?: Maybe<SubscriptionsConnection>;
 };
@@ -231,6 +237,12 @@ export type QueryLikesCollectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<Array<LikesOrderBy>>;
+};
+
+
+/** The root type for querying data */
+export type QueryNodeArgs = {
+  nodeId: Scalars['ID'];
 };
 
 
@@ -273,13 +285,15 @@ export type UuidFilter = {
   neq?: InputMaybe<Scalars['UUID']>;
 };
 
-export type Articles = {
+export type Articles = Node & {
   __typename?: 'articles';
   content?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['Datetime']>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   is_read?: Maybe<Scalars['Boolean']>;
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID'];
   pub_date: Scalars['Datetime'];
   subscription: Scalars['String'];
   title: Scalars['String'];
@@ -314,6 +328,7 @@ export type ArticlesFilter = {
   description?: InputMaybe<StringFilter>;
   id?: InputMaybe<UuidFilter>;
   is_read?: InputMaybe<BooleanFilter>;
+  nodeId?: InputMaybe<IdFilter>;
   pub_date?: InputMaybe<DatetimeFilter>;
   subscription?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
@@ -380,10 +395,12 @@ export type ArticlesUpdateResponse = {
   records: Array<Articles>;
 };
 
-export type Likes = {
+export type Likes = Node & {
   __typename?: 'likes';
   article_title?: Maybe<Scalars['String']>;
   id: Scalars['BigInt'];
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID'];
   subscription_title?: Maybe<Scalars['String']>;
   user_id: Scalars['UUID'];
 };
@@ -411,6 +428,7 @@ export type LikesEdge = {
 export type LikesFilter = {
   article_title?: InputMaybe<StringFilter>;
   id?: InputMaybe<BigIntFilter>;
+  nodeId?: InputMaybe<IdFilter>;
   subscription_title?: InputMaybe<StringFilter>;
   user_id?: InputMaybe<UuidFilter>;
 };
@@ -450,13 +468,15 @@ export type LikesUpdateResponse = {
   records: Array<Likes>;
 };
 
-export type Subscriptions = {
+export type Subscriptions = Node & {
   __typename?: 'subscriptions';
   created_at?: Maybe<Scalars['Datetime']>;
   description?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
   id: Scalars['UUID'];
   muted: Scalars['Boolean'];
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID'];
   title: Scalars['String'];
   updated_at?: Maybe<Scalars['Datetime']>;
   url: Scalars['String'];
@@ -489,6 +509,7 @@ export type SubscriptionsFilter = {
   icon?: InputMaybe<StringFilter>;
   id?: InputMaybe<UuidFilter>;
   muted?: InputMaybe<BooleanFilter>;
+  nodeId?: InputMaybe<IdFilter>;
   title?: InputMaybe<StringFilter>;
   updated_at?: InputMaybe<DatetimeFilter>;
   url?: InputMaybe<StringFilter>;
@@ -560,7 +581,7 @@ export type LikedArticlesQueryVariables = Exact<{
   id: Scalars['UUID'];
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
-  likes?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  likes: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
@@ -666,11 +687,11 @@ export function useArticlesQuery(options: Omit<Urql.UseQueryArgs<ArticlesQueryVa
   return Urql.useQuery<ArticlesQuery, ArticlesQueryVariables>({ query: ArticlesDocument, ...options });
 };
 export const LikedArticlesDocument = gql`
-    query likedArticles($id: UUID!, $after: Cursor, $before: Cursor, $likes: [String!]) {
+    query likedArticles($id: UUID!, $after: Cursor, $before: Cursor, $likes: [String!]!) {
   articles: articlesCollection(
     first: 10
     after: $after
-    filter: {title: {in: $likes}, user_id: {eq: $id}}
+    filter: {user_id: {eq: $id}, title: {in: $likes}}
     orderBy: {pub_date: DescNullsLast}
   ) {
     edges {

@@ -77,7 +77,7 @@ export default function SubscriptionCard({sub}: Props) {
                 <div className="absolute inset-0 z-50 flex items-center justify-center select-none bg-slate-900/90">
                     <Dialog.Panel
                         as="div"
-                        className="p-4 card text-slate-400"
+                        className="p-4 text-slate-400"
                     >
                         <Dialog.Title
                             as="h2"
@@ -89,16 +89,16 @@ export default function SubscriptionCard({sub}: Props) {
                             </span>{' '}
                             from your subscriptions?
                         </Dialog.Title>
-                        <div className="flex justify-center mt-2 gap-4">
+                        <div className="flex justify-center mt-4 gap-4">
                             <button
                                 onClick={handleDeleteSubscription}
-                                className="p-1 px-2 bg-red-700 rounded-md"
+                                className="p-1 px-2 text-lg card error"
                             >
                                 Delete
                             </button>
                             <button
                                 onClick={() => setDeletePromptOpen(false)}
-                                className="p-1 px-2 bg-slate-700 rounded-md"
+                                className="p-1 px-2 text-lg card"
                             >
                                 Cancel
                             </button>

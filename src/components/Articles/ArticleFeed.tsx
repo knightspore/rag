@@ -3,18 +3,14 @@ import Alert, { Level } from "../Alert"
 import { feedContainer, feedItem } from "../../lib/animation"
 import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "../SkeletonComponents/SkeletonArticles"
-import {useFilterContext} from "../Providers/FilterContextProvider"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
 import { useArticlesQuery } from "../../lib/graphql-generated"
 import { useState } from "react"
-import { useQueryContext } from "../Providers/QueryContextProvider"
 import { useAppContext } from "../Providers/AppContextProvider"
 
 export default function ArticleFeed() {
 
   const app = useAppContext()
-  const { likes } = useQueryContext()
-  const { filters } = useFilterContext()
   const [after, setAfter] = useState<string|null>(null)
   const [cursorHist, setCursorHist] = useState<[]|string[]>([])
 
@@ -24,9 +20,6 @@ export default function ArticleFeed() {
       after: after,
     }
   }) 
-
-  const hideWhenUnreadOnly = (is_read: boolean) => filters.unread && is_read === true
-  const hideWhenLiked = (title: string) => filters.liked && likes && !likes.includes(title)
 
   const handleNextPage = () => {
     const cursor =  articles.data?.articles?.pageInfo.endCursor
@@ -56,9 +49,6 @@ export default function ArticleFeed() {
     <>
       <motion.ol variants={feedContainer} initial="hidden" animate="show" className="p-2 m-2 overflow-y-scroll">
         {articles.data?.articles?.edges.map(({ node }) => {
-          if (hideWhenLiked(node.title) || hideWhenUnreadOnly(node.is_read || false)) {
-            return null
-          }
           return <motion.li key={node.title} variants={feedItem}>
             <ArticleCard article={node} />
           </motion.li>
