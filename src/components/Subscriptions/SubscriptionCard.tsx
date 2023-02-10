@@ -1,8 +1,9 @@
+/** @format */
+
 import {
     Subscriptions,
     useDeleteSubscriptionMutation,
 } from '../../lib/graphql-generated';
-import {useFilterContext} from '../Providers/FilterContextProvider';
 import {IoTrashSharp} from 'react-icons/io5';
 import Icon from '../Icon';
 import {useAppContext} from '../Providers/AppContextProvider';
@@ -12,27 +13,6 @@ import {Dialog} from '@headlessui/react';
 type Props = {sub: Partial<Subscriptions>; remove: (title?: string) => void};
 
 export default function SubscriptionCard({sub}: Props) {
-    const {filters, setFilters} = useFilterContext();
-    const filtered = filters.subscriptions?.length > 0;
-    const selected =
-        sub.title && filters.subscriptions.toString().includes(sub.title);
-
-    function handleFilter() {
-        if (selected) {
-            setFilters({
-                ...filters,
-                subscriptions: filters.subscriptions.filter(
-                    (s) => s !== sub.title
-                ),
-            });
-        } else if (!selected && filters.subscriptions && sub.title) {
-            setFilters({
-                ...filters,
-                subscriptions: [...filters.subscriptions, sub.title],
-            });
-        }
-    }
-
     const {user} = useAppContext();
 
     const [deleted, deleteSubscription] = useDeleteSubscriptionMutation();
@@ -51,11 +31,7 @@ export default function SubscriptionCard({sub}: Props) {
 
     return (
         <>
-            <div
-                className={`select-none flex items-center p-1 px-2 gap-2 card ${
-                    filtered && !selected && 'opacity-50'
-                }`}
-            >
+            <div className="flex items-center p-1 px-2 select-none gap-2 card">
                 <div className="group">
                     <div className="transition-all duration-100 group-hover:hidden">
                         <Icon src={sub.icon} />
@@ -66,9 +42,7 @@ export default function SubscriptionCard({sub}: Props) {
                         />
                     </div>
                 </div>
-                <button onClick={handleFilter}>
-                    <h3 className="w-max">{sub.title}</h3>
-                </button>
+                <h3 className="w-max">{sub.title}</h3>
             </div>
             <Dialog
                 open={deletePromptOpen}
