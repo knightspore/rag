@@ -47,38 +47,65 @@ export default function SubscriptionCard({sub}: Props) {
         }
     }
 
-    const [deletePromptOpen, setDeletePromptOpen] = useState(true)
+    const [deletePromptOpen, setDeletePromptOpen] = useState(false);
 
     return (
-      <>
-        <div
-            className={`select-none flex items-center p-1 px-2 gap-2 card ${
-                filtered && !selected && 'opacity-50'
-            }`}
-        >
-        <div className="group">
-            <div className="transition-all duration-100 group-hover:hidden">
-                <Icon src={sub.icon} />
+        <>
+            <div
+                className={`select-none flex items-center p-1 px-2 gap-2 card ${
+                    filtered && !selected && 'opacity-50'
+                }`}
+            >
+                <div className="group">
+                    <div className="transition-all duration-100 group-hover:hidden">
+                        <Icon src={sub.icon} />
+                    </div>
+                    <div className="hidden transition-all duration-100 group-hover:block">
+                        <IoTrashSharp
+                            onClick={() => setDeletePromptOpen(true)}
+                        />
+                    </div>
+                </div>
+                <button onClick={handleFilter}>
+                    <h3 className="w-max">{sub.title}</h3>
+                </button>
             </div>
-            <div className="hidden transition-all duration-100 group-hover:block">
-              <IoTrashSharp onClick={() => setDeletePromptOpen(true)} />
-            </div>
-        </div>
-          {/* <button onClick={handleFilter}> */}
-            <h3 className="w-max">{sub.title}</h3>
-          {/* </button> */}
-        </div>
-        <Dialog open={deletePromptOpen} onClose={() => setDeletePromptOpen(false)}>
-          <div className="absolute inset-0 z-50 flex items-center justify-center select-none bg-slate-900/90">
-          <Dialog.Panel as="div" className="p-4 card text-slate-400">
-            <Dialog.Title as="h2" className="text-lg">Remove <span className="font-bold text-slate-300">{sub.title}</span> from your subscriptions?</Dialog.Title>
-            <div className="flex justify-center mt-2 gap-4">
-              <button onClick={handleDeleteSubscription} className="p-1 px-2 bg-red-700 rounded-md">Delete</button>
-              <button onClick={()=>setDeletePromptOpen(false)}className="p-1 px-2 bg-slate-700 rounded-md">Cancel</button>
-            </div>
-          </Dialog.Panel>
-          </div>
-        </Dialog>
-      </>
+            <Dialog
+                open={deletePromptOpen}
+                onClose={() => setDeletePromptOpen(false)}
+            >
+                <div className="absolute inset-0 z-50 flex items-center justify-center select-none bg-slate-900/90">
+                    <Dialog.Panel
+                        as="div"
+                        className="p-4 card text-slate-400"
+                    >
+                        <Dialog.Title
+                            as="h2"
+                            className="text-lg"
+                        >
+                            Remove{' '}
+                            <span className="font-bold text-slate-300">
+                                {sub.title}
+                            </span>{' '}
+                            from your subscriptions?
+                        </Dialog.Title>
+                        <div className="flex justify-center mt-2 gap-4">
+                            <button
+                                onClick={handleDeleteSubscription}
+                                className="p-1 px-2 bg-red-700 rounded-md"
+                            >
+                                Delete
+                            </button>
+                            <button
+                                onClick={() => setDeletePromptOpen(false)}
+                                className="p-1 px-2 bg-slate-700 rounded-md"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </Dialog.Panel>
+                </div>
+            </Dialog>
+        </>
     );
 }
