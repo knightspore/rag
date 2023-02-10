@@ -3,12 +3,10 @@ import {Maybe} from "graphql/jsutils/Maybe";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import {useLikeMutation, useUnlikeMutation} from "../../lib/graphql-generated";
 import {useAppContext} from "../Providers/AppContextProvider";
-import { useQueryContext } from "../Providers/QueryContextProvider";
 
-export default function LikeButton({ subscription, title }:{ subscription: Maybe<string>, title: Maybe<string> }) {
+export default function LikeButton({ subscription, title }:{ subscription: Maybe<string>, title: string }) {
 
-  const { user } = useAppContext()
-  const { likes } = useQueryContext()
+  const { user, likes} = useAppContext()
   const [,likeMutation] = useLikeMutation()
   const [,unlikeMutation] = useUnlikeMutation()
   const liked = likes?.includes(title)

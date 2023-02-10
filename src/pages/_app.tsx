@@ -100,9 +100,7 @@ function MyApp({Component, pageProps}: AppProps) {
             </Head>
             <UrqlContextProvider>
                 <AppContextProvider>
-                    <QueryContextProvider>
-                        <Component {...pageProps} />
-                    </QueryContextProvider>
+                    <Component {...pageProps} />
                 </AppContextProvider>
             </UrqlContextProvider>
         </div>
