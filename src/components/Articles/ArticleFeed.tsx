@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import Alert, { Level } from "../Alert"
+import Alert, { Level } from "../App/Alert"
 import { feedContainer, feedItem } from "../../lib/animation"
 import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "../SkeletonComponents/SkeletonArticles"

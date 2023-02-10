@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import Alert, { Level } from "../Alert";
+import Alert, { Level } from "../App/Alert";
 import { useAppContext } from "../Providers/AppContextProvider";
 import { supabase } from "../../lib/supabase";
 import { motion } from "framer-motion"

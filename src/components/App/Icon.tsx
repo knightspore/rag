@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Maybe } from "../lib/graphql-generated";
+import { Maybe } from "../../lib/graphql-generated";
 
 export default function Icon({ src }: { src: Maybe<string> | undefined }) {
 

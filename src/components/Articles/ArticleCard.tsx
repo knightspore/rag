@@ -1,5 +1,5 @@
 import { Articles } from "../../lib/graphql-generated";
-import Icon from "../Icon";
+import Icon from "../App/Icon";
 import Link from "next/link";
 import LikeButton from "./LikeButton";
 import MarkAsReadButton from "./MarkAsReadButton";

@@ -5,7 +5,7 @@ import {
     useDeleteSubscriptionMutation,
 } from '../../lib/graphql-generated';
 import {IoTrashSharp} from 'react-icons/io5';
-import Icon from '../Icon';
+import Icon from '../App/Icon';
 import {useAppContext} from '../Providers/AppContextProvider';
 import {useState} from 'react';
 import {Dialog} from '@headlessui/react';

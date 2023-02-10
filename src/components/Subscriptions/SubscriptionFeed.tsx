@@ -2,7 +2,7 @@ import SubscriptionCard from "./SubscriptionCard"
 import {motion} from "framer-motion"
 import {feedContainer, feedItem} from "../../lib/animation"
 import { useAppContext } from "../Providers/AppContextProvider"
-import Alert, { Level } from "../Alert"
+import Alert, { Level } from "../App/Alert"
 import SkeletonSubscriptions from "../SkeletonComponents/SkeletonSubscriptions"
 import { useDeleteSubscriptionMutation, useSubscriptionsQuery } from "../../lib/graphql-generated"
 

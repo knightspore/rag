@@ -2,7 +2,7 @@ import Head from "next/head"
 import Image from "next/image"
 import { FormEvent, useState } from "react"
 import { supabase } from "../../lib/supabase"
-import Alert, { Level } from "../Alert"
+import Alert, { Level } from "../App/Alert"
 
 export default function SignIn() {
 
