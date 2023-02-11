@@ -42,7 +42,7 @@ export default function SubscriptionCard({sub}: Props) {
                         />
                     </div>
                 </div>
-                <h3 className="w-max">{sub.title}</h3>
+                <h3 className="text-sm w-max">{sub.title}</h3>
             </div>
             <Dialog
                 open={deletePromptOpen}

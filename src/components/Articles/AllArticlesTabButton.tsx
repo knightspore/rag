@@ -1,12 +1,23 @@
 import {Tab} from '@headlessui/react';
+import {IoLibraryOutline, IoLibrarySharp} from 'react-icons/io5';
 
-export default function AllArticlesTabButton() {
+type Props = {
+    onClick: () => void;
+    focused: boolean;
+};
+
+export default function AllArticlesTabButton({onClick, focused}: Props) {
     return (
         <Tab
-            as="div"
-            className="hidden"
+            as="button"
+            onClick={onClick}
         >
-            <div id="feed-tab-button">Feed</div>
+            Feed
+            {focused ? (
+                <IoLibrarySharp size={16} />
+            ) : (
+                <IoLibraryOutline size={16} />
+            )}
         </Tab>
     );
 }

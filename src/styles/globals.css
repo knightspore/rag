@@ -1,57 +1,61 @@
+/** @format */
+
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+    /* Scrollbar Styles */
+    ::-webkit-scrollbar {
+        @apply w-2 bg-slate-800;
+    }
 
-  /* Scrollbar Styles */
-  ::-webkit-scrollbar {
-    @apply w-2 h-2 
-  }
+    ::-webkit-scrollbar-thumb {
+        @apply shadow-lg rounded-md bg-slate-900;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-slate-500/50 rounded-full shadow-lg
-  }
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 
-  /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
 
-  .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+    .base-transition {
+        @apply transition-all duration-150;
+    }
 
-  .base-transition {
-    @apply transition-all duration-150
-  }
+    button {
+        @apply flex items-center text-xs border-none outline-none md:text-base text-slate-300 hover:text-slate-500 base-transition gap-2 disabled:text-slate-500;
+    }
 
-  button {
-    @apply text-xs md:text-base text-slate-300 hover:text-slate-500 base-transition flex items-center gap-2 border-none disabled:text-slate-500
-  }
-
-  input {
-    @apply  text-sm md:text-base rounded-sm p-1 bg-slate-700 w-full placeholder:text-slate-800 text-slate-300 outline-none 
-  }
-
+    input {
+        @apply w-full p-1 text-sm rounded-sm outline-none md:text-base bg-slate-700 placeholder:text-slate-800 text-slate-300;
+    }
 }
 
 @layer utilities {
-  .card {
-    @apply border-2 border-slate-700/30 bg-slate-700/30 rounded-lg shadow-sm
-  }
+    .card {
+        @apply border-2 rounded-lg border-slate-700/30 bg-slate-700/30 shadow-sm;
+    }
 
-  .info {
-    @apply !bg-slate-800/50 !border-slate-900/50
-  }
+    .info {
+        @apply bg-slate-800/50 border-slate-900/50;
+    }
 
-  .warn {
-    @apply !bg-yellow-800/50 !border-yellow-900/50
-  }
+    .warn {
+        @apply bg-yellow-800/50 border-yellow-900/50;
+    }
 
-  .error {
-    @apply !bg-red-800/50 !border-red-900/50
-  }
+    .error {
+        @apply bg-red-800/50 border-red-900/50;
+    }
+
+    .dark {
+        @apply bg-slate-900 border-slate-900;
+    }
 }

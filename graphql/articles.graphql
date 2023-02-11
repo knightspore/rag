@@ -23,11 +23,11 @@ query articles($id: UUID!, $after: Cursor, $before: Cursor) {
   }
 }
 
-query isReadArticles($id: UUID!, $after: Cursor, $before: Cursor) {
+query unreadArticles($id: UUID!, $after: Cursor, $before: Cursor) {
   articles: articlesCollection(
     first: 10,
     after: $after
-    filter: {user_id: {eq: $id}, is_read: {eq: true}}
+    filter: {user_id: {eq: $id}, is_read: {eq: false}}
     orderBy: {pub_date: DescNullsLast}
   ) {
     edges {

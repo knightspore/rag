@@ -45,7 +45,7 @@ export default function AddSubscriptionForm() {
   };
 
   return (
-    <div className="mt-4">
+    <>
         <motion.form variants={subscriptionForm} initial="hidden" animate="show" onSubmit={handleSubmit}>
           <input
             type="url"
@@ -67,6 +67,6 @@ export default function AddSubscriptionForm() {
           </button>
         </motion.form>
         {error && <Alert text="Error adding feed" level={Level.error} />}
-    </div>
+    </>
   );
 }

@@ -31,18 +31,19 @@ export default function SubscriptionFeed() {
   if (subs.error) return <Alert text="Error loading subscriptions..." level={Level.warn} />
 
   return (
-    <div className="relative">
-      <div className="fixed absolute top-0 bottom-0 right-0 bg-gradient-to-l from-slate-900 w-24 z-30" />
-        <motion.ol variants={feedContainer} initial="hidden" animate="show" className="no-scrollbar flex overflow-x-auto gap-2 md:flex-wrap relative">
-          {
-            subs.data?.subscriptions?.edges.map((sub: any) => {
-              return <motion.li key={sub.node.title} variants={feedItem}>
-                <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
-              </motion.li> 
-            })
-          }
-        </motion.ol>
-    </div>
+      <div className="relative py-2 shadow-inner bg-slate-900">
+        <div className="fixed absolute top-0 bottom-0 right-0 z-30 w-24 bg-gradient-to-l from-slate-900" />
+          <motion.ol variants={feedContainer} initial="hidden" animate="show" className="relative flex overflow-x-auto no-scrollbar gap-2">
+            <div />
+            {
+              subs.data?.subscriptions?.edges.map((sub: any) => {
+                return <motion.li key={sub.node.title} variants={feedItem}>
+                  <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
+                </motion.li> 
+              })
+            }
+          </motion.ol>
+      </div>
   )
 
 }

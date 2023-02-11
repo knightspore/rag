@@ -577,6 +577,15 @@ export type ArticlesQueryVariables = Exact<{
 
 export type ArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }>, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null } } | null };
 
+export type UnreadArticlesQueryVariables = Exact<{
+  id: Scalars['UUID'];
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+}>;
+
+
+export type UnreadArticlesQuery = { __typename?: 'Query', articles?: { __typename?: 'articlesConnection', edges: Array<{ __typename?: 'articlesEdge', node: { __typename?: 'articles', id: any, title: string, description?: string | null, url: string, pub_date: any, subscription: string, is_read?: boolean | null } }>, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null } } | null };
+
 export type LikedArticlesQueryVariables = Exact<{
   id: Scalars['UUID'];
   after?: InputMaybe<Scalars['Cursor']>;
@@ -685,6 +694,36 @@ export const ArticlesDocument = gql`
 
 export function useArticlesQuery(options: Omit<Urql.UseQueryArgs<ArticlesQueryVariables>, 'query'>) {
   return Urql.useQuery<ArticlesQuery, ArticlesQueryVariables>({ query: ArticlesDocument, ...options });
+};
+export const UnreadArticlesDocument = gql`
+    query unreadArticles($id: UUID!, $after: Cursor, $before: Cursor) {
+  articles: articlesCollection(
+    first: 10
+    after: $after
+    filter: {user_id: {eq: $id}, is_read: {eq: false}}
+    orderBy: {pub_date: DescNullsLast}
+  ) {
+    edges {
+      node {
+        id
+        title
+        description
+        url
+        pub_date
+        subscription
+        is_read
+      }
+    }
+    pageInfo {
+      startCursor
+      endCursor
+    }
+  }
+}
+    `;
+
+export function useUnreadArticlesQuery(options: Omit<Urql.UseQueryArgs<UnreadArticlesQueryVariables>, 'query'>) {
+  return Urql.useQuery<UnreadArticlesQuery, UnreadArticlesQueryVariables>({ query: UnreadArticlesDocument, ...options });
 };
 export const LikedArticlesDocument = gql`
     query likedArticles($id: UUID!, $after: Cursor, $before: Cursor, $likes: [String!]!) {
