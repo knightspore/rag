@@ -1,5 +1,3 @@
-/** @format */
-
 import {IoAddSharp} from 'react-icons/io5';
 import React, {useState} from 'react';
 import {refreshSubscriptions} from '../../lib/api';
@@ -31,9 +29,15 @@ export default function FeedControls() {
 
     return (
         <Disclosure>
+            <Disclosure.Panel
+                as="section"
+                className="p-4 bg-slate-900"
+            >
+                <AddSubscriptionForm />
+            </Disclosure.Panel>
             <Tab.List
                 as="div"
-                className="absolute z-50 flex justify-between p-4 left-4 bottom-4 card dark gap-4"
+                className="absolute z-50 flex justify-between p-2 wrap left-4 bottom-4 card dark gap-4"
             >
                 <AllArticlesTabButton
                     onClick={() => handleSelectTab(Tabs.Feed)}
@@ -47,21 +51,16 @@ export default function FeedControls() {
                     onClick={() => handleSelectTab(Tabs.Unread)}
                     focused={currentTab === Tabs.Unread}
                 />
+                <span className="text-slate-800">/</span>
                 <RefreshFeedButton
                     onClick={handleRefresh}
                     refreshing={refreshing}
                 />
                 <Disclosure.Button as="button">
-                    <h2>Add</h2> <IoAddSharp size={16} />
+                    <IoAddSharp size={16} />
                 </Disclosure.Button>
                 <SignOut />
             </Tab.List>
-            <Disclosure.Panel
-                as="section"
-                className="p-4 bg-slate-900"
-            >
-                <AddSubscriptionForm />
-            </Disclosure.Panel>
         </Disclosure>
     );
 }

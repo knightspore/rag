@@ -47,7 +47,7 @@ export default function ReadArticlePage() {
     return (
         <div className="bg-slate-800">
             <article className="p-4 pb-12 mx-auto space-y-4 prose prose-invert line-clamp">
-                <div className="fixed bottom-0 left-0 z-50 flex justify-between p-4 m-4 card dark gap-4">
+                <div className="fixed bottom-0 left-0 z-50 flex justify-between p-2 m-4 card dark gap-4">
                     <button onClick={() => router.back()}>
                         <IoReturnUpBackSharp size={16} /> Back
                     </button>

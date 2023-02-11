@@ -8,7 +8,6 @@ type Props = {
 export default function RefreshFeedButton({onClick, refreshing}: Props) {
     return (
         <button onClick={onClick}>
-            Refresh
             <IoRefreshSharp
                 size={16}
                 title="Hide previously read posts."
