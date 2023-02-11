@@ -36,7 +36,7 @@ export default function SubscriptionFeed() {
           <motion.ol variants={feedContainer} initial="hidden" animate="show" className="relative flex overflow-x-auto no-scrollbar gap-2">
             <div />
             {
-              subs.data?.subscriptions?.edges.map((sub: any) => {
+              subs.data?.subscriptions?.edges.map((sub) => {
                 return <motion.li key={sub.node.title} variants={feedItem}>
                   <SubscriptionCard sub={sub.node} remove={handleDeleteSubscription} />
                 </motion.li> 

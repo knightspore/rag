@@ -1,5 +1,3 @@
-/** @format */
-
 import {motion} from 'framer-motion';
 import {feedContainer, feedItem} from '../../lib/animation';
 
@@ -24,7 +22,7 @@ export default function SkeletonSubscriptions() {
                 animate="show"
                 className="relative flex overflow-x-auto no-scrollbar gap-2"
             >
-              <div />
+                <div />
                 <motion.li variants={feedItem}>
                     <Card />
                 </motion.li>
