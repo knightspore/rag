@@ -6,7 +6,7 @@ import {useAppContext} from "../Providers/AppContextProvider";
 
 export default function LikeButton({ subscription, title }:{ subscription: Maybe<string>, title: Maybe<string> }) {
 
-  const { user, likes} = useAppContext()
+  const { user, likes, refreshLikes } = useAppContext()
   const [,likeMutation] = useLikeMutation()
   const [,unlikeMutation] = useUnlikeMutation()
   const liked = title && likes?.includes(title)
@@ -17,6 +17,7 @@ export default function LikeButton({ subscription, title }:{ subscription: Maybe
     } else if (liked) {
       await unlikeMutation({userId: user?.id, articleTitle: title})
     }
+    refreshLikes()
   }
 
   return (

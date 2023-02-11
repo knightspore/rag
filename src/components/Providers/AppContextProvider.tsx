@@ -10,6 +10,7 @@ export type AppContextValue = {
     user: User | null;
     setUser: (value: null) => void;
     likes: Array<string>;
+    refreshLikes: () => void;
 };
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue);
@@ -43,7 +44,7 @@ export default function AppContextProvider({
         }
     }, [user]);
 
-    const [likes] = useLikesQuery({
+    const [likes, refreshLikes] = useLikesQuery({
         variables: {
             id: user?.id,
         },
@@ -65,6 +66,7 @@ export default function AppContextProvider({
         user,
         setUser,
         likes: filteredLikes(),
+        refreshLikes: refreshLikes,
     };
 
     return loading ? (
