@@ -5,6 +5,7 @@ import { supabase } from "../../lib/supabase";
 import { motion } from "framer-motion"
 import { subscriptionForm } from "../../lib/animation";
 import { parseFeed } from "../../lib/api";
+import {Articles} from "../../lib/graphql-generated";
 
 export default function AddSubscriptionForm() {
 
@@ -23,6 +24,14 @@ export default function AddSubscriptionForm() {
         return
       }
       const { subscriptions, articles } = await parseFeed(url, user.id)
+      const distinctArticles = Array.from(new Set(articles.map((x: Partial<Articles>) => x.title))).map(title => {
+        const article = articles.find((a: Partial<Articles>) => a.title === title)
+        return {
+          title: title,
+          ...article
+
+        }
+      })
       const { error: sErr } = await supabase
         .from('subscriptions')
         .upsert([
@@ -31,10 +40,12 @@ export default function AddSubscriptionForm() {
       const { error: aErr } = await supabase
         .from('articles')
         .upsert([
-          ...articles
+          ...distinctArticles
       ])
       if (sErr || aErr) {
-        throw new Error(sErr ? sErr.message : aErr && aErr.message)
+        throw new Error(sErr ? 
+          "Subscription Error: " + sErr.message : 
+          aErr && "Articles Error: " + aErr.message)
       }
       location.reload()
     } catch (e) {
