@@ -9,6 +9,12 @@ type Props = {
 };
 
 export default function Modal({open, setOpen, title, text, callback}: Props) {
+  
+  function handleCallback() {
+    callback()
+    setOpen(false)
+  }
+
     return (
         <Dialog
             open={open}
@@ -27,7 +33,7 @@ export default function Modal({open, setOpen, title, text, callback}: Props) {
                     </Dialog.Title>
                     <div className="flex justify-center mt-4 gap-4">
                         <button
-                            onClick={callback}
+                            onClick={handleCallback}
                             className="p-1 px-2 text-lg card error"
                         >
                             {text}
