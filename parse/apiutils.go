@@ -93,10 +93,15 @@ func GetArticles(url string, user string) []ArticlesResponse {
 	var feedItems []EntriesXML
 	var articles []ArticlesResponse
 
-	if len(xml.Feed.Entries) > len(xml.Feed.Items) {
-		feedItems = append(feedItems, xml.Feed.Entries...)
-	} else {
-		feedItems = append(feedItems, xml.Feed.Items...)
+	switch {
+	case len(xml.Feed.Entries) > len(xml.Feed.Items):
+		feedItems = xml.Feed.Entries
+	case len(xml.Feed.Items) > len(xml.Feed.Entries):
+		feedItems = xml.Feed.Items
+	case len(xml.Entries) > len(xml.Feed.Entries):
+		feedItems = xml.Entries
+	default:
+		log.Printf("Get Articles Error: Feed did not contain Entries or Items")
 	}
 
 	for _, item := range feedItems {

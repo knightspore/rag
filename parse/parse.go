@@ -15,7 +15,13 @@ type Feed struct {
 }
 
 type XML struct {
-	Feed FeedXML `xml:",any"`
+	Feed    FeedXML      `xml:",any"`
+	Entries []EntriesXML `xml:"entry" json:"entries"`
+}
+
+type ChannelXML struct {
+	Entries []EntriesXML `xml:"entry" json:"entries"`
+	Items   []EntriesXML `xml:"item" json:"items"`
 }
 
 type FeedXML struct {
