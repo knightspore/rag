@@ -12,7 +12,7 @@ export default function ArticleCard({
   article: Partial<Articles>
 }) {
   return (
-    <div className={`mb-2 p-2 card ${article.is_read && "opacity-30"}`}>
+    <div className={`px-2 mb-8 ${article.is_read && "opacity-20"}`}>
         <div className="text-slate-400">
           <div className="inline-block mr-1 translate-y-[2px]">
             <Icon src={"https://www.google.com/s2/favicons?domain=" + article.url} />

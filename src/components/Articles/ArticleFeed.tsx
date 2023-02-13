@@ -13,7 +13,7 @@ export default function ArticleFeed() {
 
   const app = useAppContext()
   const [after, setAfter] = useState<string|null>(null)
-  const [cursorHist, setCursorHist] = useState<[]|string[]>([])
+  const [cursorHist, setCursorHist] = useState<string[]>([])
 
   const [articles, articlesQuery] = useArticlesQuery({
     variables: {

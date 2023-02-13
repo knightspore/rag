@@ -39,15 +39,17 @@ export default function SignIn() {
 			<Head>
 				<title>Sign-In - RAG</title>
 			</Head>
-      <div className="w-screen h-screen grid lg:grid-cols-4">
-        <div className="col-span-1"/>
-        <div className="w-full px-4 m-auto lg:col-span-1 col-span-2">
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="p-4 m-auto text-center shadow-lg card">
+          <div>
+          <h1 className="text-2xl text-slate-400">RAG Feed Reader</h1>
+          </div>
 					<form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
             <label htmlFor="email">
-              <h1 className="mb-2 text-lg">Login</h1>
+              <p className="mb-2 text-lg">Login</p>
             </label>
 						<input placeholder="you@who.com" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="text-center" />
-							<button type="submit">
+							<button type="submit" className="mx-auto">
 								Get Sign-In Link
 							</button>
 					</form>
@@ -55,9 +57,6 @@ export default function SignIn() {
 					{errMsg && <Alert text={errMsg} level={Level.error} />}
 					{otpSent && <Alert text="Magic Sign-in Link Sent! Check your Email." level={Level.info} />}
 				</div>
-        <div className="flex items-center select-none col-span-2">
-          <Image className="lg:translate-y-12" src="/home_hero.png" alt="Hero Image" width={690} height={773} placeholder="blur" blurDataURL="/home_hero.png" />
-        </div>
 			</div>
 		</>
 	)
