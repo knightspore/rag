@@ -31,6 +31,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "react-markdown": "^8.0.3",
+    "react-web-share": "^2.0.2",
     "urql": "^3.0.3",
     "uuid": "^9.0.0"
   },

@@ -1,4 +1,5 @@
 
+import {Tab} from "@headlessui/react"
 import { motion } from "framer-motion"
 import { feedContainer, feedItem } from "../../lib/animation"
 
@@ -22,6 +23,7 @@ export default function SkeletonArticles() {
   }
 
   return (
+    <Tab.Panel>
     <motion.ol variants={feedContainer} initial="hidden" animate="show" className="p-2 m-2 overflow-y-scroll">
       <motion.li variants={feedItem}>
         <Card />
@@ -54,5 +56,6 @@ export default function SkeletonArticles() {
         <Card />
       </motion.li>
     </motion.ol>
+    </Tab.Panel>
   )
 }
