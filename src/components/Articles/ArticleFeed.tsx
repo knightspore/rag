@@ -42,6 +42,8 @@ export default function ArticleFeed() {
     }
   }
 
+  const showPagination = articles?.data?.articles?.edges && articles?.data?.articles?.edges?.length > 0 || false
+
   if (articles.fetching) return <SkeletonArticles />
 
   if (articles.error) return <Alert text="Error loading articles..." level={Level.warn} />
@@ -55,7 +57,8 @@ export default function ArticleFeed() {
           </motion.li>
         })}
       </motion.ol>      
-      <div className="flex justify-between p-4">
+      {
+        showPagination && <div className="flex justify-between p-4">
         <button onClick={handlePrevPage} className={cursorHist.length === 0 ? "opacity-0" : ""} disabled={cursorHist.length === 0}>
           <IoArrowBackSharp size={18} /> Prev 
         </button>
@@ -65,7 +68,8 @@ export default function ArticleFeed() {
         <button onClick={handleNextPage}>
           Next <IoArrowForwardSharp size={18} />
         </button>
-      </div>
+        </div>
+      }
     </Tab.Panel>
   )
 
