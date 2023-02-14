@@ -10,7 +10,7 @@ export default function RefreshFeedButton({onClick, refreshing}: Props) {
         <button onClick={onClick}>
             <IoRefreshSharp
                 size={16}
-                title="Hide previously read posts."
+                title="Refresh feeds"
                 className={refreshing ? 'animate-spin opacity-50' : ''}
             />
         </button>

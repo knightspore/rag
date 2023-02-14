@@ -10,6 +10,7 @@ export default function AllArticlesTabButton({onClick, focused}: Props) {
     return (
         <Tab
             as="button"
+            title="All articles"
             onClick={onClick}
         >
             Feed

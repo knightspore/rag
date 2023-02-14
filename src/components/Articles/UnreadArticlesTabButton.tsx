@@ -13,6 +13,7 @@ export default function UnreadArticlesTabButton({onClick, focused}: Props) {
         <Tab
             as="button"
             onClick={onClick}
+            title="Filter: Unread articles"
         >
             Unread
             {focused ? (

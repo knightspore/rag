@@ -13,18 +13,13 @@ export default function LikedArticleTabButton({onClick, focused}: Props) {
         <Tab
             as="button"
             onClick={onClick}
+            title="Filter: Liked Articles"
         >
             Saved
             {focused ? (
-                <IoHeartSharp
-                    size={16}
-                    title="Filter: all articles"
-                />
+                <IoHeartSharp size={16} />
             ) : (
-                <IoHeartOutline
-                    size={16}
-                    title="Filter: saved articles only"
-                />
+                <IoHeartOutline size={16} />
             )}
         </Tab>
     );

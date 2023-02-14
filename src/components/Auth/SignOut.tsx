@@ -16,7 +16,7 @@ export default function SignOut() {
 
     return (
         <>
-            <button onClick={() => setOpen(true)}>
+            <button title="Sign out" onClick={() => setOpen(true)}>
                 <IoExitOutline size={16} />
             </button>
             <Modal
