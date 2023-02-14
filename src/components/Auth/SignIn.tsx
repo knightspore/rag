@@ -39,18 +39,19 @@ export default function SignIn() {
 				<title>Sign-In - RAG</title>
 			</Head>
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="p-4 m-auto text-center shadow-lg card">
-          <div>
-          <h1 className="text-2xl text-slate-400">RAG Feed Reader</h1>
-          </div>
-					<form className="flex flex-col space-y-2" onSubmit={handleSubmit}>
-            <label htmlFor="email">
-              <p className="mb-2 text-lg">Login</p>
+        <div className="p-4 m-auto text-center">
+					<form className="flex flex-col my-4 space-y-2" onSubmit={handleSubmit}>
+            <label>
+              <div className="mb-4">
+              <h1 className="text-3xl font-bold text-slate-200">🗞️ Welcome to RAG</h1>
+              </div>
+						<input placeholder="you@who.co" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="text-center" />
             </label>
-						<input placeholder="you@who.com" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="text-center" />
-							<button type="submit" className="mx-auto">
+            <div className="pt-2">
+							<button type="submit" className="mx-auto text-lg">
 								Get Sign-In Link
 							</button>
+            </div>
 					</form>
 					{loading && <Alert text="Loading..." level={Level.info} />}
 					{errMsg && <Alert text={errMsg} level={Level.error} />}

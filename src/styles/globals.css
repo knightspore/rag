@@ -34,7 +34,7 @@
     }
 
     input {
-        @apply w-full p-1 text-sm rounded-sm outline-none md:text-base bg-slate-700 placeholder:text-slate-800 text-slate-300;
+        @apply w-full p-1 text-sm rounded-lg outline-none md:text-base bg-slate-700 placeholder:text-slate-800 text-slate-300;
     }
 }
 
