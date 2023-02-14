@@ -43,7 +43,7 @@ export default function LikedArticleFeed() {
     }
   }
 
-  const showPagination = articles?.data?.articles?.edges && articles?.data?.articles?.edges?.length > 0 || false
+  const showPagination = articles?.data?.articles?.edges && articles?.data?.articles?.edges?.length > 0 || after !== null ? true : false
 
   if (articles.fetching) return <SkeletonArticles />
 
