@@ -3,8 +3,7 @@ import Icon from "../App/Icon";
 import Link from "next/link";
 import LikeButton from "./LikeButton";
 import MarkAsReadButton from "./MarkAsReadButton";
-import { IoShareSharp } from "react-icons/io5";
-import {RWebShare} from "react-web-share";
+import ShareButton from "./ShareButton";
 
 export default function ArticleCard({
   article,
@@ -27,14 +26,7 @@ export default function ArticleCard({
       <div className="flex items-center gap-2 text-slate-400">
         <LikeButton title={article.title} subscription={article.subscription} />
         <MarkAsReadButton id={article?.id} is_read={article?.is_read || false}  />
-        <RWebShare data={{
-            text: `${article.title} (${article.subscription})`,
-            url: article.url,
-            title: `${article.title} | Shared from RAG RSS Reader`,
-
-        }}>
-          <button><IoShareSharp /></button>
-        </RWebShare>
+        <ShareButton title={article.title} url={article.url} subscription={article.subscription} />
         &bull;
         {article.pub_date && <time>
           {new Date(article.pub_date).toLocaleTimeString("en-ZA", {
