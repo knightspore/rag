@@ -2,14 +2,14 @@
 
 ![Vercel](https://vercelbadge.vercel.app/api/knightspore/rag)
 
-Roll-your-own rag! No ads or no paywalls. Visit [RAG](https://rag.ciaran.co.za/) to try it out.
+Roll-your-own rag! No ads or no paywalls. Visit [RAG](https://rag.ciaran.co.za/) to try it out, or fork and host it yourself!
 
 > Inspired by [Newsboat](https://github.com/newsboat/newsboat/). 
 
-I wanted an RSS reader for the browser that sleek, and that would let me read articles without always having to visit the website they're from. Using Go for Lambda Functions, [Supabase](https://supabase.com/) for storage, and Next.js for the frontend, RAG was born.
+I wanted an RSS reader for the browser that looked sleek, and would let me read articles without always having to visit the website they're from. Using Go for Lambda Functions, [Supabase](https://supabase.com/) for storage, and Next.js for the frontend, RAG is how it came together.
 
 Some features include:
-- Sign-in without a password using magic links
+- Sign-up / Sign-in using magic links
 - Install as a mobile app from the website ([`next-pwa`](https://www.npmjs.com/package/next-pwa))
 - Save your favourite articles with a ❤️
 - Bypass website paywalls thanks to [`go-readability`](https://github.com/go-shiori/go-readability)
