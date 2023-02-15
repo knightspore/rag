@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/knightspore/rag/parse"
+	"github.com/mmcdole/gofeed"
 )
 
 func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,25 +27,40 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 
-	articles := 0
+	total := 0
 
 	var wg sync.WaitGroup
+	start := time.Now()
 
 	for _, r := range results {
 		wg.Add(1)
 
 		go func(url string) {
 
-			start := time.Now()
-			a := parse.GetArticles(url, req.UserID)
+			fp := gofeed.NewParser()
+			feed, _ := fp.ParseURL(req.URL)
 
-			articles += len(a)
+			var articles []parse.ArticlesResponse
+
+			for _, item := range feed.Items {
+				fmt.Println(1)
+				articles = append(articles, parse.ArticlesResponse{
+					Title:        item.Title,
+					URL:          item.Link,
+					PubDate:      item.Published,
+					Description:  item.Description,
+					Subscription: feed.Title,
+					Content:      item.Content,
+					UserID:       req.UserID,
+				})
+			}
+
+			total += len(articles)
 			var r []map[string]string
-			err := supabase.DB.From("articles").Upsert(a).Execute(&r)
+			err := supabase.DB.From("articles").Upsert(articles).Execute(&r)
 
-			log.Printf("Insert %q Articles Result: %+v", a[0].Subscription, r)
+			log.Printf("Insert %q Articles Result: %+v", articles[0].Subscription, r)
 			log.Printf("Errors: %+v", err)
-			log.Printf("Refreshed %d Articles in %s\n", len(a), time.Since(start))
 			log.Printf("=== === === ===")
 
 			wg.Done()
@@ -53,8 +70,10 @@ func SubscriptionsRefreshHandler(w http.ResponseWriter, r *http.Request) {
 
 	wg.Wait()
 
+	log.Printf("Refreshed %d Articles in %s\n", total, time.Since(start))
+
 	parse.HandleResponse(w, parse.Response{
-		AffectedCount: articles,
-	}, articles > 0)
+		AffectedCount: total,
+	}, total > 0)
 
 }

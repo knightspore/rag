@@ -3,9 +3,10 @@ package handler
 import (
 	"log"
 	"net/http"
-	"sync"
+	"time"
 
 	"github.com/knightspore/rag/parse"
+	"github.com/mmcdole/gofeed"
 )
 
 func FeedGetHandler(w http.ResponseWriter, r *http.Request) {
@@ -14,22 +15,33 @@ func FeedGetHandler(w http.ResponseWriter, r *http.Request) {
 
 	icon := "https://www.google.com/s2/favicons?domain=" + req.URL
 
-	var wg sync.WaitGroup
+	fp := gofeed.NewParser()
+	feed, _ := fp.ParseURL(req.URL)
+
 	var subscription parse.SubscriptionResponse
 	var articles []parse.ArticlesResponse
 
-	wg.Add(2)
+	subscription = parse.SubscriptionResponse{
+		UpdatedAt:   time.Now(),
+		Title:       feed.Title,
+		Description: feed.Description,
+		URL:         feed.Link,
+		Icon:        icon,
+		User:        req.UserID,
+		Muted:       false,
+	}
 
-	go func() {
-		articles = parse.GetArticles(req.URL, req.UserID)
-		wg.Done()
-	}()
-	go func() {
-		subscription = parse.GetSubscription(req.URL, icon, req.UserID)
-		wg.Done()
-	}()
-
-	wg.Wait()
+	for _, item := range feed.Items {
+		articles = append(articles, parse.ArticlesResponse{
+			Title:        item.Title,
+			URL:          item.Link,
+			PubDate:      item.Published,
+			Description:  item.Description,
+			Subscription: feed.Title,
+			Content:      item.Content,
+			UserID:       req.UserID,
+		})
+	}
 
 	log.Printf("Get Feed: %q\n", subscription.Title)
 	log.Printf("%d articles found\n", len(articles))
