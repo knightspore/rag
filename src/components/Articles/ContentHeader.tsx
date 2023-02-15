@@ -26,11 +26,10 @@ export default function ContentHeader({
     return (
         <>
             <h1 className="text-slate-200">{title}</h1>
-            {description && description.startsWith('<') ? (
-                <p dangerouslySetInnerHTML={{__html: description}} />
-            ) : (
-                <p>{description}</p>
-            )}
+            <article
+                className="prose prose-invert"
+                dangerouslySetInnerHTML={{__html: `${description}`}}
+            />
             <a
                 href={url}
                 target="_blank"
