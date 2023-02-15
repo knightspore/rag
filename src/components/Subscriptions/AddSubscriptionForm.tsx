@@ -39,15 +39,15 @@ export default function AddSubscriptionForm() {
             const {error: sErr} = await supabase
                 .from('subscriptions')
                 .upsert([...subscriptions]);
+            if (sErr) {
+                throw new Error(`Subscription Error: ${sErr.message}`);
+            }
             const {error: aErr} = await supabase
                 .from('articles')
                 .upsert([...distinctArticles]);
-            if (sErr || aErr) {
-                throw new Error(
-                    sErr
-                        ? 'Subscription Error: ' + sErr.message
-                        : aErr && 'Articles Error: ' + aErr.message
-                );
+
+            if (aErr) {
+                throw new Error(`Articles Error: ${aErr.message}`);
             }
             setRefreshPending(true);
         } catch (e) {
