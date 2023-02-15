@@ -40,21 +40,6 @@ export default function SkeletonArticles() {
       <motion.li variants={feedItem}>
         <Card />
       </motion.li>
-      <motion.li variants={feedItem}>
-        <Card />
-      </motion.li>
-      <motion.li variants={feedItem}>
-        <Card />
-      </motion.li>
-      <motion.li variants={feedItem}>
-        <Card />
-      </motion.li>
-      <motion.li variants={feedItem}>
-        <Card />
-      </motion.li>
-      <motion.li variants={feedItem}>
-        <Card />
-      </motion.li>
     </motion.ol>
     </Tab.Panel>
   )

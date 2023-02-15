@@ -1,5 +1,3 @@
-/** @format */
-
 import Head from 'next/head';
 import {Tab} from '@headlessui/react';
 import FeedControls from '../components/Articles/FeedControls';
@@ -11,6 +9,7 @@ import {useAppContext} from '../components/Providers/AppContextProvider';
 import AddSubscriptionForm from '../components/Subscriptions/AddSubscriptionForm';
 
 export default function HomePage() {
+
     const {onboarding} = useAppContext();
 
     return (

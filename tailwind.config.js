@@ -10,7 +10,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ["IBM Plex Sans", "sans-serif"],
+        sans: ["var(--font-ibmplex)", "sans-serif"],
       },
     },
   },

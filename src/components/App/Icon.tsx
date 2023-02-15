@@ -11,7 +11,6 @@ export default function Icon({ src }: { src: Maybe<string> | undefined }) {
         alt={src + " icon"}
         width={48}
         height={48}
-        layout="responsive"
         src={src || defaultIcon}
         loading="eager"
       />
