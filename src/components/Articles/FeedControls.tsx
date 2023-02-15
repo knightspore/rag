@@ -1,5 +1,5 @@
 import {IoAddSharp} from 'react-icons/io5';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {refreshSubscriptions} from '../../lib/api';
 import {useAppContext} from '../Providers/AppContextProvider';
 import AddSubscriptionForm from '../Subscriptions/AddSubscriptionForm';
@@ -12,7 +12,7 @@ import {Tabs} from '../../lib/types';
 import UnreadArticlesTabButton from './UnreadArticlesTabButton';
 
 export default function FeedControls() {
-    const {user} = useAppContext();
+    const {user, setRefreshPending} = useAppContext();
     const [refreshing, setRefreshing] = useState(false);
     const [currentTab, setCurrentTab] = useState<Tabs>(Tabs.Feed);
 
@@ -24,7 +24,7 @@ export default function FeedControls() {
         setRefreshing(true);
         await refreshSubscriptions(user?.id);
         setRefreshing(false);
-        location.reload();
+        setRefreshPending(true)
     }
 
     return (

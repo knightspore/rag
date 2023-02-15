@@ -10,7 +10,7 @@ import {parseFeed} from '../../lib/api';
 import {Articles} from '../../lib/graphql-generated';
 
 export default function AddSubscriptionForm() {
-    const {user, onboarding} = useAppContext();
+    const {user, onboarding, setRefreshPending} = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<boolean | string>(false);
     const [url, setUrl] = useState('');
@@ -49,7 +49,7 @@ export default function AddSubscriptionForm() {
                         : aErr && 'Articles Error: ' + aErr.message
                 );
             }
-            location.reload();
+            setRefreshPending(true);
         } catch (e) {
             setError((e as Error).message);
         } finally {

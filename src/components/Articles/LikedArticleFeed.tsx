@@ -5,13 +5,13 @@ import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "../SkeletonComponents/SkeletonArticles"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
 import { useLikedArticlesQuery } from "../../lib/graphql-generated"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppContext } from "../Providers/AppContextProvider"
 import {Tab} from "@headlessui/react"
 
 export default function LikedArticleFeed() {
 
-  const { user, likes } = useAppContext()
+  const { user, likes, refreshPending, setRefreshPending } = useAppContext()
   const [after, setAfter] = useState<string|null>(null)
   const [cursorHist, setCursorHist] = useState<[]|string[]>([])
 
@@ -22,6 +22,14 @@ export default function LikedArticleFeed() {
       likes: likes,
     }
   }) 
+
+  useEffect(() => {
+    if (refreshPending === true) {
+      setRefreshPending(false)
+      articlesQuery({ requestPolicy: "network-only" })
+      setAfter(null)
+    }
+  }, [ refreshPending, setRefreshPending, articlesQuery ])
 
   const handleNextPage = () => {
     const cursor =  articles.data?.articles?.pageInfo.endCursor

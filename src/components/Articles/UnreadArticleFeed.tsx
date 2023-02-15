@@ -5,7 +5,7 @@ import ArticleCard from "./ArticleCard"
 import SkeletonArticles from "../SkeletonComponents/SkeletonArticles"
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
 import { useUnreadArticlesQuery } from "../../lib/graphql-generated"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppContext } from "../Providers/AppContextProvider"
 import {Tab} from "@headlessui/react"
 
@@ -21,6 +21,14 @@ export default function UnreadArticleFeed() {
       after: after,
     }
   }) 
+
+  useEffect(() => {
+    if (app.refreshPending === true) {
+      app.setRefreshPending(false)
+      articlesQuery({ requestPolicy: "network-only" })
+      setAfter(null)
+    }
+  }, [ app, articlesQuery ])
 
   const handleNextPage = () => {
     const cursor =  articles.data?.articles?.pageInfo.endCursor

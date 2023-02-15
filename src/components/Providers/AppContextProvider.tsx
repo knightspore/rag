@@ -13,6 +13,8 @@ export type AppContextValue = {
     refreshLikes: () => void;
     onboarding: boolean;
     setOnboarding: (b: boolean) => void;
+    refreshPending: boolean;
+    setRefreshPending: (b: boolean) => void;
 };
 
 const AppContext = createContext<AppContextValue>({} as AppContextValue);
@@ -35,6 +37,8 @@ export default function AppContextProvider({
     const [user, setUser] = useState<AppContextValue['user']>(null);
     const [onboarding, setOnboarding] =
         useState<AppContextValue['onboarding']>(false);
+    const [refreshPending, setRefreshPending] =
+        useState<AppContextValue['refreshPending']>(false);
 
     useEffect(() => {
         async function login() {
@@ -73,6 +77,8 @@ export default function AppContextProvider({
         refreshLikes: refreshLikes,
         onboarding,
         setOnboarding,
+        refreshPending,
+        setRefreshPending,
     };
 
     return loading ? (
