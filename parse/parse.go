@@ -59,6 +59,7 @@ func NewFeed(url string) (XML, error) {
 }
 
 func Fetch(url string) ([]byte, error) {
+
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("GET error: Fetch %s", url)
@@ -66,7 +67,7 @@ func Fetch(url string) ([]byte, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("status error: %d", resp.StatusCode)
+		return nil, fmt.Errorf("status error: %d for url %q", resp.StatusCode, url)
 	}
 
 	data, err := io.ReadAll(resp.Body)

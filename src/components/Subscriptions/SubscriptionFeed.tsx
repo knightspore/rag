@@ -21,16 +21,19 @@ export default function SubscriptionFeed() {
   useEffect(() => {
    if (subs.data?.subscriptions?.edges && subs.data?.subscriptions?.edges.length === 0) {
       app.setOnboarding(true)
+   }
+    if (app.refreshPending === true) {
+      app.setRefreshPending(false)
+      subsQuery({ requestPolicy: "network-only" })
     }
-  }, [subs, app])
+  }, [subs, app, subsQuery])
 
   async function handleDeleteSubscription(title?: string) {
-    await deleteSubscription({
+    deleteSubscription({
         title: title,
         id: app.user?.id,
     })
-    subsQuery({ requestPolicy: "network-only" })
-    // TODO: Refresh Articles
+    app.setRefreshPending(true)
   }
 
 
