@@ -50,6 +50,7 @@ export default function AddSubscriptionForm() {
                 throw new Error(`Articles Error: ${aErr.message}`);
             }
             setRefreshPending(true);
+            setUrl('');
         } catch (e) {
             setError((e as Error).message);
         } finally {
