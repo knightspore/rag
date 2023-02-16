@@ -8,7 +8,7 @@ require (
 	github.com/go-shiori/go-readability v0.0.0-20220215145315-dd6828d2f09b
 	github.com/joho/godotenv v1.3.0
 	github.com/mmcdole/gofeed v1.2.0
-	github.com/nedpals/postgrest-go v0.1.2
+	github.com/nedpals/postgrest-go v0.1.3
 )
 
 require (

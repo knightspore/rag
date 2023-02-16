@@ -1,60 +1,80 @@
 package parse
 
 import (
-	"encoding/xml"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"os"
+	"time"
+
+	"github.com/joho/godotenv"
+	postgrest "github.com/nedpals/postgrest-go/pkg"
 )
 
-type Feed struct {
-	URL  string
-	Doc  []byte
-	JSON []byte
-	XML  XML
+type Request struct {
+	URLs   []string `json:"urls,omitempty"`
+	URL    string   `json:"url,omitempty"`
+	UserID string   `json:"userId,omitempty"`
 }
 
-type XML struct {
-	Feed    FeedXML      `xml:",any"`
-	Entries []EntriesXML `xml:"entry" json:"entries"`
+type Response struct {
+	Content       string                 `json:"content,omitempty"`
+	Articles      []ArticlesResponse     `json:"articles,omitempty"`
+	Subscriptions []SubscriptionResponse `json:"subscriptions,omitempty"`
+	AffectedCount int                    `json:"affectedCount,omitempty"`
+	Error         error                  `json:"error,omitempty"`
 }
 
-type ChannelXML struct {
-	Entries []EntriesXML `xml:"entry" json:"entries"`
-	Items   []EntriesXML `xml:"item" json:"items"`
+type SubscriptionResponse struct {
+	UpdatedAt   time.Time `json:"updated_at"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	URL         string    `json:"url"`
+	Icon        string    `json:"icon"`
+	User        string    `json:"user"`
+	Muted       bool      `json:"muted"`
 }
 
-type FeedXML struct {
-	Title       string       `xml:"title" json:"title"`
-	Description string       `xml:"description" json:"description"`
-	LastUpdated string       `xml:"lastBuildDate" json:"lastUpdated"`
-	Items       []EntriesXML `xml:"item" json:"items"`
-	Entries     []EntriesXML `xml:"entry" json:"entries"`
+type ArticlesResponse struct {
+	Title        string `json:"title"`
+	URL          string `json:"url"`
+	PubDate      string `json:"pub_date"`
+	Description  string `json:"description,omitempty"`
+	Subscription string `json:"subscription"`
+	Content      string `json:"content,omitempty"`
+	UserID       string `json:"user_id"`
 }
 
-type EntriesXML struct {
-	PubDate     string `xml:"pubDate" json:"pubDate"`
-	PubEpoch    int64  `xml:"pubEpoch" json:"pubEpoch"`
-	Title       string `xml:"title" json:"title"`
-	Description string `xml:"description" json:"description"`
-	Content     string `xml:"content" json:"content"`
-	URL         string `xml:"link" json:"url"`
+type Supabase struct {
+	DB *postgrest.Client
 }
 
-func NewFeed(url string) (XML, error) {
+func CreateClient() (*Supabase, error) {
 
-	doc, err := Fetch(url)
-	if err != nil || len(doc) == 0 {
-		return XML{}, err
+	godotenv.Load()
+
+	supabaseUrl := os.Getenv("NEXT_PUBLIC_SUPABASE_URL")
+	supabaseAnonKey := os.Getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+	if (supabaseUrl == "") || (supabaseAnonKey == "") {
+		return nil, fmt.Errorf("Could not load Supabase Environment Variables")
 	}
 
-	var x XML
-	err = xml.Unmarshal(doc, &x)
+	parsedURL, err := url.Parse(fmt.Sprintf("%s/rest/v1/", supabaseUrl))
 	if err != nil {
-		return XML{}, err
+		panic(err)
 	}
 
-	return x, nil
+	return &Supabase{
+		DB: postgrest.NewClient(
+			*parsedURL,
+			postgrest.WithTokenAuth(supabaseAnonKey),
+			func(c *postgrest.Client) {
+				c.AddHeader("apiKey", supabaseAnonKey)
+			},
+		),
+	}, nil
 
 }
 
@@ -72,8 +92,33 @@ func Fetch(url string) ([]byte, error) {
 
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, fmt.Errorf("Error reading read body: %s", url)
+		return nil, fmt.Errorf("error reading read body: %s", url)
 	}
 
 	return data, nil
+}
+
+func HandleResponse(w http.ResponseWriter, res Response, cond bool) {
+	j, err := json.Marshal(res)
+	if err != nil {
+		panic(err)
+	}
+
+	if cond {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusFound)
+		fmt.Fprintf(w, "%s", j)
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "%s", j)
+	}
+}
+
+func HandleRequest(r *http.Request) Request {
+	var req Request
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		panic(err)
+	}
+	return req
 }
