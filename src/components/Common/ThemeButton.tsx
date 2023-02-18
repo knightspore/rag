@@ -1,10 +1,17 @@
-const ThemeButton = ({currentTheme, setTheme}: {currentTheme: any; setTheme: any}) => {
-  const isLightTheme: boolean = currentTheme === "light";
+import { Dispatch, SetStateAction } from "react";
+import { Theme } from "../../constants/themes";
 
-  if(isLightTheme) {
+type ThemeButtonProps = {
+  currentTheme: Theme;
+  setTheme: Dispatch<SetStateAction<Theme>>;
+}
+
+const ThemeButton = ({currentTheme, setTheme}: ThemeButtonProps) => {
+
+  if(currentTheme === Theme.Light) {
     return (
   <svg
-  onClick={() => setTheme("dark")}
+  onClick={() => setTheme(Theme.Dark)}
   xmlns="http://www.w3.org/2000/svg"
   className="h-6 w-6 cursor-pointer"
   fill="none"
@@ -23,7 +30,7 @@ const ThemeButton = ({currentTheme, setTheme}: {currentTheme: any; setTheme: any
 
   return (
       <svg
-    onClick={() => setTheme("light")}
+    onClick={() => setTheme(Theme.Light)}
     xmlns="http://www.w3.org/2000/svg"
     className="h-6 w-6 cursor-pointer"
     fill="none"

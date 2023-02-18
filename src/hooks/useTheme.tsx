@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
 import Button from "../components/Common/ThemeButton";
+import { Theme } from "../constants/themes";
 
 const useTheme = () => {
-  const [theme, setTheme] = useState<string>(
-    typeof window !== "undefined" ? localStorage.theme : "dark"
+  const [theme, setTheme] = useState<Theme>(
+    typeof window !== "undefined" ? localStorage.theme : Theme.Dark
   );
-  const colorTheme: string = theme === "dark" ? "light" : "dark";
+  const colorTheme: Theme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
 
   const ThemeButton = () => {
     return <Button currentTheme={theme} setTheme={setTheme} />;
