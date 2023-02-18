@@ -7,7 +7,6 @@ const useTheme = () => {
   const [theme, setTheme] = useState<Theme>(
     typeof window !== "undefined" ? localStorage.theme : Theme.Dark
   );
-  const colorTheme: Theme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
 
   const ThemeButton = () => {
     return <Button currentTheme={theme} setTheme={setTheme} />;
@@ -15,8 +14,9 @@ const useTheme = () => {
 
   useEffect(() => {
     const root: HTMLElement = window.document.documentElement;
+    const themeToBeRemoved: Theme = theme === Theme.Dark ? Theme.Light : Theme.Dark;
 
-    root.classList.remove(colorTheme);
+    root.classList.remove(themeToBeRemoved);
     root.classList.add(theme);
 
     if (typeof window !== "undefined") {
