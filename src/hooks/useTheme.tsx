@@ -9,7 +9,7 @@ const useTheme = () => {
   );
 
   const ThemeButton = () => {
-    return <Button currentTheme={theme} setTheme={setTheme} />;
+    return <Button currentTheme={theme} setTheme={setTheme} className="text-slate-400 my-auto cursor-pointer" />;
   }
 
   useEffect(() => {
