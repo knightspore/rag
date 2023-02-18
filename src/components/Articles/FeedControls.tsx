@@ -8,6 +8,7 @@ import SignOut from '../Auth/SignOut';
 import RefreshFeedButton from './RefreshFeedButton';
 import AllArticlesTabButton from './AllArticlesTabButton';
 import LikedArticleTabButton from './LikedArticlesTabButton';
+import useTheme from '../../hooks/useTheme';
 import {Tabs} from '../../lib/types';
 import UnreadArticlesTabButton from './UnreadArticlesTabButton';
 
@@ -15,6 +16,8 @@ export default function FeedControls() {
     const {user, setRefreshPending} = useAppContext();
     const [refreshing, setRefreshing] = useState(false);
     const [currentTab, setCurrentTab] = useState<Tabs>(Tabs.Feed);
+
+    const ThemeButton = useTheme();
 
     function handleSelectTab(t: Tabs) {
         setCurrentTab(t);
@@ -34,7 +37,7 @@ export default function FeedControls() {
                 className="p-4 bg-slate-900"
             >
                 <AddSubscriptionForm />
-            </Disclosure.Panel> 
+            </Disclosure.Panel>
           <Tab.List
                 as="div"
                 className="absolute z-50 flex justify-between p-2 wrap left-4 bottom-4 card dark gap-4"
@@ -56,6 +59,7 @@ export default function FeedControls() {
                     onClick={handleRefresh}
                     refreshing={refreshing}
                 />
+                <ThemeButton />
             <Disclosure.Button id="add-btn" as="button" title="Add subscription">
                     <IoAddSharp size={16} />
                 </Disclosure.Button>

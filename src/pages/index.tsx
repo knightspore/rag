@@ -5,7 +5,6 @@ import SubscriptionFeed from '../components/Subscriptions/SubscriptionFeed';
 import ArticleFeed from '../components/Articles/ArticleFeed';
 import LikedArticleFeed from '../components/Articles/LikedArticleFeed';
 import UnreadArticleFeed from '../components/Articles/UnreadArticleFeed';
-import useTheme from '../hooks/useTheme';
 import {useAppContext} from '../components/Providers/AppContextProvider';
 import AddSubscriptionForm from '../components/Subscriptions/AddSubscriptionForm';
 import {  useState } from 'react';
@@ -16,11 +15,10 @@ export default function HomePage() {
   const app = useAppContext()
   const [after, setAfter] = useState<string|null>(null)
   const [cursorHist, setCursorHist] = useState<string[]>([])
-  const ThemeButton = useTheme();
 
   const handleNextPage = (cursor: string | null) => {
-      after === null 
-        ? setCursorHist([""]) 
+      after === null
+        ? setCursorHist([""])
         : setCursorHist([...cursorHist, after])
       setAfter(cursor)
   }
@@ -49,7 +47,6 @@ export default function HomePage() {
                         <AddSubscriptionForm />
                     </div>
                 )}
-                <ThemeButton />
                 <SubscriptionFeed />
                 <FeedControls />
                 <ArticleFeed controls={feedControls}/>
