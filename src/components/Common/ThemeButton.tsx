@@ -10,16 +10,20 @@ type ThemeButtonProps = {
 }
 
 const ThemeButton = ({currentTheme, setTheme, className}: ThemeButtonProps) => {
-
-  if(currentTheme === Theme.Light) {
-    return (
-      <CiDark onClick={() => setTheme(Theme.Dark)} className={className}/>
-    )
+  switch(currentTheme) {
+    case Theme.Light:
+      return (
+        <CiDark onClick={() => setTheme(Theme.Dark)} className={className}/>
+      );
+    case Theme.Dark:
+      return (
+        <TfiShine onClick={() => setTheme(Theme.Light)} className={className} />
+      );
+    default:
+      return (
+        <TfiShine onClick={() => setTheme(Theme.Light)} className={className} />
+      );
   }
-
-  return (
-    <TfiShine onClick={() => setTheme(Theme.Light)} className={className}/>
-  )
 };
 
 export default ThemeButton
