@@ -17,8 +17,8 @@ export default function HomePage() {
   const [cursorHist, setCursorHist] = useState<string[]>([])
 
   const handleNextPage = (cursor: string | null) => {
-      after === null 
-        ? setCursorHist([""]) 
+      after === null
+        ? setCursorHist([""])
         : setCursorHist([...cursorHist, after])
       setAfter(cursor)
   }
