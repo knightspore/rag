@@ -21,6 +21,7 @@ type Request struct {
 
 type Response struct {
 	Content       string                 `json:"content,omitempty"`
+	FoundURLs     []string               `json:"foundURLs"`
 	Articles      []ArticlesResponse     `json:"articles,omitempty"`
 	Subscriptions []SubscriptionResponse `json:"subscriptions,omitempty"`
 	AffectedCount int                    `json:"affectedCount,omitempty"`
