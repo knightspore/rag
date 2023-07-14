@@ -1,5 +1,5 @@
 import {IoArrowBackSharp, IoArrowForwardSharp} from "react-icons/io5"
-import { FeedControl } from "../../pages";
+import { FeedControl } from '../../lib/types';
 
 export default function Pagination({ cursor, controls }: {cursor: string | null, controls: FeedControl}) {
 	return <div className="flex justify-between p-4">
