@@ -6,6 +6,7 @@ import '../styles/globals.css';
 import AppContextProvider from '../components/Providers/AppContextProvider';
 import UrqlContextProvider from '../components/Providers/UrqlContextProvider';
 import {IBM_Plex_Sans} from '@next/font/google';
+import {Analytics} from '@vercel/analytics/react';
 
 const ibmplex = IBM_Plex_Sans({
     subsets: ['latin'],
@@ -69,6 +70,7 @@ function MyApp({Component, pageProps}: AppProps) {
                     <Component {...pageProps} />
                 </AppContextProvider>
             </UrqlContextProvider>
+            <Analytics />
         </div>
     );
 }
