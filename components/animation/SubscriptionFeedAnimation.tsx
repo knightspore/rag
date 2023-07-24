@@ -19,7 +19,7 @@ export default function SubscriptionFeedAnimation({
             }}
             initial="hidden"
             animate="show"
-            className="relative flex overflow-x-auto no-scrollbar gap-2"
+            className="relative flex pl-2 overflow-x-auto no-scrollbar gap-2"
         >
             {children}
         </motion.ol>
