@@ -9,12 +9,12 @@
     "lint": "next lint && yarn prettier --write src/",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "schema:generate": "graphql-codegen --config codegen.yml"
+    "schema:generate": "graphql-codegen --config codegen.yml",
+    "types:generate": "npx supabase gen types typescript --project-id sgzquvqpyebgqnecoaoa --schema public > lib/supabase.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.10",
     "@mozilla/readability": "^0.4.2",
-    "@next/font": "^13.1.6",
     "@supabase/auth-helpers-nextjs": "^0.7.3",
     "@supabase/supabase-js": "^2.29.0",
     "@tailwindcss/line-clamp": "^0.4.2",

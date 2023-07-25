@@ -1,9 +1,14 @@
 /** @format */
 
 import {createServerActionClient} from '@supabase/auth-helpers-nextjs';
+import {Metadata} from 'next';
 import {revalidatePath} from 'next/cache';
 import {cookies} from 'next/headers';
 import {Database} from '../lib/supabase';
+
+export const metadata: Metadata = {
+    title: 'Log In',
+};
 
 export default async function LoginForm() {
     const logIn = async (formData: FormData) => {

@@ -190,9 +190,29 @@ export interface Database {
       }
     }
     Functions: {
+      enriched_articles: {
+        Args: {
+          article_id: string
+        }
+        Returns: {
+          id: string
+          title: string
+          description: string
+          url: string
+          content: string
+          pub_date: string
+          is_read: boolean
+          liked: boolean
+          subscription: string
+          subscription_description: string
+          subscription_url: string
+          subscription_icon: string
+          user_id: string
+        }[]
+      }
       user_feed: {
         Args: {
-          user_id: string
+          userid: string
           article_count: number
           article_offset: number
         }
@@ -203,6 +223,8 @@ export interface Database {
           url: string
           content: string
           pub_date: string
+          is_read: boolean
+          liked: boolean
           subscription: string
           subscription_description: string
           subscription_url: string

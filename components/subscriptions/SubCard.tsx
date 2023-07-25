@@ -1,7 +1,6 @@
 /** @format */
 
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
-import SubscriptionCardAnimation from '../../components/animation/SubscriptionCardAnimation';
 import Icon from '../../src/components/App/Icon';
 import {cookies} from 'next/headers';
 
@@ -20,11 +19,9 @@ export default async function SubCard({id}: Props) {
         .single();
 
     return (
-        <SubscriptionCardAnimation>
-            <div className="flex items-center p-1 px-2 select-none gap-2 card">
-                <Icon src={subscription?.icon} />
-                <h3 className="text-sm w-max">{subscription?.title}</h3>
-            </div>
-        </SubscriptionCardAnimation>
+        <div className="flex items-center p-1 px-2 select-none gap-2 card">
+            <Icon src={subscription?.icon} />
+            <h3 className="text-sm w-max">{subscription?.title}</h3>
+        </div>
     );
 }
