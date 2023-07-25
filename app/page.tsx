@@ -8,6 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function IndexPage() {
-    // @ts-expect-error Server Component
     return <Feed />;
 }

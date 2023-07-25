@@ -67,13 +67,15 @@ export default function ClientFeed() {
             id="feed"
             className="p-2 pb-16 m-2 overflow-y-scroll"
         >
-            {isLoading &&
-                Array(limit).map((v, i) => {
-                    return <LoadingArticleCard key={v + i} />;
-                })}
             {article_ids?.map(({id}) => {
-                /* @ts-expect-error Server Component */
-                return <ArticleCard id={id} />;
+                return (
+                    <Suspense
+                        key={id}
+                        fallback={<LoadingArticleCard />}
+                    >
+                        <ArticleCard id={id} />
+                    </Suspense>
+                );
             })}
 
             <Pagination

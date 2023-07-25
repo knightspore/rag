@@ -44,14 +44,12 @@ export default async function RootLayout({
                 <main>
                     {session ? (
                         <>
-                            {/* @ts-expect-error Server Component */}
                             <SubFeed />
                             <div className="p-2 overflow-y-scroll">
                                 {children}
                             </div>
                         </>
                     ) : (
-                        // @ts-expect-error Server Component
                         <LoginForm />
                     )}
                 </main>

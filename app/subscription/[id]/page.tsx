@@ -51,13 +51,12 @@ export default async function SubscriptionPage({
                                 month: 'short',
                                 hour: 'numeric',
                                 minute: '2-digit',
-                            }
+                            },
                         )}
                     </time>
                 </p>
                 <hr className="mt-4 mb-2 border-slate-700" />
             </div>
-            {/* @ts-expect-error Server Component */}
             <Feed subscription={subscription?.title} />
         </>
     );

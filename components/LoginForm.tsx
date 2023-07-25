@@ -32,7 +32,6 @@ export default async function LoginForm() {
             <h1 className="text-3xl font-bold text-slate-200">
                 🗞️ Welcome to RAG
             </h1>
-            {/* @ts-expect-error Server Component */}
             <form action={login}>
                 <input
                     type="email"

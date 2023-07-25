@@ -6,7 +6,6 @@ import {cookies} from 'next/headers';
 import ArticleCard from './ArticleCard';
 import {Suspense} from 'react';
 import LoadingArticleCard from './LoadingArticleCard';
-import Pagination from './Pagination';
 import {getIDs, getSubscriptionIDs, getUnreadIDs} from '../../lib/api';
 
 type Props = {
@@ -42,12 +41,10 @@ export default async function Feed({subscription, unread}: Props) {
                         key={id}
                         fallback={<LoadingArticleCard />}
                     >
-                        {/* @ts-expect-error Server Component */}
                         <ArticleCard id={id} />
                     </Suspense>
                 );
             })}
-            <Pagination />
         </section>
     );
 }
