@@ -21,7 +21,7 @@ export default function MenuItem({text, path, icon}: Props) {
             }`}
         >
             {icon}
-            <h3 className="text-sm w-max">{text}</h3>
+            <h3 className="text-sm font-medium w-max">{text}</h3>
         </Link>
     );
 }

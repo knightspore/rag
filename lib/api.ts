@@ -9,6 +9,8 @@ import {Database} from './supabase';
 
 const supabase = createServerActionClient({cookies});
 
+// UPDATE
+
 export async function likeArticle(
     article_title: string,
     subscription_title: string,
@@ -40,6 +42,8 @@ export async function markArticleRead(article_id: string, read: boolean) {
 export type FeedResults =
     Database['public']['Functions']['user_feed']['Returns'];
 export type FeedResult = FeedResults[number];
+
+// SELECT
 
 type UserFeedResponse = {
     error: any;
@@ -96,4 +100,45 @@ export async function getFeedArticle(id?: string) {
         })
         .limit(1)
         .single();
+}
+
+export async function getIDs(user_id?: string) {
+    return await supabase
+        .from('articles')
+        .select('id')
+        .eq('user_id', user_id)
+        .order('pub_date', {
+            ascending: false,
+            nullsFirst: false,
+        })
+        .range(0, 9);
+}
+
+export async function getSubscriptionIDs(
+    subscription: string,
+    user_id?: string
+) {
+    return await supabase
+        .from('articles')
+        .select('id')
+        .eq('user_id', user_id)
+        .order('pub_date', {
+            ascending: false,
+            nullsFirst: false,
+        })
+        .eq('subscription', subscription)
+        .range(0, 9);
+}
+
+export async function getUnreadIDs(user_id?: string) {
+    return await supabase
+        .from('articles')
+        .select('id')
+        .eq('user_id', user_id)
+        .eq('is_read', false)
+        .order('pub_date', {
+            ascending: false,
+            nullsFirst: false,
+        })
+        .range(0, 9);
 }

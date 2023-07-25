@@ -15,7 +15,7 @@ export default function Indicator({id, children}: Props) {
     return (
         <div
             className={`bg-slate-800 ${
-                isActive && 'bg-slate-300 text-slate-900'
+                isActive && '!bg-slate-300 text-slate-900'
             } rounded-lg transition-all duration-75`}
         >
             {children}

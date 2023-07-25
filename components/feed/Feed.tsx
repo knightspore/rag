@@ -7,12 +7,15 @@ import ArticleCard from './ArticleCard';
 import {Suspense} from 'react';
 import LoadingArticleCard from './LoadingArticleCard';
 import Pagination from './Pagination';
+import {getIDs, getSubscriptionIDs, getUnreadIDs} from '../../lib/api';
 
 type Props = {
-    subscription: string;
+    subscription?: string;
+    unread?: boolean;
+    liked?: boolean;
 };
 
-export default async function Feed({subscription}: Props) {
+export default async function Feed({subscription, unread}: Props) {
     const supabase = createServerComponentClient<Database>({cookies});
 
     const {
@@ -20,26 +23,14 @@ export default async function Feed({subscription}: Props) {
     } = await supabase.auth.getUser();
 
     const {data: article_ids} = subscription
-        ? await supabase
-              .from('articles')
-              .select('id')
-              .eq('user_id', user?.id)
-              .order('pub_date', {
-                  ascending: false,
-                  nullsFirst: false,
-              })
-              .eq('subscription', subscription)
-              .range(0, 9)
-        : await supabase
-              .from('articles')
-              .select('id')
-              .eq('user_id', user?.id)
-              .order('pub_date', {
-                  ascending: false,
-                  nullsFirst: false,
-              })
-              .range(0, 9);
-
+        ? // TODO: Liked
+          // Subscription
+          await getSubscriptionIDs(subscription, user?.id)
+        : unread
+        ? // Unread
+          await getUnreadIDs(user?.id)
+        : // Default
+          await getIDs(user?.id);
     return (
         <section
             id="feed"
