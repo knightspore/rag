@@ -29,6 +29,7 @@ export default async function SubFeed() {
                             key={subscription.id}
                             fallback={<LoadingSubCard />}
                         >
+                            {/* @ts-expect-error Server Component */}
                             <SubCard id={subscription.id} />
                         </Suspense>
                     );

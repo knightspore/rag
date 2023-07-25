@@ -11,10 +11,9 @@ export const metadata: Metadata = {
 };
 
 export default async function LoginForm() {
-    const logIn = async (formData: FormData) => {
+    async function login(formData: FormData) {
         'use server';
         const email = String(formData.get('email'));
-        console.log(email);
         const supabase = createServerActionClient<Database>({cookies});
         const {error} = await supabase.auth.signInWithOtp({
             email,
@@ -26,14 +25,15 @@ export default async function LoginForm() {
             console.log(error);
         }
         revalidatePath('/');
-    };
+    }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen space-y-2">
             <h1 className="text-3xl font-bold text-slate-200">
                 🗞️ Welcome to RAG
             </h1>
-            <form action={logIn}>
+            {/* @ts-expect-error Server Component */}
+            <form action={login}>
                 <input
                     type="email"
                     name="email"

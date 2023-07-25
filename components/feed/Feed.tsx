@@ -6,6 +6,7 @@ import {cookies} from 'next/headers';
 import ArticleCard from './ArticleCard';
 import {Suspense} from 'react';
 import LoadingArticleCard from './LoadingArticleCard';
+import Pagination from './Pagination';
 
 const supabase = createServerComponentClient<Database>({cookies});
 
@@ -35,10 +36,12 @@ export default async function Feed() {
                         key={id}
                         fallback={<LoadingArticleCard />}
                     >
+                        {/* @ts-expect-error Server Component */}
                         <ArticleCard id={id} />
                     </Suspense>
                 );
             })}
+            <Pagination />
         </section>
     );
 }

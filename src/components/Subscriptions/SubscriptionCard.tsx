@@ -33,6 +33,7 @@ export default function SubscriptionCard({sub}: Props) {
             <div className="flex items-center p-1 px-2 select-none gap-2 card">
                 <div className="group">
                     <div className="transition-all duration-100 group-hover:hidden">
+                        {/* @ts-expect-error Old Component */}
                         <Icon src={sub.icon} />
                     </div>
                     <div className="hidden transition-all duration-100 group-hover:block">
