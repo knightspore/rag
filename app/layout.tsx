@@ -40,7 +40,14 @@ export default async function RootLayout({
             <body
                 className={`text-slate-50 bg-slate-800 ${ibmplex.variable} font-sans`}
             >
-                <main>{session ? children : <LoginForm />}</main>
+                <main>
+                    {session ? (
+                        children
+                    ) : (
+                        // @ts-expect-error Server Component
+                        <LoginForm />
+                    )}
+                </main>
             </body>
         </html>
     );
