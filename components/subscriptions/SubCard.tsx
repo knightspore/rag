@@ -1,7 +1,7 @@
 /** @format */
 
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
-import Icon from '../../src/components/App/Icon';
+import Icon from '../Icon';
 import {cookies} from 'next/headers';
 import Link from 'next/link';
 import Indicator from './Indicator';

@@ -1,12 +1,12 @@
 /** @format */
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import {Database} from '../../lib/supabase';
-import Icon from '../../src/components/App/Icon';
 import Link from 'next/link';
 import LikeButton from '../../components/feed/LikeButton';
 import ReadButton from '../../components/feed/ReadButton';
 import {cookies} from 'next/headers';
 import {getFeedArticle} from '../../lib/api';
+import Icon from '../Icon';
 
 type Props = {
     id: string;
