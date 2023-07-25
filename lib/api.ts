@@ -14,7 +14,7 @@ const supabase = createServerActionClient({cookies});
 export async function likeArticle(
     article_title: string,
     subscription_title: string,
-    user_id?: string
+    user_id?: string,
 ) {
     await supabase.from('likes').insert({
         user_id,
@@ -46,7 +46,7 @@ export type FeedResult = FeedResults[number];
 // SELECT
 
 type UserFeedResponse = {
-    error: any;
+    error: Error | null;
     data: Array<FeedResult>;
     count: number;
     status: number;
@@ -58,7 +58,7 @@ export async function getFeed(
     id?: string,
     subscription: string | null = null,
     count = 30,
-    offset = 0
+    offset = 0,
 ): Promise<UserFeedResponse> {
     const result = {
         ...(subscription !== null
@@ -116,7 +116,7 @@ export async function getIDs(user_id?: string) {
 
 export async function getSubscriptionIDs(
     subscription: string,
-    user_id?: string
+    user_id?: string,
 ) {
     return await supabase
         .from('articles')

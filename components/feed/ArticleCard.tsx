@@ -74,7 +74,7 @@ export default async function ArticleCard({id}: Props) {
                                 month: 'short',
                                 hour: 'numeric',
                                 minute: '2-digit',
-                            }
+                            },
                         )}
                     </time>
                 )}

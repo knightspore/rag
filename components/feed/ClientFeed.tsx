@@ -12,7 +12,7 @@ import Pagination from './Pagination';
 
 export default function ClientFeed() {
     const [article_ids, setArticleIds] = useState<null | {id: string}[]>(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [, setIsLoading] = useState(false);
 
     const [cursor, setCursor] = useState(0);
     const [limit, setLimit] = useState(9);
