@@ -4,6 +4,8 @@ import SubCard from './SubCard';
 import {cookies} from 'next/headers';
 import {Suspense} from 'react';
 import LoadingSubCard from './LoadingSubCard';
+import MenuItem from '../MenuItem';
+import {IoDocumentsSharp} from 'react-icons/io5';
 
 export default async function SubFeed() {
     const supabase = createServerComponentClient({cookies});
@@ -23,6 +25,11 @@ export default async function SubFeed() {
         >
             <div className="fixed absolute top-0 bottom-0 right-0 z-30 w-24 bg-gradient-to-l from-slate-900" />
             <div className="relative flex p-2 pl-2 overflow-x-auto no-scrollbar gap-2">
+                <MenuItem
+                    icon={<IoDocumentsSharp size={14} />}
+                    path="/"
+                    text={'All Feeds'}
+                />
                 {subscriptions.data?.map((subscription) => {
                     return (
                         <Suspense

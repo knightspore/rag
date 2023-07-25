@@ -1,6 +1,7 @@
 /** @format */
 'use server';
 
+import 'server-only';
 import {createServerActionClient} from '@supabase/auth-helpers-nextjs';
 import {revalidatePath} from 'next/cache';
 import {cookies} from 'next/headers';
@@ -73,6 +74,19 @@ export async function getFeed(
     };
 
     return result as UserFeedResponse;
+}
+
+export async function getFeedIds(cursor: number, limit: number, id?: string) {
+    const {data: article_ids} = await supabase
+        .from('articles')
+        .select('id')
+        .eq('user_id', id)
+        .order('pub_date', {
+            ascending: false,
+            nullsFirst: false,
+        })
+        .range(cursor, limit);
+    return article_ids;
 }
 
 export async function getFeedArticle(id?: string) {

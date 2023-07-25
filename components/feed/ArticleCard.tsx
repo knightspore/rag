@@ -1,5 +1,4 @@
 /** @format */
-
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import {Database} from '../../lib/supabase';
 import Icon from '../../src/components/App/Icon';
@@ -16,9 +15,8 @@ type Props = {
 type Article =
     Database['public']['Functions']['enriched_articles']['Returns'][number];
 
-const supabase = createServerComponentClient<Database>({cookies});
-
 export default async function ArticleCard({id}: Props) {
+    const supabase = createServerComponentClient<Database>({cookies});
     const {
         data: {user},
     } = await supabase.auth.getUser();

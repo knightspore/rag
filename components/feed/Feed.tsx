@@ -8,27 +8,42 @@ import {Suspense} from 'react';
 import LoadingArticleCard from './LoadingArticleCard';
 import Pagination from './Pagination';
 
-const supabase = createServerComponentClient<Database>({cookies});
+type Props = {
+    subscription: string;
+};
 
-export default async function Feed() {
+export default async function Feed({subscription}: Props) {
+    const supabase = createServerComponentClient<Database>({cookies});
+
     const {
         data: {user},
     } = await supabase.auth.getUser();
 
-    const {data: article_ids} = await supabase
-        .from('articles')
-        .select('id')
-        .eq('user_id', user?.id)
-        .order('pub_date', {
-            ascending: false,
-            nullsFirst: false,
-        })
-        .limit(10);
+    const {data: article_ids} = subscription
+        ? await supabase
+              .from('articles')
+              .select('id')
+              .eq('user_id', user?.id)
+              .order('pub_date', {
+                  ascending: false,
+                  nullsFirst: false,
+              })
+              .eq('subscription', subscription)
+              .range(0, 9)
+        : await supabase
+              .from('articles')
+              .select('id')
+              .eq('user_id', user?.id)
+              .order('pub_date', {
+                  ascending: false,
+                  nullsFirst: false,
+              })
+              .range(0, 9);
 
     return (
         <section
             id="feed"
-            className="p-2 pb-16 m-2 overflow-y-scroll"
+            className="pb-16"
         >
             {article_ids?.map(({id}) => {
                 return (

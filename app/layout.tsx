@@ -8,6 +8,7 @@ import {cookies} from 'next/headers';
 import './../src/styles/globals.css';
 import LoginForm from '../components/LoginForm';
 import {Metadata} from 'next';
+import SubFeed from '../components/subscriptions/SubFeed';
 
 const ibmplex = IBM_Plex_Sans({
     subsets: ['latin'],
@@ -23,13 +24,13 @@ export const metadata: Metadata = {
     },
 };
 
-const supabase = createServerComponentClient<Database>({cookies});
-
 export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const supabase = createServerComponentClient<Database>({cookies});
+
     const {
         data: {session},
     } = await supabase.auth.getSession();
@@ -42,7 +43,13 @@ export default async function RootLayout({
             >
                 <main>
                     {session ? (
-                        children
+                        <>
+                            {/* @ts-expect-error Server Component */}
+                            <SubFeed />
+                            <div className="p-2 overflow-y-scroll">
+                                {children}
+                            </div>
+                        </>
                     ) : (
                         // @ts-expect-error Server Component
                         <LoginForm />

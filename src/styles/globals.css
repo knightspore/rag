@@ -6,6 +6,7 @@
 @tailwind utilities;
 
 @layer base {
+    
     /* Scrollbar Styles */
     ::-webkit-scrollbar {
         @apply w-2 bg-slate-800;
