@@ -111,7 +111,7 @@ export async function getIDs(user_id?: string) {
             ascending: false,
             nullsFirst: false,
         })
-        .range(0, 9);
+        .range(0, 30);
 }
 
 export async function getSubscriptionIDs(
@@ -127,7 +127,7 @@ export async function getSubscriptionIDs(
             nullsFirst: false,
         })
         .eq('subscription', subscription)
-        .range(0, 9);
+        .range(0, 30);
 }
 
 export async function getUnreadIDs(user_id?: string) {
@@ -140,7 +140,7 @@ export async function getUnreadIDs(user_id?: string) {
             ascending: false,
             nullsFirst: false,
         })
-        .range(0, 9);
+        .range(0, 30);
 }
 
 export async function getLikedIDs(user_id?: string) {
@@ -152,7 +152,7 @@ export async function getLikedIDs(user_id?: string) {
             ascending: false,
             nullsFirst: false,
         })
-        .range(0, 9);
+        .range(0, 30);
     console.log({likes});
     const data = await supabase
         .from('articles')
