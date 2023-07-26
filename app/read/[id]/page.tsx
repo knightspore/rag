@@ -64,9 +64,11 @@ export default async function ReadArticlePage({
             </div>
             <hr />
             <div className="prose-a:text-slate-300">
-                <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-                    {article.content}
-                </ReactMarkdown>
+                {article.content && (
+                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                        {article.content}
+                    </ReactMarkdown>
+                )}
             </div>
         </div>
     );

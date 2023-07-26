@@ -27,7 +27,7 @@
         "**/*.graphql",
         ".next/types/**/*.ts"
     ],
-    "exclude": ["node_modules", "src"],
+    "exclude": ["node_modules"],
     "baseUrl": ".",
     "paths": {
         "@/components/*": ["components/*"],

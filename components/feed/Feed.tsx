@@ -37,11 +37,9 @@ export default async function Feed({subscription, unread, liked}: Props) {
           await getUnreadIDs(user?.id)
         : // Default
           await getIDs(user?.id);
+
     return (
-        <section
-            id="feed"
-            className="pb-16"
-        >
+        <section id="feed">
             {article_ids?.map(({id}) => {
                 return (
                     <Suspense

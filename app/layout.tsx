@@ -46,10 +46,13 @@ export default async function RootLayout({
             >
                 <main>
                     <div className="relative shadow-inner bg-slate-900/50">
-                        <div className="fixed absolute top-0 bottom-0 right-0 z-30 w-24 bg-gradient-to-l from-slate-900" />
-                        <div className="relative flex p-2 pl-2 overflow-x-auto no-scrollbar gap-2">
+                        <div
+                            id="shadow"
+                            className="fixed absolute top-0 bottom-0 right-0 z-30 w-24 bg-gradient-to-l from-slate-900"
+                        />
+                        <div className="relative flex items-center p-2 pl-2 overflow-x-auto no-scrollbar gap-2">
                             <UserMenu />
-                            <hr className="h-8 card" />
+                            <hr className="h-6 mx-2 card" />
                             <SubFeed />
                         </div>
                         <div />
