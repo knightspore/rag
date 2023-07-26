@@ -5,7 +5,7 @@ import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import DefaultHead from '../components/Head';
 import {Database} from '../lib/supabase';
 import {cookies} from 'next/headers';
-import './../src/styles/globals.css';
+import './globals.css';
 import LoginForm from '../components/LoginForm';
 import {Metadata} from 'next';
 import SubFeed from '../components/subscriptions/SubFeed';

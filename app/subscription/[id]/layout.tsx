@@ -4,6 +4,8 @@ import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import {cookies} from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
+import LoadingApp from '../../../components/LoadingApp';
+import {Suspense} from 'react';
 
 export default async function SubscriptionLayout({
     params: {id},
@@ -58,14 +60,20 @@ export default async function SubscriptionLayout({
             </p>
             <div className="flex items-center mt-4 gap-2">
                 <Link
-                    className="flex items-center p-1 px-2 rounded-lg select-none bg-slate-800 transition-all duration-75 gap-2 card"
+                    className="flex items-center p-1 px-2 text-sm rounded-lg select-none bg-slate-800 transition-all duration-75 gap-2 card"
                     href={`/subscription/${id}/edit`}
                 >
                     Edit
                 </Link>
+                <Link
+                    className="flex items-center p-1 px-2 text-sm rounded-lg select-none bg-slate-800 transition-all duration-75 gap-2 card warn"
+                    href={`/subscription/${id}/edit`}
+                >
+                    Delete
+                </Link>
             </div>
             <hr className="mt-4 mb-2 border-slate-700" />
-            {children}
+            <Suspense fallback={<LoadingApp />}>{children}</Suspense>
         </div>
     );
 }

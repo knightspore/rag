@@ -9,15 +9,18 @@ import LikeButton from '../../../components/feed/LikeButton';
 import ReadButton from '../../../components/feed/ReadButton';
 
 export default async function ReadArticlePage({
-    params: {id},
+    params: {article_id},
 }: {
-    params: {id: string};
+    params: {article_id: string};
 }) {
     const supabase = createServerComponentClient({cookies});
+    const {
+        data: {user},
+    } = await supabase.auth.getUser();
     const {data: article} = await supabase
         .from('articles')
         .select()
-        .eq('id', id)
+        .eq('id', article_id)
         .limit(1)
         .single();
 
@@ -30,7 +33,7 @@ export default async function ReadArticlePage({
         const {error} = await supabase
             .from('articles')
             .update({content})
-            .eq('id', id);
+            .eq('id', article_id);
         if (error) {
             console.log(error);
         }
@@ -51,7 +54,7 @@ export default async function ReadArticlePage({
                 </p>
                 <div className="flex gap-4">
                     <LikeButton
-                        user_id={id}
+                        user_id={user?.id}
                         title={article.title}
                         subscription={article.subscription}
                         liked={article.liked}

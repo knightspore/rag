@@ -24,7 +24,7 @@ export default async function ArticleCard({id}: Props) {
     return (
         <div
             key={article.id}
-            className={`px-2 mb-8 ${article.is_read && 'opacity-20'}`}
+            className={`px-2 mb-8 ${article?.is_read && 'opacity-20'}`}
         >
             <div className="text-slate-400">
                 <div className="inline-block mr-1 translate-y-[2px]">

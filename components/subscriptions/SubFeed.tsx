@@ -14,6 +14,7 @@ export default async function SubFeed() {
     const subscriptions = await supabase
         .from('subscriptions')
         .select('id')
+        .order('created_at', {ascending: false, nullsFirst: false})
         .eq('user', user?.id);
 
     return (
