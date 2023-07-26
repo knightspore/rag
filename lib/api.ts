@@ -2,12 +2,12 @@
 'use server';
 
 import 'server-only';
-import {createServerActionClient} from '@supabase/auth-helpers-nextjs';
+import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import {revalidatePath} from 'next/cache';
 import {cookies} from 'next/headers';
 import {Database} from './supabase';
 
-const supabase = createServerActionClient({cookies});
+const supabase = createServerComponentClient({cookies});
 
 // UPDATE
 

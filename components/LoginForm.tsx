@@ -1,6 +1,6 @@
 /** @format */
 
-import {createServerActionClient} from '@supabase/auth-helpers-nextjs';
+import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import {Metadata} from 'next';
 import {revalidatePath} from 'next/cache';
 import {cookies} from 'next/headers';
@@ -14,7 +14,7 @@ export default async function LoginForm() {
     async function login(formData: FormData) {
         'use server';
         const email = String(formData.get('email'));
-        const supabase = createServerActionClient<Database>({cookies});
+        const supabase = createServerComponentClient<Database>({cookies});
         const {error} = await supabase.auth.signInWithOtp({
             email,
             options: {
