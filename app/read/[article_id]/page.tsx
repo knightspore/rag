@@ -25,10 +25,17 @@ export default async function ReadArticlePage({
         .single();
 
     async function getContent() {
-        const res = await fetch('http://localhost:3000/api/articles/read', {
-            method: 'POST',
-            body: JSON.stringify({url: article.url}),
-        });
+        const res = await fetch(
+            `${
+                process.env.NODE_ENV === 'development'
+                    ? 'http://localhost:3000'
+                    : 'https://dev.rag.ciaran.co.za'
+            }/api/subscriptions/refresh`,
+            {
+                method: 'POST',
+                body: JSON.stringify({url: article.url}),
+            },
+        );
         const {content} = await res.json();
         const {error} = await supabase
             .from('articles')

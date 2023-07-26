@@ -167,11 +167,18 @@ export async function getLikedIDs(user_id?: string) {
 }
 
 export async function refreshSubscriptions(user_id?: string) {
-    await fetch('http://localhost:3000/api/subscriptions/refresh', {
-        method: 'POST',
-        body: JSON.stringify({
-            userId: user_id,
-        }),
-    });
+    await fetch(
+        `${
+            process.env.NODE_ENV === 'development'
+                ? 'http://localhost:3000'
+                : 'https://dev.rag.ciaran.co.za'
+        }/api/subscriptions/refresh`,
+        {
+            method: 'POST',
+            body: JSON.stringify({
+                userId: user_id,
+            }),
+        },
+    );
     revalidatePath('/');
 }

@@ -20,7 +20,7 @@ export default async function LoginForm() {
             options: {
                 emailRedirectTo:
                     process.env.NODE_ENV === 'development'
-                        ? 'http://127.0.0.1:3000'
+                        ? 'http://127.0.0.1:3000/auth/callback'
                         : 'https://dev.rag.ciaran.co.za/auth/callback',
             },
         });
