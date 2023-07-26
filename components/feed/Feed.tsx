@@ -6,7 +6,12 @@ import {cookies} from 'next/headers';
 import ArticleCard from './ArticleCard';
 import {Suspense} from 'react';
 import LoadingArticleCard from './LoadingArticleCard';
-import {getIDs, getSubscriptionIDs, getUnreadIDs} from '../../lib/api';
+import {
+    getIDs,
+    getLikedIDs,
+    getSubscriptionIDs,
+    getUnreadIDs,
+} from '../../lib/api';
 
 type Props = {
     subscription?: string;
@@ -14,7 +19,7 @@ type Props = {
     liked?: boolean;
 };
 
-export default async function Feed({subscription, unread}: Props) {
+export default async function Feed({subscription, unread, liked}: Props) {
     const supabase = createServerComponentClient<Database>({cookies});
 
     const {
@@ -22,9 +27,11 @@ export default async function Feed({subscription, unread}: Props) {
     } = await supabase.auth.getUser();
 
     const {data: article_ids} = subscription
-        ? // TODO: Liked
-          // Subscription
+        ? // Subscription
           await getSubscriptionIDs(subscription, user?.id)
+        : liked
+        ? // Liked
+          await getLikedIDs(user?.id)
         : unread
         ? // Unread
           await getUnreadIDs(user?.id)

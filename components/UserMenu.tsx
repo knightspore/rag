@@ -1,11 +1,7 @@
 /** @format */
 import MenuItem from './MenuItem';
-import {
-    IoDocumentsSharp,
-    IoEyeOutline,
-    IoHeartSharp,
-    IoRefreshSharp,
-} from 'react-icons/io5';
+import {IoDocumentsSharp, IoEyeOutline, IoHeartSharp} from 'react-icons/io5';
+import RefreshButton from './RefreshButton';
 
 export default function UserMenu() {
     return (
@@ -25,11 +21,7 @@ export default function UserMenu() {
                 path="/liked"
                 text={'Liked'}
             />
-            <MenuItem
-                icon={<IoRefreshSharp size={14} />}
-                path="/api/refresh"
-                text={'Refresh'}
-            />
+            <RefreshButton />
         </nav>
     );
 }

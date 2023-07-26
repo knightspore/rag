@@ -142,3 +142,36 @@ export async function getUnreadIDs(user_id?: string) {
         })
         .range(0, 9);
 }
+
+export async function getLikedIDs(user_id?: string) {
+    const {data: likes} = await supabase
+        .from('likes')
+        .select('article_title')
+        .eq('user_id', user_id)
+        .order('id', {
+            ascending: false,
+            nullsFirst: false,
+        })
+        .range(0, 9);
+    console.log({likes});
+    const data = await supabase
+        .from('articles')
+        .select()
+        .in('title', likes?.map((l) => l.article_title) ?? [])
+        .order('pub_date', {
+            ascending: false,
+            nullsFirst: false,
+        });
+    console.log({data});
+    return data;
+}
+
+export async function refreshSubscriptions(user_id?: string) {
+    await fetch('http://localhost:3000/api/subscriptions/refresh', {
+        method: 'POST',
+        body: JSON.stringify({
+            userId: user_id,
+        }),
+    });
+    revalidatePath('/');
+}

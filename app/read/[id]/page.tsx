@@ -5,6 +5,8 @@ import {revalidatePath} from 'next/cache';
 import {cookies} from 'next/headers';
 import {ReactMarkdown} from 'react-markdown/lib/react-markdown';
 import rehypeRaw from 'rehype-raw';
+import LikeButton from '../../../components/feed/LikeButton';
+import ReadButton from '../../../components/feed/ReadButton';
 
 export default async function ReadArticlePage({
     params: {id},
@@ -43,10 +45,25 @@ export default async function ReadArticlePage({
         <div>
             <div className="space-y-2">
                 <h1 className="block">{article.title}</h1>
-                <p className="block font-bold">{article.subscription}</p>
+                <p className="block">
+                    From{' '}
+                    <span className="font-bold">{article.subscription}</span>
+                </p>
+                <div className="flex gap-4">
+                    <LikeButton
+                        user_id={id}
+                        title={article.title}
+                        subscription={article.subscription}
+                        liked={article.liked}
+                    />
+                    <ReadButton
+                        article_id={article.id}
+                        is_read={article.is_read}
+                    />
+                </div>
             </div>
             <hr />
-            <div className="mt-4 prose-a:text-slate-300">
+            <div className="prose-a:text-slate-300">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
                     {article.content}
                 </ReactMarkdown>

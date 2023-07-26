@@ -7,6 +7,7 @@ import ReadButton from '../../components/feed/ReadButton';
 import {cookies} from 'next/headers';
 import {getFeedArticle} from '../../lib/api';
 import Icon from '../Icon';
+import {Suspense} from 'react';
 
 type Props = {
     id: string;

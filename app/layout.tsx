@@ -9,6 +9,9 @@ import './../src/styles/globals.css';
 import LoginForm from '../components/LoginForm';
 import {Metadata} from 'next';
 import SubFeed from '../components/subscriptions/SubFeed';
+import {Suspense} from 'react';
+import LoadingApp from '../components/LoadingApp';
+import UserMenu from '../components/UserMenu';
 
 const ibmplex = IBM_Plex_Sans({
     subsets: ['latin'],
@@ -42,16 +45,24 @@ export default async function RootLayout({
                 className={`text-slate-50 bg-slate-800 ${ibmplex.variable} font-sans`}
             >
                 <main>
-                    {session ? (
-                        <>
+                    <div className="relative shadow-inner bg-slate-900/50">
+                        <div className="fixed absolute top-0 bottom-0 right-0 z-30 w-24 bg-gradient-to-l from-slate-900" />
+                        <div className="relative flex p-2 pl-2 overflow-x-auto no-scrollbar gap-2">
+                            <UserMenu />
+                            <hr className="h-8 card" />
                             <SubFeed />
+                        </div>
+                        <div />
+                    </div>
+                    <Suspense fallback={<LoadingApp />}>
+                        {session ? (
                             <div className="p-2 overflow-y-scroll">
                                 {children}
                             </div>
-                        </>
-                    ) : (
-                        <LoginForm />
-                    )}
+                        ) : (
+                            <LoginForm />
+                        )}
+                    </Suspense>
                 </main>
             </body>
         </html>
