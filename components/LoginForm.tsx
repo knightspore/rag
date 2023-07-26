@@ -18,7 +18,10 @@ export default async function LoginForm() {
         const {error} = await supabase.auth.signInWithOtp({
             email,
             options: {
-                emailRedirectTo: 'http://localhost:3000',
+                emailRedirectTo:
+                    process.env.NODE_ENV === 'development'
+                        ? 'http://127.0.0.1:3000'
+                        : 'https://dev.rag.ciaran.co.za/auth/callback',
             },
         });
         if (error) {
